@@ -7,7 +7,7 @@ library("tidyverse")
 source("0-data/0-api_keys.R")
 
 # Create a directory for the data
-local_dir    <- "0-data/OHIO"
+local_dir    <- "0-data/ohio"
 data_source <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(data_source)) dir.create(data_source)
