@@ -7,8 +7,8 @@ library("rvest")
 library("tidyverse")
 
 # Create a directory for the data
-local_dir    <- "0-data/OHIO"
-data_source <- paste0(local_dir, "/raw")
+local_dir    <- "0-data/soils"
+data_source  <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(data_source)) dir.create(data_source)
 
@@ -22,13 +22,15 @@ cauv_files <- c("real_property/cauv_table_ty2009.xls",
                        "Copy%20of%202014%20Table%20for%20ODT%20Web.xlsx"),
                 "real_property/2015_Table_for_ODT_Web.xls",
                 "real_property/CAUV2016Table.xlsx",
-                "real_property/CAUV2017Table.xlsx")
+                "real_property/CAUV2017Table.xlsx",
+                "real_property/CAUV2018Table.xlsx")
 
 cauv_urls <- paste0(base_url, cauv_files)
 
 cauv_files <- c("cauv_2009.xls", "cauv_2010.xls", "cauv_2011.xls",
                 "cauv_2012.xls", "cauv_2013.xlsx", "cauv_2014.xlsx",
-                "cauv_2015.xls", "cauv_2016.xlsx", "cauv_2017.xlsx")
+                "cauv_2015.xls", "cauv_2016.xlsx", "cauv_2017.xlsx",
+                "cauv_2018.xlsx")
 
 map2(cauv_urls, cauv_files, function(x, y) {
   file_name <- paste0(data_source, "/", y)
@@ -70,7 +72,6 @@ cauv <- j5 %>%
   bind_rows() %>% 
   mutate_at(vars(prod_index, cropland, woodland, year), as.numeric)
 
-###############
 # Need to add in corrections here for messed up soils.
 x <- cauv$soil_series == "DRUMMER,GR-SUBST"
 cauv$slope[x]       <- "0-2"
@@ -127,7 +128,6 @@ cauv$prod_index[x] <- 84
 
 x <- cauv$soil_series == "CARLISLE,DRAINED"
 cauv$prod_index[x] <- 86
-###############
 
 # Fill in the productivity index for these values
 cauv <- cauv %>% 
@@ -153,19 +153,34 @@ write_csv(cauv, paste0(local_dir, "/cauv_soils.csv"))
 write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
 
 # Now calculate the non-adjusted 2017 values
+
 readjust <- function(x) ifelse((max(x) - min(x)) == 0, max(x),
                                min(x) - (max(x) - min(x)))
-unadj <- cauv %>% 
-  filter(year > 2015) %>% 
+
+unadj2017 <- cauv %>% 
+  filter(year %in% c(2016, 2017)) %>% 
   group_by(id, soil_series, texture, slope, erosion, drainage,
            prod_index, indx) %>% 
-  summarise(cropland = readjust(cropland),
-            woodland = readjust(woodland),
+  summarise(cropland_unadj = readjust(cropland),
+            woodland_unadj = readjust(woodland),
             year = 2017) %>% 
   ungroup()
 
-write_csv(unadj, paste0(local_dir, "/cauv_unadj_2017.csv"))
-write_rds(unadj, paste0(local_dir, "/cauv_unadj_2017.rds"))
+# Then the 2018 ones
+
+unadj2018 <- cauv %>% 
+  filter(year %in% c(2017, 2018)) %>% 
+  group_by(id, soil_series, texture, slope, erosion, drainage,
+           prod_index, indx) %>% 
+  summarise(cropland_unadj = readjust(cropland),
+            woodland_unadj = readjust(woodland),
+            year = 2018) %>% 
+  ungroup()
+
+unadj <- bind_rows(unadj2017, unadj2018)
+
+write_csv(unadj2018, paste0(local_dir, "/cauv_unadj.csv"))
+write_rds(unadj2018, paste0(local_dir, "/cauv_unadj.rds"))
 
 
 # ---- pd32 ---------------------------------------------------------------
@@ -213,6 +228,10 @@ tax_files <- tax_files[!grepl(".pdf", tax_files)]
 
 cauv_vals <- map(tax_files, function(x){
   j5 <- gdata::read.xls(x)
+  
+  # Remove the first column if it is the county number
+  if (any(grepl("county number", tolower(j5[,1])))) j5 <- j5[,-1]
+  
   starts <- which(grepl("adams", tolower(j5[,1])))
   ends   <- which(grepl("wyandot", tolower(j5[,1])))
   j5 <- j5[starts:ends,]
@@ -220,8 +239,9 @@ cauv_vals <- map(tax_files, function(x){
   j5 <- j5[, !(j5[1,] == "")]
   names(j5) <- c("county", "parcels", "acres_cauv", "cauv", "market_value")
   j5$year <- as.numeric(substr(basename(x), 7, 8))
+  
   # hack for creating a year variable
-  j5$year <- ifelse(j5$year < 17, 2000 + j5$year, 1900 + j5$year)
+  j5$year <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
   return(j5)
 })
 
@@ -245,7 +265,7 @@ cauv_vals <- cauv_vals %>%
 # cauv_vals <- bind_rows(cauv_vals, temp)
 
 # Reappraisals:
-reap <- read_csv("0-data/OHIO/tax_reappraisals.csv") %>% 
+reap <- read_csv("0-data/soils/offline/tax_reappraisals.csv") %>% 
   gather(appraisal, year, -county)
 j5 <- map(-1:5, function(x){
   temp <- reap

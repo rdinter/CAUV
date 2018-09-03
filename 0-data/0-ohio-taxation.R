@@ -8,8 +8,8 @@ library("rvest")
 library("tidyverse")
 
 # Create a directory for the data
-local_dir    <- "0-data/OHIO"
-data_source <- paste0(local_dir, "/raw")
+local_dir    <- "0-data/ODT"
+data_source  <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(data_source)) dir.create(data_source)
 
@@ -87,6 +87,8 @@ pd30_vals <- map(tax_files, function(x){
 pd30_vals <- bind_rows(pd30_vals) %>% 
   mutate(county = ifelse(county == "guernesey", "guernsey", county))
 
+pd30_vals <- arrange(pd30_vals, year, county)
+
 write_csv(pd30_vals, paste0(local_dir, "/pd30.csv"))
 write_rds(pd30_vals, paste0(local_dir, "/pd30.rds"))
 
@@ -156,6 +158,8 @@ pd31_vals <- map(tax_files, function(x){
 
 pd31_vals <- bind_rows(pd31_vals) %>% 
   mutate(county = ifelse(county == "guernesey", "guernsey", county))
+
+pd31_vals <- arrange(pd31_vals, year, county)
 
 write_csv(pd31_vals, paste0(local_dir, "/pd31.csv"))
 write_rds(pd31_vals, paste0(local_dir, "/pd31.rds"))
@@ -230,6 +234,8 @@ pr6_vals <- map(tax_files, function(x){
 
 pr6_vals <- bind_rows(pr6_vals) %>% 
   mutate(county = ifelse(county == "guernesey", "guernsey", county))
+
+pr6_vals <- arrange(pr6_vals, year, county)
 
 write_csv(pr6_vals, paste0(local_dir, "/pr6.csv"))
 write_rds(pr6_vals, paste0(local_dir, "/pr6.rds"))
@@ -311,5 +317,8 @@ td1_vals <- map(tax_files, function(x){
 td1_vals <- bind_rows(td1_vals) %>% 
   mutate(county = ifelse(county == "guernesey", "guernsey", county))
 
+td1_vals <- arrange(td1_vals, year, county)
+
 write_csv(td1_vals, paste0(local_dir, "/td1.csv"))
 write_rds(td1_vals, paste0(local_dir, "/td1.rds"))
+
