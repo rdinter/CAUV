@@ -24,7 +24,7 @@ And lastly, here are the category-item combinations and descriptions (useful for
 - `fixed costs` - category in the budgets related to fixed cost of operation for a crop, should be on the lower end of the excel file. All categories are used except for the management charge and land charge.
     - `fixed_miscellaneous` - started in 2015 budgets, typically the last item in the fixed costs. Includes marketing, farm insurance, dues and professional fees, supplies, utilities, soil tests, small tools, software/hardware, business use of vehicle, transport of supplies/equipment, etc.
     - `labor` - usually first item under fixed costs and is a combination of hours and the prevailing wage rate. Use the average of all the yield levels, although they should all be equal.
-    - `machine` - titled the "Mach. And Equip. Charge" and usually in the middle of fixed costs. All yields should be equal, so use the average. There was a large-scale change in 2018 which dramatically lowered this value, so in 2018 and beyond this category must be a combination of `machine_new` and `hired_custom_work` for consistency.
+    - `machine` - titled the "Mach. And Equip. Charge" and usually in the middle of fixed costs. All yields should be equal, so use the average. There was a large-scale change in 2018 which dramatically lowered this value, for 2018 and beyond this category must be a combination of `machine_new` and `hired_custom_work` for consistency.
     - `machine_new` - only tracked beginning in 2018, this is the actual value for "Mach. And Equip. Charge" after the new tracking of the category.
 - `production` - top of the budgets, these are related to the agronomic issues for each crop. Actually placed under the variable costs section.
     - `seed` - usually the first item under the variable cost, should be the amount of seeds used for the various levels of yields and technically match the yield values.
@@ -32,7 +32,7 @@ And lastly, here are the category-item combinations and descriptions (useful for
 - `variable cost` - close enough to the first section of each excel file for most of these items.
     - `chemicals` - cost of all chemicals related to the production of each crop, these are typically fixed values but if not take the average across the yield values.
     - `crop_insurance` - crop insurance which depends on the expected yields for each crop and will vary across the different levels.
-    - `drying` - only corn needs drying, but the cost the value needs to be converted into cent per bushel. This is done easily for 2018. For previous years, it was generally done by ....
+    - `drying` - only corn needs drying, but the cost value needs to be converted into cent per bushel.
     - `fuel_oil_grease` - in about the middle of each variable cost section, but it usually doesn't vary across yield levels.
     - `hired_costom_work` - began in 2018 split of how the budgets were calculated, should be documented across the different production levels but the average should be used to add onto the `machine` category in fixed costs.
     - `k2o` - fertilizer cost is documented as per pound, this should be a column within the category. There should also be different levels in terms of how much fertilizer should be sued, which are to the left of the cost and should be inputted into the low-med-high categories.
@@ -41,11 +41,9 @@ And lastly, here are the category-item combinations and descriptions (useful for
     - `p2o5` - cost and the production levels are recorded for this and the cost may differ across crops. Cost is in a per-pound cost at the middle right while the production levels are to the left of this value.
     - `repairs` - should usually be equal across all yields but if not, then the average should be used.
     - `seed` - cost of seed, which is usually the first row in variable costs and in the middle. Corn is per 1,000.
-    - `trucking` - category changed in 2018 to be called "Hauling" which includes a per bushel cost that should be used. Prior to 2017, this value  ......
+    - `trucking` - category changed in 2018 to be called "Hauling" which includes a per bushel cost that should be used. Prior to 2017, this value needed to be calculated by taking the total cost for low production divided by the yields for the low production yield.
     - `variable_miscellaneous` - usually one of the last line items for this category, it varies across yield levels and is expressed as a cost. It should be recorded as so too.
 
 
 
 
-- `machine` - prior to the 2018 budgets, this category was meant for the 
-- `machine_new` - 

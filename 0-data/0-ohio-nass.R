@@ -6,6 +6,8 @@ library("nassR")
 library("tidyverse")
 source("0-data/0-api_keys.R")
 
+not_all_na <- function(x) any(!is.na(x))
+
 # Create a directory for the data
 local_dir    <- "0-data/ohio"
 data_source <- paste0(local_dir, "/raw")
@@ -158,6 +160,7 @@ state_crops <- map(c(corn_vals, soy_vals, wheat_vals), function(x){
 
 crops <- state_crops %>% 
   bind_rows() %>% 
+  # Filter out the forecast values
   filter(reference_period_desc == "YEAR") %>% 
   mutate(year = as.numeric(year),
          short_desc = factor(short_desc,
@@ -179,11 +182,46 @@ crops <- crops %>%
                               wheat_winter_yield, wheat_yield)) %>% 
   select(-contains("winter"))
 
-
 write.csv(crops, paste0(local_dir, "/ohio_state_crops.csv"),
           row.names = F)
 write_rds(crops, paste0(local_dir, "/ohio_state_crops.rds"))
 
+# Gather up the forecasted values
+
+forecast_crops <- state_crops %>% 
+  bind_rows() %>% 
+  # Filter out the forecast values
+  filter(reference_period_desc != "YEAR") %>% 
+  mutate(year = as.numeric(year),
+         reference = tolower(str_replace_all(str_remove(reference_period_desc,
+                                                        "YEAR - "),
+                                             "[:space:]", "_")),
+         short_desc = factor(short_desc,
+                             levels = c(corn_vals, soy_vals, wheat_vals),
+                             labels = c(corn_names, soy_names, wheat_names))) %>% 
+  select(year, reference, val = Value, short_desc) %>% 
+  spread(short_desc, val)
+
+forecast_crops <- forecast_crops %>% 
+  mutate(wheat_acres_harvest = ifelse(is.na(wheat_acres_harvest),
+                                      wheat_winter_acres_harvest,
+                                      wheat_acres_harvest),
+         wheat_acres_planted = ifelse(is.na(wheat_acres_planted),
+                                      wheat_winter_acres_planted,
+                                      wheat_acres_planted),
+         wheat_prod_bu = ifelse(is.na(wheat_prod_bu),
+                                wheat_winter_prod_bu, wheat_prod_bu),
+         wheat_yield = ifelse(is.na(wheat_yield),
+                              wheat_winter_yield, wheat_yield)) %>% 
+  select(-contains("winter")) %>% 
+  gather(short_desc, val, -year, -reference) %>% 
+  unite(temp, short_desc, reference) %>% 
+  spread(temp, val) %>% 
+  select_if(not_all_na)
+
+write.csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"),
+          row.names = F)
+write_rds(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.rds"))
 
 # ---- county -------------------------------------------------------------
 # 
