@@ -1,6 +1,8 @@
 # Ohio CAUV values:
 # http://www.tax.ohio.gov/real_property/cauv.aspx
 
+# ---- start --------------------------------------------------------------
+
 library("httr")
 library("readxl")
 library("rvest")
@@ -11,6 +13,13 @@ local_dir    <- "0-data/soils"
 data_source  <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(data_source)) dir.create(data_source)
+
+dot_soils  <- read_csv("0-data/soils/offline/pi_dat_orig84.csv") %>% 
+  replace(is.na(.), "") %>% 
+  mutate(id = paste0(soil_series, texture, slope, erosion, drainage))
+
+# ---- cauv-values --------------------------------------------------------
+
 
 base_url <- "http://www.tax.ohio.gov/portals/0/"
 cauv_files <- c("real_property/cauv_table_ty2009.xls",
@@ -72,7 +81,7 @@ cauv <- j5 %>%
   bind_rows() %>% 
   mutate_at(vars(prod_index, cropland, woodland, year), as.numeric)
 
-# Need to add in corrections here for messed up soils.
+# Need to add in corrections here for messed up soils -- this is tedious!
 x <- cauv$soil_series == "DRUMMER,GR-SUBST"
 cauv$slope[x]       <- "0-2"
 
@@ -149,6 +158,12 @@ cauv$indx <- factor(cauv$indx, c("indx_100", "indx_99", "indx_89", "indx_79",
 cauv <- mutate(cauv,
                id = paste0(soil_series, texture, slope, erosion, drainage))
 
+cauv <- cauv %>% 
+  rename(prod = prod_index) %>% 
+  left_join(dot_soils) %>% 
+  mutate(prod_index = ifelse(is.na(prod_index), prod, prod_index)) %>% 
+  select(-prod, soy_base = soybeans_base)
+
 write_csv(cauv, paste0(local_dir, "/cauv_soils.csv"))
 write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
 
@@ -179,8 +194,8 @@ unadj2018 <- cauv %>%
 
 unadj <- bind_rows(unadj2017, unadj2018)
 
-write_csv(unadj2018, paste0(local_dir, "/cauv_unadj.csv"))
-write_rds(unadj2018, paste0(local_dir, "/cauv_unadj.rds"))
+write_csv(unadj, paste0(local_dir, "/cauv_unadj.csv"))
+write_rds(unadj, paste0(local_dir, "/cauv_unadj.rds"))
 
 
 # ---- pd32 ---------------------------------------------------------------
