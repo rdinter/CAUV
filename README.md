@@ -51,7 +51,7 @@ All categories are Olympic averages with the exception of rotation.
 |     2017|2011-2017           |2007-2016 |2010-2016 |2011-2017      |2012-2016 |
 |     2018|2012-2018           |2008-2017 |2011-2017 |2012-2018      |2013-2017 |
 |     2019|2013-2019           |2009-2018 |2012-2018 |2013-2019      |2014-2018 |
-|   Future|current-6 years ago |previous-11 years ago |previous-8 years ago |current-6 years ago      |previous-5 years ago |
+|   Future|current-6 years ago |previous-11 years ago |previous-7 years ago |current-6 years ago      |previous-5 years ago |
 |    Years|7 Olympic |10 Average, lag |7 Olympic, lag |7 Olympic      |5 Average, lag |
 
 Sources and timing of release:
