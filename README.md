@@ -4,31 +4,14 @@ Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each so
 
 The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation.
 
-## Organization:
+# Components:
 
-The structure of the repository is as follows:
+1. [Capitalization Rate](caprate.md)
+2. [Yields](yields.md)
+3. [Prices](prices.md)
+4. [Non-Land Costs](nonland.md)
+5. [Rotation](rotation.md)
 
-- [0-data/](0-data/)
-    - `0-data_source.R` - script to download data and create `.csv` and `.rds` files in an easy to read and uniform format. Some of these data are not online and cannot be downloaded. For those data that cannot be downloaded, they reside in this repository.
-    - data_source/ - most of this will be ignored via `.gitignore`.
-        - raw/
-            - All downloaded files from the `0-data_source.R` script.
-            - Some data cannot be downloaded and must be hosted elsewhere. They will also be in this folder for local use.
-        - `various_names.csv`
-        - `various_names.rds`
-    - `0-functions.R` - relevant functions for this sub-directory.
-    - `.gitignore` - any large files will not be loaded to GitHub.
-- [1-tidy/](1-tidy/)
-    - `1-component_tidy.R` - script to gather and format data in a usable way
-    - component/
-        - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
-- [2-calc/](2-calc/)
-    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
-        - `2-project_calc.R` - calculations for CAUV valuation of soil types.
-- [3-proj/](3-proj/)
-    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
-        - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
-        
 
 ## Years Used in CAUV Calculation
 
@@ -56,8 +39,37 @@ All categories are Olympic averages with the exception of rotation.
 
 Sources and timing of release:
 
-1. Capitalization Rate
-2. Yields
+1. Capitalization Rate - interest rates come from Ohio Department of Taxation while the equity rate comes from [USDA-ERS](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/) which has updates each year in February (should be considered "official"), August, and November.
+    - [USDA data files](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/), should select the Farm Income Statements and then returns to operators
+2. [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046) affects yields and rotation. Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
 3. Prices
 4. Non-Land Costs
 5. Rotation
+
+
+# Organization:
+
+The structure of the repository is as follows:
+
+- [0-data/](0-data/)
+    - `0-data_source.R` - script to download data and create `.csv` and `.rds` files in an easy to read and uniform format. Some of these data are not online and cannot be downloaded. For those data that cannot be downloaded, they reside in this repository.
+    - data_source/ - most of this will be ignored via `.gitignore`.
+        - raw/
+            - All downloaded files from the `0-data_source.R` script.
+            - Some data cannot be downloaded and must be hosted elsewhere. They will also be in this folder for local use.
+        - `various_names.csv`
+        - `various_names.rds`
+    - `0-functions.R` - relevant functions for this sub-directory.
+    - `.gitignore` - any large files will not be loaded to GitHub.
+- [1-tidy/](1-tidy/)
+    - `1-component_tidy.R` - script to gather and format data in a usable way
+    - component/
+        - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
+- [2-calc/](2-calc/)
+    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
+        - `2-project_calc.R` - calculations for CAUV valuation of soil types.
+- [3-proj/](3-proj/)
+    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
+        - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
+        
+

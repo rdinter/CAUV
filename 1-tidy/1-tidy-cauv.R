@@ -52,6 +52,8 @@ huh <- price_month %>%
   arrange(date) %>% 
   mutate(corn_roll = rollapplyr(corn_price*(corn_sales/100), 12, sum,
                                 fill = NA),
+         korn_roll = rollapplyr(corn_price*(lag(corn_sales,12)/100), 12, sum,
+                                fill = NA),
          soy_roll = rollapplyr(soy_price*(soy_sales/100), 12, sum,
                                fill = NA),
          wheat_roll = rollapplyr(wheat_price*(wheat_sales/100), 12, sum,
@@ -100,7 +102,7 @@ if (!file.exists(nonland)) dir.create(nonland)
 osu_budget <- read_csv("0-data/osu_budget/osu_budgets - R.csv")
 
 ohio_nonland <- odt %>% 
-  select(year = tax_year, contains("cost")) %>% 
+  select(year = tax_year, contains("cost"), contains("base")) %>% 
   right_join(osu_budget) %>% 
   arrange(year)
 

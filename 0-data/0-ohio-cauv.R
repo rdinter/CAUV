@@ -170,7 +170,7 @@ write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
 # Now calculate the non-adjusted 2017 values
 
 readjust <- function(x) ifelse((max(x) - min(x)) == 0, max(x),
-                               min(x) - (max(x) - min(x)))
+                               round(min(x) - (max(x) - min(x)), -1))
 
 unadj2017 <- cauv %>% 
   filter(year %in% c(2016, 2017)) %>% 
