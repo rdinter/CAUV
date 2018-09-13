@@ -132,5 +132,5 @@ ohio_all <- cap_odt %>%
   full_join(ohio_rot) %>% 
   arrange(year)
 
-write_csv(ohio_all, paste0(local_dir, "/ohio_all.csv"))
-write_rds(ohio_all, paste0(local_dir, "/ohio_all.rds"))
+write_csv(ohio_all, paste0(local_dir, "/ohio_cauv_all.csv"))
+write_rds(ohio_all, paste0(local_dir, "/ohio_cauv_all.rds"))
