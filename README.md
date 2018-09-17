@@ -4,18 +4,22 @@ Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each so
 
 The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation.
 
+[Farm Science Review](4-presentations/4-FSR-2018)
+
 # Components:
 
-1. [Capitalization Rate](caprate.md)
-2. [Yields](yields.md)
-3. [Prices](prices.md)
-4. [Non-Land Costs](nonland.md)
-5. [Rotation](rotation.md)
+An oversimplified description of how to calculate the CAUV value for a particular soil type is that it is the expected net returns from farming corn, soybeans, and wheat on an acre of land divided by capitalization rate to give a present value for owning a piece of land for commercial agricultural production. Please read the [CAUV formula description](formula) for a more in-depth understanding of the program. The following pages provide description of the data involved with each component:
+
+1. [Rotation](rotation)
+2. [Yields](yields)
+3. [Prices](prices)
+4. [Non-Land Costs](nonland)
+5. [Capitalization Rate](caprate)
 
 
 ## Years Used in CAUV Calculation
 
-All categories are Olympic averages with the exception of rotation.
+All categories are Olympic averages with the exception of rotation and yields.
 
 | Tax Year|Capitalization Rate |Yields    |Prices    |Non-Land Costs |Rotation  |
 |--------:|:-------------------|:---------|:---------|:--------------|:---------|
@@ -34,17 +38,16 @@ All categories are Olympic averages with the exception of rotation.
 |     2017|2011-2017           |2007-2016 |2010-2016 |2011-2017      |2012-2016 |
 |     2018|2012-2018           |2008-2017 |2011-2017 |2012-2018      |2013-2017 |
 |     2019|2013-2019           |2009-2018 |2012-2018 |2013-2019      |2014-2018 |
-|   Future|current-6 years ago |previous-11 years ago |previous-7 years ago |current-6 years ago      |previous-5 years ago |
-|    Years|7 Olympic |10 Average, lag |7 Olympic, lag |7 Olympic      |5 Average, lag |
+|   Future|current-6 years ago |previous-11 years ago |previous-7 years ago |current-6 years ago |previous-5 years ago |
+|    Years|7 Olympic |10 Average, lag |7 Olympic, lag |7 Olympic |5 Average, lag |
 
 Sources and timing of release:
 
 1. Capitalization Rate - interest rates come from Ohio Department of Taxation while the equity rate comes from [USDA-ERS](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/) which has updates each year in February (should be considered "official"), August, and November.
     - [USDA data files](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/), should select the Farm Income Statements and then returns to operators
 2. [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046) affects yields and rotation. Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
-3. Prices
-4. Non-Land Costs
-5. Rotation
+3. Prices are for the marketing year period which are published by the [USDA-NASS](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1002) and have monthly prices. However, the official values come out around March each year.
+4. Non-Land Costs maintained at the [Ohio State Extension website](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) and there will usually be an initial estimate for the budgets in October of that year with the final update usually around May.
 
 
 # Organization:
@@ -59,10 +62,10 @@ The structure of the repository is as follows:
             - Some data cannot be downloaded and must be hosted elsewhere. They will also be in this folder for local use.
         - `various_names.csv`
         - `various_names.rds`
-    - `0-functions.R` - relevant functions for this sub-directory.
     - `.gitignore` - any large files will not be loaded to GitHub.
 - [1-tidy/](1-tidy/)
-    - `1-component_tidy.R` - script to gather and format data in a usable way
+    - `1-tidy-cauv.R` - script to gather and format data in a usable way by each component
+    - `ohio_cauv_all` - as .csv and .rds but these are all of the components joined together which is a large amount of variables.
     - component/
         - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
 - [2-calc/](2-calc/)

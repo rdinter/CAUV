@@ -1,0 +1,123 @@
+---
+title: "Farm Science Review - CAUV Program"
+author: "Robert Dinterman"
+date: "18th and 19th of September 2018"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+  word_document: default
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_knit$set(root.dir = normalizePath("../"))
+read_chunk("4-FSR.R")
+```
+
+```{r global_options, include=FALSE}
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%")
+```
+
+```{r start, include=FALSE}
+```
+
+# Questions
+
+## What is the CAUV Program, why does it exist, and what the heck goes into it?
+
+- Optional program for farmers with more than 10 acres of land to enroll in calculating their property tax value based off of agricultural conditions instead of market conditions, almost everyone participates
+- Started in the 1970s -- its primary stated intent has been to combat urbanization which can put upward pressure on farms property values and hence their tax
+- The objective of the CAUV program was to discourage the sale of farmland for development purposes by providing the farmer with a tax break (http://www.the-daily-record.com/opinion/20120214/understanding-cauv-tax-program)
+- Attempts to tie the property value of a farm to its agricultural use and not its "next best use"
+- The formula involves:
+    - Soil type/quality, yields/prices/non-land costs for corn/soybeans/wheat, and a capitalization rate
+    - Higher quality soil has higher CAUV
+    - All values are based on at least 5 historical values, usually through an Olympic average where the highest and lowest values are dropped
+
+## Has this been an effective program?
+
+- Well that depends who you ask -- it has been effective to reduce the average property value over the years to at least 60% of average market value in a county
+- But there are certainly instances where highly productive soils exceeded their market value
+- Historically, 1985 had average CAUV of 35% of market value and this trended down to about 14% in 2006. A steady rise has resulted in averages above 50% the last 3 years but this should come down
+
+```{r agland-70}
+```
+
+```{r table-assessed}
+```
+
+(Note these are for assessed properties and does not treat soil types equally like later calculations do)
+
+## What changes have been made to the program and why?
+
+- Document main changes:
+    - 2006 yield update started an increase - Farm Bureau had concerns the program would be revoked due to unjustifiably low CAUV values
+        - Then high crop prices pushed the values upward
+        - Declining interest rates also caused an upward rise in CAUV
+    - Large complaints about the rapidly increasing property tax bills of farmers: the state average was about \$5.32 per acre in 2006 and quickly quadrupled to \$20.63 in 2013.
+    - 2015 adjustment to decrease lags in components began the decline in CAUV values
+    - 2017 changed in capitalization rate which will be phased in over a period of time
+- [Wood County Document](http://www.co.wood.oh.us/auditor/pdfs/2015/CAUV/History%20of%20CAUV.pdf)
+
+```{r cropland-trend}
+```
+
+```{r prices}
+```
+
+## So the new 2017 changes have affected me already?
+
+- Not quite, for one this will be phased in over the 2016 CAUV values so as to not reduce values dramatically.
+- Depends on your county, 2017 had about half the state adjust while 2018 has a quarter and 2019 the remaining quarter.
+    - CAUV values will update once every three years, but it depends on which county you live in. There will be about a quarter of the counties updated this year, last tax season had roughly half and in 2019 there will be the remaining counties updated.
+
+```{r map-update}
+```
+
+## How much will this phase in process affect my CAUV?
+
+- In 2017 estimates, the average soil CAUV is around \$1,150 but this includes a phased in adjustment factor of around \$150. If this were 2020, then we would have seen values of around \$1,000
+- For 2018, the average soil CAUV was \$1,015 but the phase-in adjustment was around \$140.
+- Our current projections for 2019 is to see about a 13\% decline in CAUV value of around \$890 which would have a phase-in of about \$130.
+
+![](../3-proj/figures/cauv_expected_projections_2019.png)
+
+![](../3-proj/figures/cauv_expected_phase_in_2019.png)
+
+```{r by-soil-types}
+```
+
+## How do you make these projections?
+
+- Based off of current expectations of prices, yields, non-land costs, and interest rates
+    - Prices carry forward the most recent USDA values
+    - Yields and rotation use the August forecast values from USDA which, will be updated with the September, October, and November forecasts. Finalized in January 2019.
+    - Non-land costs use Ohio State Extension budgets carrying forward values from 2018 as place-holder for 2019. Will be updated when preliminary budget estimates are released
+    - Interest rates carry forward current values
+
+## Once this takes effect fully -- I will definitely see a decrease in my CAUV?
+
+- It is highly likely but not certain, it will still depend on yield/price and interest rate trends
+- Even if you realize a decreased CAUV, your tax rate might change
+- **CAUV is different than property tax**
+    - CAUV gives the property value of which you're taxed but not the actual tax you pay
+    - Ohio has a taxable value of 35% property value, but then the "millage rate" will depend on your county, municipality, and school district
+    - Millage rates might increase, so your CAUV might go down but tax rate could increase
+- Keep in mind that while the average in Ohio for property tax per acre was about `r dollars(mean(ohio$tax_cauv[ohio$year == 2017]), 1e2)` the minimum was `r dollars(min(ohio$tax_cauv[ohio$year == 2017]), 1e2)` for `r ohio$county[ohio$year == 2017 & ohio$tax_cauv < 5.94]` and maximum was `r dollars(max(ohio$tax_cauv[ohio$year == 2017]), 1e2)` for `r ohio$county[ohio$year == 2017 & ohio$tax_cauv > 98]`
+
+```{r property-tax-map}
+```
+
+## How does CAUV compare to other states?
+
+All of the surrounding states do provide some sort of differential tax treatment
+
+- Indiana is most similar in using a use-value formulation but also use cash rents in their formula
+    - \$35 to \$42 property tax paid per acre of farmland in Indiana for 2016 
+- Illinois is about \$17 to \$20 per acre
+- West Virginia: about \$1.50 per acre
+- Kentucky has been in trouble with improper classification of farmland (used for commercial development but received preferable farmland taxation.)
+
+```{r cash-rent-alt}
+```
