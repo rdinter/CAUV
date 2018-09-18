@@ -17,6 +17,9 @@ figures     <- paste0(local_dir, "/figures")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(figures)) dir.create(figures)
 
+crp     <- read_rds("0-data/fsa/crp/crp_payments.rds")
+crp_exp <- read_rds("0-data/fsa/crp/crp_expiring.rds")
+
 price_proj <- read_rds("2-calc/prices/ohio_forecast_prices.rds")
 
 ohio <- read_rds("4-presentations/ohio_cauv.rds") %>% 
@@ -31,6 +34,8 @@ deflator <- ohio %>%
 
 ohio_vals <- read_rds("4-presentations/ohio_state_prices.rds") %>% 
   left_join(deflator)
+
+ohio_vals$tax_cauv <- ifelse(ohio_vals$tax_cauv == 0, NA, ohio_vals$tax_cauv)
 
 ohio_soils <- read_rds("0-data/soils/cauv_soils.rds") %>% 
   mutate(date = as.Date(paste0(year, "-01-01"))) %>% 
@@ -326,3 +331,46 @@ price_proj %>%
          "Expected Projection" = wheat_price_cauv_exp,
          "High Projection" = wheat_price_cauv_h) %>% 
   knitr::kable()
+
+# ---- crp-history --------------------------------------------------------
+
+ohio_crp <- crp %>%
+  filter(STATE == "OHIO") %>%
+  group_by(YEAR) %>%
+  summarise(OHIO = sumn(ACRES_CRP))
+crp %>% 
+  group_by(YEAR) %>% 
+  summarise(US = sumn(ACRES_CRP)) %>% 
+  left_join(ohio_crp) %>% 
+  mutate(fraction = percent(OHIO / US),
+         OHIO = comma(OHIO),
+         US = comma(US)) %>% 
+  knitr::kable()
+
+# ---- crp-expiring -------------------------------------------------------
+
+crp_both <- crp %>% 
+  full_join(crp_exp) %>% 
+  arrange(FIPS, YEAR) %>% 
+  filter(YEAR > 2016) %>% 
+  group_by(FIPS) %>% 
+  mutate(ACRES_EXPIRING = if_else(YEAR == 2017, ACRES_CRP,
+                                  ACRES_CRP[YEAR == 2017] -
+                                    lag(cumsum(replace_na(TOTAL_ACRES_CRP_EXP, 0)))))
+
+crp_both <- crp_both %>% 
+  full_join(crp) %>% 
+  mutate(ACRES_EXPIRING = if_else(is.na(ACRES_EXPIRING),
+                                  ACRES_CRP, ACRES_EXPIRING))
+
+crp_both %>% 
+  filter(STATE == "OHIO") %>% 
+  group_by(YEAR) %>% 
+  summarise(ACRES_EXPIRING = sumn(ACRES_EXPIRING)) %>% 
+  ggplot(aes(YEAR, ACRES_EXPIRING)) +
+  geom_line() +
+  scale_y_continuous(labels = comma, limits = c(0, NA)) +
+  labs(x = "", y = "",
+       title = "CRP Acreage in Ohio",
+       subtitle = "if no land is enrolled into the program") +
+  theme_bw()

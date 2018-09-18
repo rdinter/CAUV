@@ -5,8 +5,8 @@ date: "18th and 19th of September 2018"
 output:
   html_document:
     keep_md: yes
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r, include=FALSE}
@@ -35,10 +35,44 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
     - Higher quality soil has higher CAUV
     - All values are based on at least 5 historical values, usually through an Olympic average where the highest and lowest values are dropped
 
+All categories are Olympic averages with the exception of rotation and yields.
+
+| Tax Year|Capitalization Rate |Yields    |Prices    |Non-Land Costs |Rotation  |
+|--------:|:-------------------|:---------|:---------|:--------------|:---------|
+|     2005|1999-2005           |1984      |1997-2003 |1998-2004      |ad hoc    |
+|     2006|2000-2006           |1995-2004 |1998-2004 |1999-2005      |ad hoc    |
+|     2007|2001-2007           |1996-2005 |1999-2005 |2000-2006      |ad hoc    |
+|     2008|2002-2008           |1997-2006 |2000-2006 |2001-2007      |ad hoc    |
+|     2009|2003-2009           |1998-2007 |2001-2007 |2002-2008      |ad hoc    |
+|     2010|2004-2010           |1999-2008 |2002-2008 |2003-2009      |2004-2008 |
+|     2011|2005-2011           |2000-2009 |2003-2009 |2004-2010      |2005-2009 |
+|     2012|2006-2012           |2001-2010 |2004-2010 |2005-2011      |2006-2010 |
+|     2013|2007-2013           |2002-2011 |2005-2011 |2006-2012      |2007-2011 |
+|     2014|2008-2014           |2003-2012 |2006-2012 |2007-2013      |2008-2012 |
+|     2015|2009-2015           |2005-2014 |2008-2014 |2009-2015      |2010-2014 |
+|     2016|2010-2016           |2006-2015 |2009-2015 |2010-2016      |2011-2015 |
+|     2017|2011-2017           |2007-2016 |2010-2016 |2011-2017      |2012-2016 |
+|     2018|2012-2018           |2008-2017 |2011-2017 |2012-2018      |2013-2017 |
+|     2019|2013-2019           |2009-2018 |2012-2018 |2013-2019      |2014-2018 |
+|   Future|current-6 years ago |previous-11 years ago |previous-7 years ago |current-6 years ago |previous-5 years ago |
+|    Years|7 Olympic |10 Average, lag |7 Olympic, lag |7 Olympic |5 Average, lag |
+
+Sources and timing of release:
+
+1. Capitalization Rate - interest rates come from Ohio Department of Taxation while the equity rate comes from [USDA-ERS](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/) which has updates each year in February (should be considered "official"), August, and November.
+    - [USDA data files](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/), should select the Farm Income Statements and then returns to operators
+2. [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046) affects yields and rotation. Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
+3. Prices are for the marketing year period which are published by the [USDA-NASS](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1002) and have monthly prices. However, the official values come out around March each year.
+4. Non-Land Costs maintained at the [Ohio State Extension website](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) and there will usually be an initial estimate for the budgets in October of that year with the final update usually around May.
+
+
 ## Has this been an effective program?
 
-- Well that depends who you ask -- it has been effective to reduce the average property value over the years to at least 60% of average market value in a county
-- But there are certainly instances where highly productive soils exceeded their market value
+- Well that depends who you ask -- it has been effective to reduce the average CAUV property value over the years to at least 60% of average market value in a county
+    - At the same time, the reduction in agricultural property values results in a shifting of the tax burden for residential land -- so if you ask your typical homeowner then this program stinks
+    - Some counties have struggled with budgetary issues because of the CAUV changes, so they might not enjoy this
+    - The extremely low CAUV values in 2005 triggered the adjustment to yields, partly from the homeowners and counties
+- But there are certainly instances where highly productive soils exceeded their market value, although the lowest is always used for property tax assessment purposes
 - Historically, 1985 had average CAUV of 35% of market value and this trended down to about 14% in 2006. A steady rise has resulted in averages above 50% the last 3 years but this should come down
 
 ```{r agland-70}
@@ -56,9 +90,12 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
         - Then high crop prices pushed the values upward
         - Declining interest rates also caused an upward rise in CAUV
     - Large complaints about the rapidly increasing property tax bills of farmers: the state average was about \$5.32 per acre in 2006 and quickly quadrupled to \$20.63 in 2013.
-    - 2015 adjustment to decrease lags in components began the decline in CAUV values
+    - 2015 adjustment to decrease lags in components began the decline in CAUV values and higher clearing/drainage costs
     - 2017 changed in capitalization rate which will be phased in over a period of time
 - [Wood County Document](http://www.co.wood.oh.us/auditor/pdfs/2015/CAUV/History%20of%20CAUV.pdf)
+- New minimum values of \$350 for cropland and \$230 for woodland
+    - Woodland value is the cropland value less clearing and drainage costs. Clearing is now \$1,000 per acre (up from \$500 in 2014) and drainage is \$800 for somewhat poorly drained, poorly drained, very poorly drained, and saturated (ie soils which are not well drained)
+    - Land in conservation is now assessed \$230, the lowest value that can occur
 
 ```{r cropland-trend}
 ```
@@ -71,6 +108,7 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
 - Not quite, for one this will be phased in over the 2016 CAUV values so as to not reduce values dramatically.
 - Depends on your county, 2017 had about half the state adjust while 2018 has a quarter and 2019 the remaining quarter.
     - CAUV values will update once every three years, but it depends on which county you live in. There will be about a quarter of the counties updated this year, last tax season had roughly half and in 2019 there will be the remaining counties updated.
+    - Starting in 2020, there will be no more phase-in procedure
 
 ```{r map-update}
 ```
@@ -80,6 +118,7 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
 - In 2017 estimates, the average soil CAUV is around \$1,150 but this includes a phased in adjustment factor of around \$150. If this were 2020, then we would have seen values of around \$1,000
 - For 2018, the average soil CAUV was \$1,015 but the phase-in adjustment was around \$140.
 - Our current projections for 2019 is to see about a 13\% decline in CAUV value of around \$890 which would have a phase-in of about \$130.
+    - This is the last year of the phase-in, the 2020 values would be \$760 if there are no changes to CAUV values because the phase-in would not apply.
 
 ![](../3-proj/figures/cauv_expected_projections_2019.png)
 
@@ -95,6 +134,8 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
     - Yields and rotation use the August forecast values from USDA which, will be updated with the September, October, and November forecasts. Finalized in January 2019.
     - Non-land costs use Ohio State Extension budgets carrying forward values from 2018 as place-holder for 2019. Will be updated when preliminary budget estimates are released
     - Interest rates carry forward current values
+
+
 
 ## Once this takes effect fully -- I will definitely see a decrease in my CAUV?
 
@@ -121,3 +162,22 @@ All of the surrounding states do provide some sort of differential tax treatment
 
 ```{r cash-rent-alt}
 ```
+
+
+# Was there a change in the conservation assessment?
+
+Yes, in 2017 one large change was that land enrolled in conservation is now assessed at the lowest value (\$230) whereas before its CAUV value was still based on the soil type.
+
+- In 2017, there were `r comma(ohio_vals$total_acres_cauv[ohio_vals$year == 2017])` acres enrolled in CAUV -- which has been pretty stable.
+    - There were `r comma(ohio_vals$total_acres_crp[ohio_vals$year == 2017])` acres enrolled in CRP
+    - Not a _large_ issue, but still of interest.
+- Will be interesting to keep track of enrollment, farmers have a bit more incentive to enroll into CRP
+
+Acreage history for CRP:
+
+```{r crp-history}
+```
+
+```{r crp-expiring}
+```
+
