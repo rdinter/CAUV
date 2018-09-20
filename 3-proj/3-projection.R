@@ -81,7 +81,8 @@ recreated <- ohio %>%
   left_join(unadj) %>% 
   mutate(difference = unadjusted - cropland_unadj,
          difference_o = unadjusted_o - cropland_unadj,
-         org_soil = ifelse(raw_val_o == cropland_unadj & difference != 0, T, F)) %>% 
+         org_soil = ifelse(raw_val_o == cropland_unadj &
+                             difference != 0, T, F)) %>% 
   left_join(soil2016) %>% 
   mutate(raw = ifelse(org_soil, raw_val_o, raw_val),
          unadjusted = ifelse(raw < 350, 350, raw),
@@ -91,7 +92,8 @@ recreated <- ohio %>%
 
 # Determine the organic soils for calculating the correct value
 organic <- recreated %>% 
-  mutate(org_soil = ifelse(raw_val_o == cropland_unadj & difference != 0, T, F)) %>% 
+  mutate(org_soil = ifelse(raw_val_o == cropland_unadj &
+                             difference != 0, T, F)) %>% 
   select(id, org_soil)
 
 # dot_soils <- left_join(dot_soils, organic)
@@ -146,7 +148,8 @@ recreated2 <- ohio %>%
   left_join(unadj) %>% 
   mutate(difference = unadjusted - cropland_unadj,
          difference_o = unadjusted_o - cropland_unadj,
-         org_soil = ifelse(raw_val_o == cropland_unadj & difference != 0, T, F)) %>% 
+         org_soil = ifelse(raw_val_o == cropland_unadj &
+                             difference != 0, T, F)) %>% 
   left_join(soil2017) %>% 
   mutate(raw = ifelse(org_soil, raw_val_o, raw_val),
          unadjusted = ifelse(raw < 350, 350, raw),
@@ -188,7 +191,8 @@ ohio_exp <- ohio %>%
            corn_cost_cauv_exp,
          soy_cost = soy_cost_add_cauv_exp*(soy_yield - soy_base_cauv_exp) +
            soy_cost_cauv_exp,
-         wheat_cost = wheat_cost_add_cauv_exp*(wheat_yield - wheat_base_cauv_exp) +
+         wheat_cost = wheat_cost_add_cauv_exp*(wheat_yield -
+                                                 wheat_base_cauv_exp) +
            wheat_cost_cauv_exp,
          
          net_return = corn_rotate_cauv*(corn_revenue - corn_cost) +
@@ -389,34 +393,32 @@ ohio_soils_exp %>%
                                   "indx_69", "indx_59", "indx_49"),
                       labels = c("100", "90 to 99", "80 to 89", "70 to 79",
                                  "60 to 69", "50 to 59", "0 to 49"))) %>% 
-                                 {
-                                   ggplot(.,aes(year, val)) +
-                                     geom_line(aes(color = var)) +
-                                     geom_point(aes(color = var)) +
-                                     geom_text_repel(data = filter(., year == 2019),
-                                                     aes(color = var,
-                                                         label = dollars(val)),
-                                                     nudge_x = 1.75, show.legend = FALSE, segment.color = NA) +
-                                     geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
-                                     geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
-                                                     aes(year, avg_cauv + 50,
-                                                         label = dollars(avg_cauv)),
-                                                     nudge_x = 1.75, nudge_y = 100,
-                                                     show.legend = FALSE, segment.color = NA) +
-                                     geom_vline(xintercept = 2018) +
-                                     scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
-                                                        limits = c(1991, 2020)) +
-                                     scale_y_continuous(labels = dollar) +
-                                     scale_color_viridis(option = "C", direction = -1,
-                                                         end = 0.9, discrete = T) +
-                                     labs(x = "", y = "", color = "Soil Productivity Index",
-                                          title = "2019 Projection for CAUV Values of Cropland",
-                                          subtitle = "in dollars per acre, average value in black",
-                                          caption = caption_proj) +
-                                     theme_bw() +
-                                     theme(legend.position = c(0.2, 0.7),
-                                           legend.background = element_blank())
-                                 }
+  {ggplot(.,aes(year, val)) +
+      geom_line(aes(color = var)) +
+      geom_point(aes(color = var)) +
+      geom_text_repel(data = filter(., year == 2019),
+                      aes(color = var, label = dollars(val)),
+                      nudge_x = 1.75, show.legend = FALSE,
+                      segment.color = NA) +
+      geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
+      geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
+                      aes(year, avg_cauv + 50, label = dollars(avg_cauv)),
+                      nudge_x = 1.75, nudge_y = 100,
+                      show.legend = FALSE, segment.color = NA) +
+      geom_vline(xintercept = 2018) +
+      scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
+                         limits = c(1991, 2020)) +
+      scale_y_continuous(labels = dollar) +
+      scale_color_viridis(option = "C", direction = -1,
+                          end = 0.9, discrete = T) +
+      labs(x = "", y = "", color = "Soil Productivity Index",
+           title = "2019 Projection for CAUV Values of Cropland",
+           subtitle = "in dollars per acre, average value in black",
+           caption = caption_proj) +
+      theme_bw() +
+      theme(legend.position = c(0.2, 0.7),
+            legend.background = element_blank())
+    }
 # ggsave(filename = paste0(figures, "/cauv_expected_projections_2018.png"),
 #        width = 10, height = 7)
 
