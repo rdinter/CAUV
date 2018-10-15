@@ -41,9 +41,9 @@ price_month <- read_rds("0-data/ohio/ohio_prices_monthly.rds") %>%
 
 price_month %>% 
   filter(year > 2001) %>% 
-  select(month, corn_sales, hay_sales, soy_sales, wheat_sales) %>% 
+  select(month, corn_sales, soy_sales, wheat_sales) %>% 
   gather(var, val, -month) %>% 
-  ggplot(aes(month, val, color = var)) + geom_violin()
+  ggplot(aes(month, val, color = var, fill = var)) + geom_violin()
 
 # How to give a projection of prices? Use the same weights as the last year?
 #  Recalibrate the weights to historical averages?

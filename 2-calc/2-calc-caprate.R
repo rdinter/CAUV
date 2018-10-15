@@ -26,6 +26,12 @@ cap_proj <- data_frame(year = max(j5$year) + 1, mortgage_pct_odt = 0.8,
 debt_service <- function(r, n) (r*(1 + r)^n) / ((1 + r)^n - 1)
 sinking_fund <- function(r, n) (r) / ((1 + r)^n - 1)
 
+# Slightly more complicated for percentage of mortgage remaining...
+pmt <- function(r, n) r / (1 - 1 / (1 + r)^n)
+rem <- function(r, n, pmt) pmt * (1 - 1 / (1 + r)^n) / r
+mortgage_rem <- function(r, n, x) {
+  1 - rem(r, n - x, pmt(r, n))
+}
 
 # ---- calc ---------------------------------------------------------------
 
@@ -55,12 +61,16 @@ ohio <- cap_proj %>%
          cap_intermediate_cauv = (mortgage_pct_odt)*mortgage_equity_cauv +
            ((1 - mortgage_pct_odt))*equity_rate_cauv,
          cap_less_cauv = ifelse(year > 2016,
-                                mortgage_pct_odt*
+                                mortgage_pct_odt *
                                   sinking_fund(equity_rate_cauv,
                                                sinking_years_odt),
+                                # Pre 2016 has a mortgage paid off adjustment
                                 0.05*sinking_fund(equity_rate_cauv,
                                                   sinking_years_odt) +
-                                  mortgage_pct_odt*(0.22)*
+                                  mortgage_pct_odt * 
+                                  mortgage_rem(interest_rate_cauv,
+                                               mortgage_years_odt,
+                                               sinking_years_odt) *
                                   sinking_fund(equity_rate_cauv,
                                                sinking_years_odt)),
          cap_rate_cauv = cap_intermediate_cauv - cap_less_cauv +
@@ -73,13 +83,13 @@ ohio <- cap_proj %>%
          interest_rate_cauv_h = (rollapplyr(interest_rate_25_odt, width = 7,
                                             FUN = sum, na.rm = T, fill = NA) - 
                                    rollapplyr(interest_rate_25_odt, width = 7,
-                                              FUN = max, na.rm = T, fill = NA))/
+                                              FUN = max, na.rm = T, fill = NA)) /
            (6 - rollapplyr(interest_rate_25_odt, width = 7,
                            FUN = function(x) sum(is.na(x)), fill = NA)),
          interest_rate_cauv_l = (rollapplyr(interest_rate_25_odt, width = 7,
                                             FUN = sum, na.rm = T, fill = NA) - 
                                    rollapplyr(interest_rate_25_odt, width = 7,
-                                              FUN = min, na.rm = T, fill = NA))/
+                                              FUN = min, na.rm = T, fill = NA)) /
            (6 - rollapplyr(interest_rate_25_odt, width = 7,
                            FUN = function(x) sum(is.na(x)), fill = NA)),
          mortgage_equity_cauv_h = debt_service(interest_rate_cauv_h,
@@ -109,26 +119,6 @@ write_rds(ohio, paste0(cap, "/ohio_forecast_caprate.rds"))
 ohio %>% 
   filter(year > 2009) %>% 
   select("Year" = year, "ODT Value" = cap_rate_odt,
-         "Expected" = cap_rate_cauv, "Maybe" = cap_rate_cauv_exp,
+         "Expected" = cap_rate_cauv, #"Maybe" = cap_rate_cauv_exp,
          "Low" = cap_rate_cauv_l, "High" = cap_rate_cauv_h) %>% 
-  knitr::kable()
-
-# ---- soy ----------------------------------------------------------------
-
-ohio %>% 
-  filter(year > 2009) %>% 
-  select("Year" = year, "ODT Value" = soy_rotate_odt,
-         "USDA Acres Harvested" = soy_acres_harvest,
-         "AVG Acres Harvested" = soy_harvest_cauv,
-         "Projected" = soy_rotate_cauv) %>% 
-  knitr::kable()
-
-# ---- wheat --------------------------------------------------------------
-
-ohio %>% 
-  filter(year > 2009) %>% 
-  select("Year" = year, "ODT Value" = wheat_rotate_odt,
-         "USDA Acres Harvested" = wheat_acres_harvest,
-         "AVG Acres Harvested" = wheat_harvest_cauv,
-         "Projected" = wheat_rotate_cauv) %>% 
   knitr::kable()
