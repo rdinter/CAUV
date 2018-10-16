@@ -32,6 +32,11 @@ rem <- function(r, n, pmt) pmt * (1 - 1 / (1 + r)^n) / r
 mortgage_rem <- function(r, n, x) {
   1 - rem(r, n - x, pmt(r, n))
 }
+mortgage_alt <- function(r, n) {
+  x = (1 - 1 / (1 + r)^n)
+  y = (1 - 1 / (1 + r)^(n - 5))
+  return((x - y) / x)
+}
 
 # ---- calc ---------------------------------------------------------------
 
