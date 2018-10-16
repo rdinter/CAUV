@@ -69,8 +69,8 @@ The structure of the repository is as follows:
     - component/
         - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
 - [2-calc/](2-calc/)
-    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
-        - `2-project_calc.R` - calculations for CAUV valuation of soil types.
+    - component/ - projecions for each component in the CAUV formula.
+        - `2-calc_component.R` - each component.
 - [3-proj/](3-proj/)
     - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
         - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
