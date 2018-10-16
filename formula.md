@@ -7,18 +7,18 @@ There are over 3,500 soil types in Ohio and each of them receives a CAUV value b
 However, a more comprehensive overview of the calculation of CAUV is necessary and follows. For each soil type ($s$) in Ohio, a particular year's ($t$) CAUV value is calculated as the soil's net income divided by the capitalization rate:
 
 $$
-{CAUV}_{s,t} = \frac{{NOI}_{s,t}}{{CAP}_{t}} \label{eq:cauv}
+{CAUV}_{s,t} = \frac{NOI_{s,t}}{CAP_{t}}
 $$
 
-where ${CAP}_{t}$ represents the capitalization rate and ${NOI}_{s,t}$ represents the net operating income. Effectively, the CAUV value represents net present valuation of expected income from agricultural production at the current rates -- although it will be apparent that current rates are not well reflected and it is more appropriate to call it historical from the previous 5 to 10 years worth of data.
+where $CAP_{t}$ represents the capitalization rate and $NOI_{s,t}$ represents the net operating income. Effectively, the CAUV value represents net present valuation of expected income from agricultural production at the current rates -- although it will be apparent that current rates are not well reflected and it is more appropriate to call it historical from the previous 5 to 10 years worth of data.
 
 
 # Net Operating Income
 
-Net operating income, ${NOI}_{s,t}$, captures the average returns to an acre of land under normal management practices which is adjusted by the state-wide rotation pattern of crops. This is defined as:
+Net operating income, $NOI_{s,t}$, captures the average returns to an acre of land under normal management practices which is adjusted by the state-wide rotation pattern of crops. This is defined as:
 
 $$
-{NOI}_{s,t} = \sum_{c} w_{c,t}\times({GOI}_{s,c,t} - {nonland}_{s,c,t})
+NOI_{s,t} = \sum_{c} w_{c,t}\times({GOI}_{s,c,t} - {nonland}_{s,c,t})
 $$
 
 where $c$ denotes the crop type, which is either corn, soybeans, or wheat and represents the dominant crops in Ohio. The term $w_{c,t}$ is a crop's share of state production as represented by acres harvested. ${GOI}_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the crop types (corn, soybeans, and wheat) based on yields and prices. ${nonland}_{s,c,t}$ is the non-land costs associated with each crop type. Both of these variables are further explained in the following sections.
