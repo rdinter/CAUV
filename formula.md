@@ -42,7 +42,7 @@ A base cost is assigned for each commodity and includes the fixed costs at their
 However, each soil type has an associated expected yield (explained in the gross income section) and there is an adjustment applied for each commodity if the expected yield is above or below the base yield. Each additional bushel above or below the base yield is multiplied by an additional cost per yield. The additional costs only involve the variable costs but also need the medium yield scenario in each of the budgets in order to calculate the additional costs for an associated bushel.
 
 $$
-{Add}_{c,t} = \sum_{i=item} \frac{{Medium Cost}_{i,c} - {Low Cost}_{i,c}}{{Medium Yield}_{c} - {Low Yield}_{c}}
+{Add}_{c,t} = \sum_{i=item} \frac{ {Medium Cost}_{i,c} - {Low Cost}_{i,c} }{ {Medium Yield}_{c} - {Low Yield}_{c} }
 $$
 
 Where $i$ is the item on the OSU budget sheet and all values used are the associated 7-year Olympic average. The additional cost is either added on or subtracted from the base cost of each crop type dependent upon the expected yield for a soil type.
@@ -52,7 +52,7 @@ Where $i$ is the item on the OSU budget sheet and all values used are the associ
 Gross operating income, ${GOI}_{s,c,t}$, is based on historical yields and prices for each crop. The gross operating income across each soil type and crop is defined as:
 
 $$
-{GOI}_{s,c,t} = \frac{{Yield}_{c,Ohio,t}}{{Yield}_{c,Ohio,1984}} \times {Yield}_{c,s,1984} \times {Price}_{c,Ohio,t}
+{GOI}_{s,c,t} = \frac{ {Yield}_{c,Ohio,t} }{ {Yield}_{c,Ohio,1984} } \times {Yield}_{c,s,1984} \times {Price}_{c,Ohio,t}
 $$
 
 where ${Yield}_{c,Ohio,t}$ is an Olympic average for state-wide yields in Ohio and ${Price}_{c,Ohio,t}$ is a weighted Olympic average for state-wide prices in Ohio. Prior to 2015, both yield and price were lagged two years in its calculation. Since 2015, yields and prices have a one year lag. The prices are based on 7-year Olympic averages while yields are based on a 10-year average. The ${Yield}_{c,Ohio,1984}$ variable is a state-wide adjustment for the yields of each crop (corn, soybeans, and wheat) in 1984 to account for yield increases. And the ${Yield}_{c,s,1984}$ is the yield for each soil type ($s$) for each crop in 1984 to account for differences in soil productivity.
@@ -95,7 +95,7 @@ $$ {Equity Buildup}_t = {Equity \%}_t* {Mortgage Paid \%}_t *\frac{r}{(1 + r)^n 
 
 For 2017 and beyond, the ${Mortgage Paid \%}_t$ is assumed to be 100\%. However, prior to 2017 this value needed to be calculated as the percentage of mortgage paid after 5 years. The mortgage term was needed to determine what the mortgage paid after 5 years would be. For 2015 and beyond the mortgage terms have been for 25 years while prior to 2015 the mortgage term was for 15 years. The formula for calculating the percentage of the mortgage paid off after 5 years is:
 
-$$ {Mortgage Paid \%}_t = \frac{\frac{1}{(1 + r)^{n-5}} - \frac{1}{(1 + r)^n}}{1 - \frac{1}{(1 + r)^n}} $$
+$$ {Mortgage Paid \%}_t = \frac{ \frac{1}{ (1 + r)^{n-5} } - \frac{1}{ (1 + r)^n} }{ 1 - \frac{1}{(1 + r)^n} } $$
 
 Where $r$ is the interest rate and $n$ is the term of the loan.
 
@@ -103,6 +103,6 @@ Where $r$ is the interest rate and $n$ is the term of the loan.
 
 And finally, the ${Tax Additur Adjustment}_t$ needs to be calculated. The tax additur is added onto the capitalization rate as a way to proxy for property taxes as a ratio to market value. The statewide average effective tax rate on agricultural land, as determined through table [DTE27](https://www.tax.ohio.gov/tax_analysis/tax_data_series/publications_tds_property.aspx#Allpropertytaxes), from the previous tax year is used in calculation for the tax additur in question. The statewide average effective tax rate is expressed in terms of mills and the tax additur is then expressed as:
 
-$$ {Tax Additur Adjustment}_t = \frac{0.35 * {Statewide Millage}_{t-1}}{1000} $$
+$$ {Tax Additur Adjustment}_t = \frac{0.35 * {Statewide Millage}_{t-1} }{1000} $$
 
 <!--- The ODT does not release table DTE27 until around the same time that --->
