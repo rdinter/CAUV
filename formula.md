@@ -18,10 +18,10 @@ where $CAP_{t}$ represents the capitalization rate and $NOI_{s,t}$ represents th
 Net operating income, $NOI_{s,t}$, captures the average returns to an acre of land under normal management practices which is adjusted by the state-wide rotation pattern of crops. This is defined as:
 
 $$
-NOI_{s,t} = \sum_{c} w_{c,t}\times({GOI}_{s,c,t} - {nonland}_{s,c,t})
+NOI_{s,t} = \sum_{c} w_{c,t} \times ({GOI}_{s,c,t} - {nonland}_{s,c,t})
 $$
 
-where $c$ denotes the crop type, which is either corn, soybeans, or wheat and represents the dominant crops in Ohio. The term $w_{c,t}$ is a crop's share of state production as represented by acres harvested. ${GOI}_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the crop types (corn, soybeans, and wheat) based on yields and prices. ${nonland}_{s,c,t}$ is the non-land costs associated with each crop type. Both of these variables are further explained in the following sections.
+where $c$ denotes the crop type, which is either corn, soybeans, or wheat and represents the dominant crops in Ohio. The term $w_{c,t}$ is a crop's share of state production as represented by acres harvested. $GOI_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the crop types (corn, soybeans, and wheat) based on yields and prices. $nonland_{s,c,t}$ is the non-land costs associated with each crop type. Both of these variables are further explained in the following sections.
 
 ### [Rotation](rotation)
 
@@ -55,7 +55,7 @@ $$
 {GOI}_{s,c,t} = \frac{ {Yield}_{c,Ohio,t} }{ {Yield}_{c,Ohio,1984} } \times {Yield}_{c,s,1984} \times {Price}_{c,Ohio,t}
 $$
 
-where ${Yield}_{c,Ohio,t}$ is an Olympic average for state-wide yields in Ohio and ${Price}_{c,Ohio,t}$ is a weighted Olympic average for state-wide prices in Ohio. Prior to 2015, both yield and price were lagged two years in its calculation. Since 2015, yields and prices have a one year lag. The prices are based on 7-year Olympic averages while yields are based on a 10-year average. The ${Yield}_{c,Ohio,1984}$ variable is a state-wide adjustment for the yields of each crop (corn, soybeans, and wheat) in 1984 to account for yield increases. And the ${Yield}_{c,s,1984}$ is the yield for each soil type ($s$) for each crop in 1984 to account for differences in soil productivity.
+where $Yield_{c,Ohio,t}$ is an Olympic average for state-wide yields in Ohio and $Price_{c,Ohio,t}$ is a weighted Olympic average for state-wide prices in Ohio. Prior to 2015, both yield and price were lagged two years in its calculation. Since 2015, yields and prices have a one year lag. The prices are based on 7-year Olympic averages while yields are based on a 10-year average. The $Yield_{c,Ohio,1984}$ variable is a state-wide adjustment for the yields of each crop (corn, soybeans, and wheat) in 1984 to account for yield increases. And the $Yield_{c,s,1984}$ is the yield for each soil type ($s$) for each crop in 1984 to account for differences in soil productivity.
 
 Each soil type has an expected yield for each year, which will impact the expected revenues but is also an important note for the cost section as costs rise with yields.
 
@@ -76,24 +76,28 @@ ODT began adjusting for yield trends in 2006 through the current method of takin
 
 The capitalization rate requires the knowledge of an interest rate on a loan and an equity rate as well as the term and debt percentage for determining from the [Mortgage-Equity Method](http://www.commercialappraisalsoftware.dcfsoftware.com/mtgequity.htm). But it can be defined as:
 
-$$
-{CAP_t} = {Loan \%}_t*{Annual Debt Service}_t + {Equity \%}_t*{Equity Yield}_t - {Equity Buildup}_t + {Tax Additur Adjustment}_t
-$$
+$$\begin{eqnarray}
+{CAP_t} &= {Loan \%}_t \times {Annual Debt Service}_t + \\
+& {Equity \%}_t \times {Equity Yield}_t - \nonumber \\
+& {Equity Buildup}_t + \nonumber \\
+& {Tax Additur Adjustment}_t \nonumber
+\end{eqnarray}$$
 
-The ${Loan \%}_t$ plus ${Equity \%}_t$ must equal one and is currently an 80\% to 20\% ratio respectively. Prior to 2015, the values were based on 60\% loan and 40\% equity appreciation.
+
+The ${Loan \%}_t$ plus ${Equity \%}_t$ must equal one and is currently an 80% to 20% ratio respectively. Prior to 2015, the values were based on 60% loan and 40% equity appreciation.
 
 
 ${Annual Debt Service}_t$ is a debt servicing factor based on a 25-year term mortgage with an associated interest rate. The interest rate used for a particular year is based on a 7-year Olympic average where the value for the loan interest rate came from a 25-year mortgage from Farm Credit Services (FCS). Prior to 2015, a 15-year term was used instead of 25 and there were no lags in this formula. For example, the 2017 interest rate used comes from FCS values between 2011 and 2017. The formula for calculating the debt servicing factor with $r$ as the interest rate (from FCS) and $n$ the term length (currently 25) is:
 
-$$ {Annual Debt Service} = \frac{r*(1 + r)^n}{(1 + r)^n - 1} $$
+$$ {Annual Debt Service} = \frac{r \times (1 + r)^n}{(1 + r)^n - 1} $$
 
-Next, the ${Equity Yield}_t$ needs to be calculated -- which is simply the interest rate associated with equity that a farmer may hold. Prior to 2017, the equity yield was a 7-year Olympic average of the prime rate plus 2\% from the Wall Street Journal's bank survey -- with no lag for the values. In 2017, the ODT switched the equity yield to be a two year lagged 25-year average of the "Total rate of return on farm equity" from the [Economic Research Services](https://data.ers.usda.gov/reports.aspx?ID=17838) of the USDA. For example, the 2017 value used the ERS's values from 1991 to 2015.
+Next, the ${Equity Yield}_t$ needs to be calculated -- which is simply the interest rate associated with equity that a farmer may hold. Prior to 2017, the equity yield was a 7-year Olympic average of the prime rate plus 2% from the Wall Street Journal's bank survey -- with no lag for the values. In 2017, the ODT switched the equity yield to be a two year lagged 25-year average of the "Total rate of return on farm equity" from the [Economic Research Services](https://data.ers.usda.gov/reports.aspx?ID=17838) of the USDA. For example, the 2017 value used the ERS's values from 1991 to 2015.
 
 Then, the equity buildup associated with a set time frame needs to be calculated. The equity buildup formula involves an associated interest rate (the ${Equity Yield}_t$ is used here as $r$) and a time-frame $n$, which is set at 25 years currently (prior to 2017, this was set at 5 years of equity buildup):
 
-$$ {Equity Buildup}_t = {Equity \%}_t* {Mortgage Paid \%}_t *\frac{r}{(1 + r)^n - 1} $$
+$$ {Equity Buildup}_t = {Equity \%}_t \times {Mortgage Paid \%}_t \times \frac{r}{(1 + r)^n - 1} $$
 
-For 2017 and beyond, the ${Mortgage Paid \%}_t$ is assumed to be 100\%. However, prior to 2017 this value needed to be calculated as the percentage of mortgage paid after 5 years. The mortgage term was needed to determine what the mortgage paid after 5 years would be. For 2015 and beyond the mortgage terms have been for 25 years while prior to 2015 the mortgage term was for 15 years. The formula for calculating the percentage of the mortgage paid off after 5 years is:
+For 2017 and beyond, the ${Mortgage Paid \%}_t$ is assumed to be 100%. However, prior to 2017 this value needed to be calculated as the percentage of mortgage paid after 5 years. The mortgage term was needed to determine what the mortgage paid after 5 years would be. For 2015 and beyond the mortgage terms have been for 25 years while prior to 2015 the mortgage term was for 15 years. The formula for calculating the percentage of the mortgage paid off after 5 years is:
 
 $$ {Mortgage Paid \%}_t = \frac{ \frac{1}{ (1 + r)^{n-5} } - \frac{1}{ (1 + r)^n} }{ 1 - \frac{1}{(1 + r)^n} } $$
 
@@ -103,6 +107,6 @@ Where $r$ is the interest rate and $n$ is the term of the loan.
 
 And finally, the ${Tax Additur Adjustment}_t$ needs to be calculated. The tax additur is added onto the capitalization rate as a way to proxy for property taxes as a ratio to market value. The statewide average effective tax rate on agricultural land, as determined through table [DTE27](https://www.tax.ohio.gov/tax_analysis/tax_data_series/publications_tds_property.aspx#Allpropertytaxes), from the previous tax year is used in calculation for the tax additur in question. The statewide average effective tax rate is expressed in terms of mills and the tax additur is then expressed as:
 
-$$ {Tax Additur Adjustment}_t = \frac{0.35 * {Statewide Millage}_{t-1} }{1000} $$
+$$ {Tax Additur Adjustment}_t = \frac{0.35 \times {Statewide Millage}_{t-1} }{1000} $$
 
 <!--- The ODT does not release table DTE27 until around the same time that --->
