@@ -1,5 +1,9 @@
 # Rotation
 
+The rotation between corn, soybeans, and wheat come from official USDA data which are automatically downloaded with the [0-data/0-ohio-nass.R](0-data/0-ohio-nass.R) script. These data technically come from [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046). Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
+
+Rotation is one of the few components which does not use Olympic averaging, which makes projecting the component forward more sensitive to new values.
+
 | Tax Year|Rotation  |
 |--------:|:---------|
 |     2005|ad hoc    |

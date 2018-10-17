@@ -79,7 +79,7 @@ The capitalization rate requires the knowledge of an interest rate on a loan and
 $$\begin{eqnarray}
 {CAP_t} &= {Loan \%}_t \times {Annual Debt Service}_t + \\
 & {Equity \%}_t \times {Equity Yield}_t - \nonumber \\
-& {Equity Buildup}_t + \nonumber \\
+& {Buildup}_t + \nonumber \\
 & {Tax Additur Adjustment}_t \nonumber
 \end{eqnarray}$$
 
@@ -95,7 +95,7 @@ Next, the ${Equity Yield}_t$ needs to be calculated -- which is simply the inter
 
 Then, the equity buildup associated with a set time frame needs to be calculated. The equity buildup formula involves an associated interest rate (the ${Equity Yield}_t$ is used here as $r$) and a time-frame $n$, which is set at 25 years currently (prior to 2017, this was set at 5 years of equity buildup):
 
-$$ {Equity Buildup}_t = {Equity \%}_t \times {Mortgage Paid \%}_t \times \frac{r}{(1 + r)^n - 1} $$
+$$ {Buildup}_t = {Equity \%}_t \times {Mortgage Paid \%}_t \times \frac{r}{(1 + r)^n - 1} $$
 
 For 2017 and beyond, the ${Mortgage Paid \%}_t$ is assumed to be 100%. However, prior to 2017 this value needed to be calculated as the percentage of mortgage paid after 5 years. The mortgage term was needed to determine what the mortgage paid after 5 years would be. For 2015 and beyond the mortgage terms have been for 25 years while prior to 2015 the mortgage term was for 15 years. The formula for calculating the percentage of the mortgage paid off after 5 years is:
 

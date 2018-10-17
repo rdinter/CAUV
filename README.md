@@ -4,8 +4,6 @@ Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each so
 
 The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation.
 
-[Farm Science Review](4-presentations/4-FSR-2018)
-
 # Components:
 
 An oversimplified description of how to calculate the CAUV value for a particular soil type is that it is the expected net returns from farming corn, soybeans, and wheat on an acre of land divided by capitalization rate to give a present value for owning a piece of land for commercial agricultural production. Please read the [CAUV formula description](formula) for a more in-depth understanding of the program. The following pages provide description of the data involved with each component:
@@ -15,6 +13,41 @@ An oversimplified description of how to calculate the CAUV value for a particula
 3. [Prices](prices)
 4. [Non-Land Costs](nonland)
 5. [Capitalization Rate](caprate)
+
+The [nassR package](https://github.com/rdinter/nassR) is used for updating official USDA data and is not on CRAN. To install, a user must rnu the following command in R:
+
+``` r
+devtools::install_github("rdinter/nassR")
+```
+
+Afterwards, the user must register a [NASS API Key](https://quickstats.nass.usda.gov/api) through USDA and install the key on their local machine with the `set_nass_key("YOUR_KEY_IN_QUOTATIONS")` command with the `nassR` library.
+
+# Organization:
+
+The structure of the repository is as follows:
+
+- [0-data/](0-data/)
+    - `0-data_source.R` - script to download data and create `.csv` and `.rds` files in an easy to read and uniform format. Some of these data are not online and cannot be downloaded. For those data that cannot be downloaded, they reside in this repository.
+    - data_source/ - most of this will be ignored via `.gitignore`.
+        - raw/
+            - All downloaded files from the `0-data_source.R` script.
+            - Some data cannot be downloaded and must be hosted elsewhere. They will also be in this folder for local use.
+        - `various_names.csv`
+        - `various_names.rds`
+    - `.gitignore` - any large files will not be loaded to GitHub.
+- [1-tidy/](1-tidy/)
+    - `1-tidy-cauv.R` - script to gather and format data in a usable way by each component
+    - `ohio_cauv_all` - as .csv and .rds but these are all of the components joined together which is a large amount of variables.
+    - component/
+        - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
+- [2-calc/](2-calc/)
+    - component/ - projections for each component in the CAUV formula.
+        - `2-calc_component.R` - each component.
+- [3-proj/](3-proj/)
+    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
+        - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
+- [4-presentations/](4-presentations/)
+    - [Farm Science Review](4-presentations/4-FSR-2018)
 
 
 ## Years Used in CAUV Calculation
@@ -48,31 +81,3 @@ Sources and timing of release:
 2. [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046) affects yields and rotation. Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
 3. Prices are for the marketing year period which are published by the [USDA-NASS](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1002) and have monthly prices. However, the official values come out around March each year.
 4. Non-Land Costs maintained at the [Ohio State Extension website](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) and there will usually be an initial estimate for the budgets in October of that year with the final update usually around May.
-
-
-# Organization:
-
-The structure of the repository is as follows:
-
-- [0-data/](0-data/)
-    - `0-data_source.R` - script to download data and create `.csv` and `.rds` files in an easy to read and uniform format. Some of these data are not online and cannot be downloaded. For those data that cannot be downloaded, they reside in this repository.
-    - data_source/ - most of this will be ignored via `.gitignore`.
-        - raw/
-            - All downloaded files from the `0-data_source.R` script.
-            - Some data cannot be downloaded and must be hosted elsewhere. They will also be in this folder for local use.
-        - `various_names.csv`
-        - `various_names.rds`
-    - `.gitignore` - any large files will not be loaded to GitHub.
-- [1-tidy/](1-tidy/)
-    - `1-tidy-cauv.R` - script to gather and format data in a usable way by each component
-    - `ohio_cauv_all` - as .csv and .rds but these are all of the components joined together which is a large amount of variables.
-    - component/
-        - Properly formatted and gathered data for further analysis on a particular component of the CAUV calculation (prices, yields, harvested acreage, capitalization rate, and non-land costs).
-- [2-calc/](2-calc/)
-    - component/ - projecions for each component in the CAUV formula.
-        - `2-calc_component.R` - each component.
-- [3-proj/](3-proj/)
-    - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
-        - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
-        
-

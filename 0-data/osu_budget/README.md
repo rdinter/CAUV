@@ -1,4 +1,4 @@
-# The Ohio State University Budget Items
+# The Ohio State University Extension Budget Items
 
 The intent behind the current methodology for ODT's calculation of non-land costs in the CAUV formula is to account for any costs related to the operation of farmland that is not related to purchasing the land itself or the landowner's time. Effectively this means that from the budget reports for each crop, the ODT will omit the land cost and management cost from the extension office budgets and construct the costs based on a 7 year Olympic average for each component.
 
