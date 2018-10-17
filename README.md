@@ -14,7 +14,7 @@ An oversimplified description of how to calculate the CAUV value for a particula
 4. [Non-Land Costs](nonland)
 5. [Capitalization Rate](caprate)
 
-The [nassR package](https://github.com/rdinter/nassR) is used for updating official USDA data and is not on CRAN. To install, a user must rnu the following command in R:
+The [nassR package](https://github.com/rdinter/nassR) is used for updating official USDA data and is not on CRAN. To install, a user must run the following command in R:
 
 ``` r
 devtools::install_github("rdinter/nassR")
@@ -81,3 +81,21 @@ Sources and timing of release:
 2. [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046) affects yields and rotation. Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for.
 3. Prices are for the marketing year period which are published by the [USDA-NASS](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1002) and have monthly prices. However, the official values come out around March each year.
 4. Non-Land Costs maintained at the [Ohio State Extension website](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) and there will usually be an initial estimate for the budgets in October of that year with the final update usually around May.
+
+Typical timeline, using Tax Year 2019 as example:
+
+| Month          | Release | Notes |
+|:--------------:|:-------:|:------|
+| May 2018       | Crop    | Wheat acres/yield forecast for 2018 value (used in 2019 formula) |
+| June 2018      | Crop    | Corn, soybeans, and wheat acreage report plus wheat yield update |
+| July 2018      | Crop    | Wheat acres/yield forecast |
+| August 2018    | Crop, ERS    | Corn, soybeans, and wheat acres/yield forecast |
+| September 2018 | Crop   | Corn, soybeans, and wheat acres/yield forecast |
+| October 2018   | Crop, Budgets   | Corn and soybeans acres/yield forecast; Ohio State Extension releases first budget report |
+| November 2018  | Crop, ERS   | Corn and soybeans acres/yield forecast |
+| December 2018  | Crop   | |
+| January 2019   | Crop    | Finalized corn, soybeans, and wheat acres/yield |
+| February 2019  | ERS | ERS finalizes the value for return to equity |
+| March 2019     | Finalized marketing year prices | Corn, soybeans, and wheat |
+| May 2019       | Budgets | unofficial, there is no hard date for this but usually the  |
+| August 2019    | ODT Official Values; FCS Interest Rate for Cap. Rate | Rough estimate |
