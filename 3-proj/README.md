@@ -1,6 +1,6 @@
 # Current Projection Figures
 
-Current figures used in our projections, which utilize the [3-projection-viz.R](3-projection-viz.R).
+Current figures used in our projections, which utilize the [3-projection-viz.R](3-projection-viz.R). These were updated on 18 October 2018.
 
 ## Expected Projection
 
