@@ -40,9 +40,6 @@ mortgage_alt <- function(r, n) {
 
 # ---- calc ---------------------------------------------------------------
 
-# THIS IS WHERE I NEED TO FIGURE OUT THE DISCREPANCIES FROM 2013 -- 2016
-# AND CREATE THE HIGH AND LOW
-
 ohio <- cap_proj %>%
   mutate(tax_additur_cauv = tax_additur_odt) %>% 
   fill(tax_additur_cauv) %>% 

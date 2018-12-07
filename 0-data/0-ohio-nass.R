@@ -1,8 +1,8 @@
 # NASS API for their Quickstats web interface:
 # https://quickstats.nass.usda.gov/
 
-# devtools::install_github("rdinter/nassR")
-library("nassR")
+# devtools::install_github("rdinter/usdarnass")
+library("usdarnass")
 library("tidyverse")
 source("0-data/0-api_keys.R")
 

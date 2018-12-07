@@ -14,10 +14,10 @@ An oversimplified description of how to calculate the CAUV value for a particula
 4. [Non-Land Costs](nonland)
 5. [Capitalization Rate](caprate)
 
-The [nassR package](https://github.com/rdinter/nassR) is used for updating official USDA data and is not on CRAN. To install, a user must run the following command in R:
+The [usdarnass package](https://rdinter.github.io/usdarnass) is used for updating official USDA data and is not on CRAN. To install, a user must run the following command in R:
 
 ``` r
-devtools::install_github("rdinter/nassR")
+devtools::install_github("rdinter/usdarnass")
 ```
 
 Afterwards, the user must register a [NASS API Key](https://quickstats.nass.usda.gov/api) through USDA and install the key on their local machine with the `set_nass_key("YOUR_KEY_IN_QUOTATIONS")` command with the `nassR` library.
