@@ -1,0 +1,30 @@
+# SQL query for soils in Ohio
+# soildb?
+# https://ncss-tech.github.io/AQP/soilDB/soilDB-Intro.html
+# https://sdmdataaccess.sc.egov.usda.gov/Query.aspx
+# http://ncss-tech.github.io/stats_for_soil_survey/chapters/
+#  0_pre-class-assignment/pre-class-assignment.html
+
+library("tidyverse")
+library("soilDB")
+
+# Create a directory for the data
+local_dir    <- "0-data/soils"
+data_source <- paste0(local_dir, "/raw")
+if (!file.exists(local_dir)) dir.create(local_dir)
+if (!file.exists(data_source)) dir.create(data_source)
+
+
+q <- paste0("SELECT L.areaname, M.mukey, M.musym, M.muname, ",
+            "M.muacres AS mapunit_acres, L.areaacres AS survey_acres ",
+            "FROM mapunit M ",
+            "INNER JOIN legend L on L.lkey = M.lkey and",
+            " L.areasymbol LIKE 'OH%' ")
+res <- SDA_query(q)
+glimpse(res)
+
+write_csv(res, paste0(local_dir, "/nrcs_county_soils.csv"))
+write_rds(res, paste0(local_dir, "/nrcs_county_soils.rds"))
+
+#######
+# "SELECT L.areaname, M.mukey, M.musym, M.muname, M.muacres AS mapunit_acres, L.areaacres AS survey_acres FROM mapunit M INNER JOIN legend L on L.lkey = M.lkey and L.areasymbol LIKE 'OH%' "

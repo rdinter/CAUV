@@ -14,14 +14,6 @@ data_source <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir)
 if (!file.exists(data_source)) dir.create(data_source)
 
-# NOTE: a major issue in USDA county level data is that sometimes there are
-#  multiple counties combined together as "OTHER (COMBINED) COUNTIES" which
-#  should be where we simply impute downward at this level. This can be done
-#  by recognizing that the "asd_desc" is the level which counties are combined
-#  at. Therefore, group by "asd_desc" and check if values are missing. If they
-#  are missing, then replace them with the "OTHER (COMBINED) COUNTIES" which
-#  also has the county_code of "998
-
 # ---- prices -------------------------------------------------------------
 
 prices <- map(c("CORN", "HAY", "SOYBEANS", "WHEAT"), function(x){
@@ -224,7 +216,14 @@ write.csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"),
 write_rds(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.rds"))
 
 # ---- county -------------------------------------------------------------
-# 
+
+# NOTE: a major issue in USDA county level data is that sometimes there are
+#  multiple counties combined together as "OTHER (COMBINED) COUNTIES" which
+#  should be where we simply impute downward at this level. This can be done
+#  by recognizing that the "asd_desc" is the level which counties are combined
+#  at. Therefore, group by "asd_desc" and check if values are missing. If they
+#  are missing, then replace them with the "OTHER (COMBINED) COUNTIES" which
+#  also has the county_code of "998
 # 
 # ohio_crops <- map(c(corn_vals, soy_vals, wheat_vals), function(x){
 #   nass_data(short_desc = x, agg_level_desc = "COUNTY", state_name = "OHIO",
