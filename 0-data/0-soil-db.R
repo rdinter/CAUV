@@ -27,4 +27,37 @@ write_csv(res, paste0(local_dir, "/nrcs_county_soils.csv"))
 write_rds(res, paste0(local_dir, "/nrcs_county_soils.rds"))
 
 #######
-# "SELECT L.areaname, M.mukey, M.musym, M.muname, M.muacres AS mapunit_acres, L.areaacres AS survey_acres FROM mapunit M INNER JOIN legend L on L.lkey = M.lkey and L.areasymbol LIKE 'OH%' "
+# "SELECT L.areaname, M.mukey, M.musym, M.muname, M.muacres AS mapunit_acres,
+#  L.areaacres AS survey_acres FROM mapunit M 
+#  INNER JOIN legend L on L.lkey = M.lkey and L.areasymbol LIKE 'OH%' "
+
+
+#####
+
+# Alternate:
+
+q2 <- "SELECT l.areaname, musym, muname, muacres, farmlndcl, compname,
+        nirrcapcl, nirrcapscl, textsubcat AS PI
+       FROM legend AS l
+       INNER JOIN mapunit m ON m.lkey = l.lkey AND areasymbol LIKE 'OH%'
+       INNER JOIN mutext AS mt ON mt.mukey = m.mukey 
+        AND mapunittextkind LIKE 'miscellaneous notes' AND textcat = 'PI'
+       INNER JOIN component  AS c ON c.mukey = m.mukey
+        AND majcompflag LIKE 'Yes'
+       ORDER BY areasymbol, musym"
+res2 <- SDA_query(q2)
+glimpse(res2)
+
+write_csv(res2, paste0(local_dir, "/nrcs_county_soils_alt.csv"))
+write_rds(res2, paste0(local_dir, "/nrcs_county_soils_alt.rds"))
+
+
+# SELECT l.areaname, musym, muname, muacres, farmlndcl, compname,
+#         nirrcapcl, nirrcapscl, textsubcat AS PI
+# FROM legend AS l
+# INNER JOIN mapunit m ON m.lkey = l.lkey AND areasymbol LIKE 'OH%'
+# INNER JOIN mutext AS mt ON mt.mukey = m.mukey 
+#  AND mapunittextkind LIKE 'miscellaneous notes' AND textcat = 'PI'
+# INNER JOIN component  AS c ON c.mukey = m.mukey
+#  AND majcompflag LIKE 'Yes'
+# ORDER BY areasymbol, musym
