@@ -306,7 +306,7 @@ ohio_soils %>%
                                            legend.background = element_blank())
                                  }
 ggsave(filename = paste0(figures, "/cauv_2018.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- phase-in -----------------------------------------------------------
 
@@ -336,7 +336,7 @@ recreated_2018 %>%
   theme_bw() +
   theme(legend.position = c(0.85, 0.85), legend.background = element_blank())
 ggsave(filename = paste0(figures, "/cauv_phase_in_2018.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- high-trend ---------------------------------------------------------
 
@@ -377,7 +377,7 @@ ohio_soils_high %>%
                                            legend.background = element_blank())
                                  }
 ggsave(filename = paste0(figures, "/cauv_high_projections_2019.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- low-trend ----------------------------------------------------------
 
@@ -418,7 +418,7 @@ ohio_soils_low %>%
                                            legend.background = element_blank())
                                  }
 ggsave(filename = paste0(figures, "/cauv_low_projections_2019.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- low-2019 -----------------------------------------------------------
 
@@ -448,7 +448,7 @@ ohio_low %>%
   theme_bw() +
   theme(legend.position = c(0.85, 0.85), legend.background = element_blank())
 ggsave(filename = paste0(figures, "/cauv_low_phase_in_2019.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- exp-trend ----------------------------------------------------------
 
@@ -489,7 +489,7 @@ ohio_soils_exp %>%
                                            legend.background = element_blank())
                                  }
 ggsave(filename = paste0(figures, "/cauv_expected_projections_2019.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
 
 # ---- exp-2019 -----------------------------------------------------------
 
@@ -519,4 +519,4 @@ ohio_exp %>%
   theme_bw() +
   theme(legend.position = c(0.85, 0.85), legend.background = element_blank())
 ggsave(filename = paste0(figures, "/cauv_expected_phase_in_2019.png"),
-       width = 10, height = 7)
+       width = 7, height = 5.25)
