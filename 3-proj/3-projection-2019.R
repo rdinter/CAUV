@@ -21,7 +21,7 @@ ohio <- read_rds("2-calc/prices/ohio_forecast_prices.rds") %>%
   left_join(read_rds("2-calc/nonland/ohio_forecast_nonland.rds")) %>% 
   left_join(read_rds("2-calc/cap/ohio_forecast_caprate.rds"))
 
-# HACK, cap rate has been finecky so just going to go with 0.08 in all
+# HACK, cap rate has been finicky so just going to go with 0.08 in all
 #  projections for the moment.
 ohio$cap_rate_cauv[ohio$year %in% c(2018,2019)] <- 0.08
 ohio$cap_rate_cauv_exp[ohio$year %in% c(2018,2019)] <- 0.08
