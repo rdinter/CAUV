@@ -1,5 +1,8 @@
 # Prices
 
+The prices for corn, soybeans, and wheat come from official USDA data which are automatically downloaded with the [0-data/0-ohio-nass.R](0-data/0-ohio-nass.R) script. These data technically come from [NASS Price Program ](https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Prices/) which are also historically available from [Cornell](https://usda.library.cornell.edu/concern/publications/c821gj76b?locale=en). Data are provided for every month but the year for prices are related to the marketing year, which requires the knowledge of how much volume was sold for each month to calculate the marketing year price. 
+
+Prices used in the CAUV formula are based off of an Olympic average of the previous 7 years. The marketing year depends on the crop, although the for the most recent year's USDA price included in CAUV calculations are based off of projections for what the marketing year will be. By example, the 2018 CAUV values were finalized in June of 2018 yet the marketing year prices for corn, soybeans, and wheat for the 2018 values were not finalized but based off of March mid-year values.
 
 | Tax Year|Prices    |
 |--------:|:---------|
