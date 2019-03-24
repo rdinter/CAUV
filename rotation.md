@@ -22,4 +22,4 @@ Rotation is one of the components which does not use Olympic averaging, which ma
 |     2018|2013-2017 |
 |     2019|2014-2018 |
 |   Future|previous-5 years ago |
-|    Years|5 Average, lag |
+|    Years|5 Average, one year lag |

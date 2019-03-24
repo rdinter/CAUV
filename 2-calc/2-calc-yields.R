@@ -33,7 +33,10 @@ yield_calc <- function(crop, year) {
 
 # ---- calc ---------------------------------------------------------------
 
-ohio <- yield_proj %>% 
+ohio_yield <- yield_proj %>% 
+  arrange(year) %>% 
+  fill(corn_grain_yield, soy_yield, wheat_yield) %>% 
+  
   mutate(corn_yield_cauv  = yield_calc(corn_grain_yield, year),
          corn_yield_adj_cauv = corn_yield_cauv / corn_grain_yield[year==1984],
          corn_yield_adj_odt = corn_yield_odt / corn_grain_yield[year==1984],
@@ -42,7 +45,10 @@ ohio <- yield_proj %>%
          soy_yield_adj_odt = soy_yield_odt / soy_yield[year==1984],
          wheat_yield_cauv = yield_calc(wheat_yield, year),
          wheat_yield_adj_cauv = wheat_yield_cauv / wheat_yield[year==1984],
-         wheat_yield_adj_odt = wheat_yield_odt / wheat_yield[year==1984])
+         wheat_yield_adj_odt = wheat_yield_odt / wheat_yield[year==1984]) %>% 
+  select(year, corn_yield_cauv:wheat_yield_adj_odt)
+
+ohio <- left_join(yield_proj, ohio_yield)
 
 
 write.csv(ohio, paste0(yields, "/ohio_forecast_crops.csv"),

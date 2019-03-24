@@ -7,9 +7,7 @@
 
 # ---- start --------------------------------------------------------------
 
-library("lubridate")
 library("tidyverse")
-library("zoo")
 
 # Create a directory for the data
 local_dir <- "1-tidy"
@@ -35,30 +33,6 @@ ohio_prices <- odt %>%
   right_join(ohio) %>% 
   select(year, contains("price"), contains("prod_bu")) %>% 
   arrange(year)
-
-price_month <- read_rds("0-data/ohio/ohio_prices_monthly.rds") %>% 
-  mutate(month = month(date, label = T))
-
-price_month %>% 
-  filter(year > 2001) %>% 
-  select(month, corn_sales, soy_sales, wheat_sales) %>% 
-  gather(var, val, -month) %>% 
-  ggplot(aes(month, val, color = var, fill = var)) + geom_violin()
-
-# How to give a projection of prices? Use the same weights as the last year?
-#  Recalibrate the weights to historical averages?
-
-huh <- price_month %>%
-  arrange(date) %>% 
-  mutate(corn_roll = rollapplyr(corn_price*(corn_sales/100), 12, sum,
-                                fill = NA),
-         korn_roll = rollapplyr(corn_price*(lag(corn_sales,12)/100), 12, sum,
-                                fill = NA),
-         soy_roll = rollapplyr(soy_price*(soy_sales/100), 12, sum,
-                               fill = NA),
-         wheat_roll = rollapplyr(wheat_price*(wheat_sales/100), 12, sum,
-                                 fill = NA))
-
 
 write_csv(ohio_prices, paste0(prices, "/ohio_prices.csv"))
 write_rds(ohio_prices, paste0(prices, "/ohio_prices.rds"))

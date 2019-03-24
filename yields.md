@@ -22,4 +22,4 @@ Yields are one of the components which does not use Olympic averaging, which mak
 |     2018|2008-2017 |
 |     2019|2009-2018 |
 |   Future|previous-11 years ago |
-|    Years|10 Average, lag |
+|    Years|10 Average, one year lag |
