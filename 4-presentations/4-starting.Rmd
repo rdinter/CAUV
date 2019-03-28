@@ -1,0 +1,173 @@
+---
+title: "Getting Started with CAUV Repository"
+author: "Robert Dinterman"
+institute: "The Ohio State University"
+date: 29 March 2019
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    highlight: pygments
+    center: true
+    self_contained: true
+    fig_width: 7
+    fig_height: 5
+    reveal_options:
+      slideNumber: true
+      previewLinks: true
+---
+
+# Overview > RStudio > GitHub > Integration > Project
+
+## Overview
+
+- Projections for Ohio's Current Agricultural Use Value Program (CAUV) are written in R.
+- If the intent is to simply view outputs, then the best resource is the repository's website:
+    - https://rdinter.github.io/CAUV
+- If you only want to view the files, then the repository is available on GitHub.com
+    - https://github.com/rdinter/CAUV
+    - click on the "Clone or download" button towards the top right then download the zip file
+- Repository is best viewed/amended with RStudio and GitHub
+
+## Overview
+
+- The best practices for updating CAUV projections is to use the current structure, no reason to reinvent the wheel
+- We'll touch on:
+    1. RStudio
+    2. GitHub
+    3. Integrating the two together
+    4. CAUV Program specific changes
+
+# RStudio
+
+## RStudio
+
+- [R](https://www.r-project.org/) is a programming language and a statistical software program
+    - built as open-source (free) off of [S](https://en.wikipedia.org/wiki/S_(programming_language)) from Bell Labs, which was proprietary
+- R by itself is terminal based (think MS-DOS) and not exactly user-friendly
+- RStudio provides a graphical interface that allows you an environment to create reproducible code, run said code, and inspect the ouputs
+    - It's free and very powerful.
+
+## Installing
+
+- To use RStudio, you must first install R
+    - Follow download instructions for your system here: https://cloud.r-project.org/
+- Next, download RStudio desktop
+    - Follow download instructions for your system here: https://www.rstudio.com/products/rstudio/download/
+
+## RStudio Usage
+
+- Four panes in the interface
+    - Console - where literal commands in R can be run
+    - Source - where code can be written and saved for future use (you can send code to the Console to be run with multiple "Run" commands)
+    - "Files, Plots, Packages, Help, Viewer" - kind of self-explanatory
+    - "Environment, History, Connections, Git" - environment is most important as it shows you the various objects (think dataframes) you can interact with at the particular moment
+
+## RStudio Usage
+
+- **Projects** are an absolute must use feature
+- Integrates seamlessly with GitHub (later)
+- Even without GitHub, it helps keep your projects organized in folders
+    - Reduces the clutter of strange file/folder locations (C:\\Users\\dinterman.1\\Box Sync\\Farm Income Enhancement Team \\file.R)
+    - Stops you from using the evil `setwd()` command that creates subtle bugs
+
+# GitHub
+
+## GitHub
+
+- Technically, the aspect we are concerned with is [Git](https://git-scm.com/) which is version control
+    - think of keeping track of each saved document
+- [GitHub](https://github.com/) is one of many different Git services
+    - free to use and used by many
+    - education accounts get unlimited private repositories
+- Actually a terminal line based program
+- A nice overview: https://happygitwithr.com/big-picture.html
+    - Commit, Push, Pull, Branch, Fork, Pull, and Merge.
+
+## GitHub Use
+
+- When you start a repository, it starts off with the Master Branch and progresses with regular software/data development
+- Each step in the development is called a **commit**
+    - Commits should represent substantial changes to the project
+    - Commits can have changes to more than one file
+    - Each commit needs a description, make it short and relevant
+- Commit often but keep it systematic
+    - Should be thought as bookmarks for changes so you can easily document issues that might arise in the future
+
+## GitHub Use
+
+- Commits are done on your local machine, but the project/repository lives on GitHub
+- Commits need to be **pushed** to GitHub in order to make changes for anyone else that might work on the project
+- Push will update the current branch version with all of the commits
+    - Potentially a situation for error/warning depending on if the branch had other pushes
+    - Kinda annoying to match up the parts that don't match, but that's why Git is there
+
+## GitHub Use
+
+- **Pull** is for your local machine to try and accept changes to your branch on GitHub
+    - Potential to fail because your local machine doesn't match up with branch on GitHub
+    - Kinda annoying to correct where the two versions may differ
+- Should also mention **branches** exist
+    - Master branch always exists, but potentially new branches emerge if there's obvious reason to take development in another route (usually for a different purpose)
+
+## GitHub Use
+
+- Branch creation
+    - Can create a branch off of the Master (or others), which is time dependent (usually called **forking**)
+    - Allows for independent work on a project
+- Branches can be combined together
+    - **Pull request** is situation where another branch is requesting a **merge** of the two branches
+    - Any differences for files needs to be addressed
+
+
+# Integration
+
+## Integration
+
+- Benefits of GitHub and how to integrate it with R and RStudio: https://happygitwithr.com/
+- Official RStudio description of connecting https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN
+- Allows you to have your own personal repository/project and a public facing version
+    - Or private repository
+
+# Project
+
+## CAUV Project
+
+- Straightforward organization:
+    0. Download data.
+    1. Tidy up the data for a consistent format usage.
+    2. Calculate individual components for the CAUV formula.
+    3. Project the individual CAUV values based on the components.
+    4. Explain them.
+- 0 to 3 are complete, 4 still in progress
+
+## CAUV Program
+
+- Calculation of CAUV requires knowledge of:
+    - soil types (Ohio Department of Taxation)
+    - yields, prices, acreage (USDA)
+    - non-land costs (Ohio State University Extension)
+    - interest rates (Ohio Department of Taxation)
+
+
+## Download Data
+
+https://rdinter.github.io/CAUV/0-data/
+
+- Automated all USDA data with the `0-ohio-nass.R`
+- Budgets from Extension must be manually adjusted
+    - 0-data/osu_budget/osu_budgets - R.csv
+- Interest rates must be manually adjusted
+    - 0-data/cap_rate/capitalization_rate.csv
+
+## R Code
+
+- Tidying of data is straightforward with 1-tidy/1-tidy-cauv.R
+    - each component is saved into their own folder
+- Next step is to calculate each component, this is where individual R scripts are important
+    - potentially where different projections can be incorporated
+- Projection depends on the year
+    - current 2019 CAUV values will be phased in
+        - 3-proj/3-projection-2019.R
+    - future CAUV values will not be phased in
+        - 3-proj/3-projection-2020.R
+
