@@ -8,8 +8,8 @@ library("zoo")
 # Create a directory for the data
 local_dir <- "2-calc"
 nonland   <- paste0(local_dir, "/nonland")
-if (!file.exists(local_dir)) dir.create(local_dir)
-if (!file.exists(nonland)) dir.create(nonland)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(nonland)) dir.create(nonland, recursive = T)
 
 j5 <- read_rds("1-tidy/nonland/ohio_nonland.rds")
 

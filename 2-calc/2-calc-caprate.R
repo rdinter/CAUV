@@ -8,8 +8,8 @@ library("zoo")
 # Create a directory for the data
 local_dir <- "2-calc"
 cap       <- paste0(local_dir, "/cap")
-if (!file.exists(local_dir)) dir.create(local_dir)
-if (!file.exists(cap)) dir.create(cap)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(cap)) dir.create(cap, recursive = T)
 
 j5 <- read_rds("1-tidy/cap/ohio_caprate.rds")
 

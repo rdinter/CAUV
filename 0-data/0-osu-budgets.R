@@ -12,8 +12,8 @@ library("tidyverse")
 
 local_dir   <- "0-data/osu_budget"
 data_source <- "0-data/osu_budget/raw"
-if (!file.exists(local_dir)) dir.create(local_dir)
-if (!file.exists(data_source)) dir.create(data_source)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 # Current values:
 # https://farmoffice.osu.edu/farm-management-tools/farm-budgets

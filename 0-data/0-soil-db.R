@@ -11,8 +11,8 @@ library("soilDB")
 # Create a directory for the data
 local_dir    <- "0-data/soils"
 data_source <- paste0(local_dir, "/raw")
-if (!file.exists(local_dir)) dir.create(local_dir)
-if (!file.exists(data_source)) dir.create(data_source)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 
 q <- paste0("SELECT L.areaname, M.mukey, M.musym, M.muname, ",

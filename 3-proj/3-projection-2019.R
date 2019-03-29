@@ -12,8 +12,8 @@ dollars <- function(x, dig = 0) dollar_format(largest_with_cents = dig)(x)
 # Create a directory for the data
 local_dir <- "3-proj"
 future    <- paste0(local_dir, "/future")
-if (!file.exists(local_dir)) dir.create(local_dir)
-if (!file.exists(future)) dir.create(future)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(future)) dir.create(future, recursive = T)
 
 ohio <- read_rds("2-calc/prices/ohio_forecast_prices.rds") %>% 
   left_join(read_rds("2-calc/yields/ohio_forecast_crops.rds")) %>% 

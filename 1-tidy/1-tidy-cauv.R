@@ -11,7 +11,7 @@ library("tidyverse")
 
 # Create a directory for the data
 local_dir <- "1-tidy"
-if (!file.exists(local_dir)) dir.create(local_dir)
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 
 odt     <- read_csv("0-data/odt/odt_values_used.csv")
 cap_odt <- read_csv("0-data/cap_rate/capitalization_rate.csv") %>% 
