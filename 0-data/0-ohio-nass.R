@@ -17,7 +17,7 @@ if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 prices <- map(c("CORN", "HAY", "SOYBEANS", "WHEAT"), function(x){
   nass_data(commodity_desc = x, statisticcat_desc = "PRICE RECEIVED",
-            state_name = "OHIO", token = api_nass_key, numeric_vals = T)})
+            state_name = "OHIO", numeric_vals = T)})
 
 from_price <- c("CORN, GRAIN - PRICE RECEIVED, MEASURED IN $ / BU",
                 "HAY, ALFALFA - PRICE RECEIVED, MEASURED IN $ / TON",
@@ -63,7 +63,7 @@ annual <- data.frame(year = max(annual$year) + 1) %>%
 sales <- map(c("CORN", "HAY", "SOYBEANS", "WHEAT"), function(x){
   nass_data(commodity_desc = x, statisticcat_desc = "SALES",
             freq_desc = "MONTHLY", state_name = "OHIO",
-            token = api_nass_key, numeric_vals = T)})
+            numeric_vals = T)})
 
 from_sales <- c("CORN, GRAIN - SALES, MEASURED IN PCT OF MKTG YEAR",
                 "HAY - SALES, MEASURED IN PCT OF MKTG YEAR",
