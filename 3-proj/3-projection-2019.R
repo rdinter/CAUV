@@ -23,10 +23,10 @@ ohio <- read_rds("2-calc/prices/ohio_forecast_prices.rds") %>%
 
 # HACK, cap rate has been finicky so just going to go with 0.08 in all
 #  projections for the moment.
-ohio$cap_rate_cauv[ohio$year %in% c(2018,2019)] <- 0.08
+ohio$cap_rate_cauv[ohio$year %in% c(2018,2019)]     <- 0.08
 ohio$cap_rate_cauv_exp[ohio$year %in% c(2018,2019)] <- 0.08
-ohio$cap_rate_cauv_l[ohio$year %in% c(2018,2019)] <- 0.081
-ohio$cap_rate_cauv_h[ohio$year %in% c(2018,2019)] <- 0.079
+ohio$cap_rate_cauv_l[ohio$year %in% c(2018,2019)]   <- 0.081
+ohio$cap_rate_cauv_h[ohio$year %in% c(2018,2019)]   <- 0.079
 
 soils <- read_rds("0-data/soils/cauv_soils.rds")
 unadj <- read_rds("0-data/soils/cauv_unadj.rds")
@@ -105,7 +105,7 @@ organic <- recreated %>%
 #   arrange(difference_o) %>%
 #   View
 
-# Even correcting for organic soils, there's still about 35 soils that are off
+# Even correcting for organic soils, there's still about 35 soils off
 # recreated %>%
 #   filter(difference != 0, difference_o != 0) %>%
 #   arrange(difference_o) %>%
@@ -187,7 +187,7 @@ ohio_exp <- ohio %>%
          soy_revenue = soy_yield*soy_price_cauv_exp,
          wheat_revenue = wheat_yield*wheat_price_cauv_exp,
          
-         corn_cost = corn_cost_add_cauv_exp*(corn_yield - corn_base_cauv_exp) +
+         corn_cost = corn_cost_add_cauv_exp*(corn_yield-corn_base_cauv_exp) +
            corn_cost_cauv_exp,
          soy_cost = soy_cost_add_cauv_exp*(soy_yield - soy_base_cauv_exp) +
            soy_cost_cauv_exp,
@@ -202,8 +202,8 @@ ohio_exp <- ohio %>%
          organic = 0.5*(corn_revenue - corn_cost) +
            0.5*(soy_revenue - soy_cost),
          
-         raw_val = round(net_return / round(cap_rate_cauv_exp, 3), digits = -1),
-         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3), digits = -1),
+         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits=-1),
+         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits=-1),
          raw = ifelse(org_soil, raw_val_o, raw_val),
          unadjusted = ifelse(raw < 350, 350, raw)) %>% 
   arrange(id) %>% 
