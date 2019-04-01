@@ -145,7 +145,7 @@ wheat_names <- c("wheat_acres_harvest", "wheat_acres_planted", "wheat_prod_bu",
 
 state_crops <- map(c(corn_vals, soy_vals, wheat_vals), function(x){
   nass_data(short_desc = x, agg_level_desc = "STATE", state_name = "OHIO",
-            sector = "CROPS", source_desc = "SURVEY", token = api_nass_key,
+            sector = "CROPS", source_desc = "SURVEY",
             numeric_vals = T)
 })
 
@@ -178,6 +178,7 @@ write.csv(crops, paste0(local_dir, "/ohio_state_crops.csv"),
 write_rds(crops, paste0(local_dir, "/ohio_state_crops.rds"))
 
 # Gather up the forecasted values
+not_all_na <- function(x) any(!is.na(x))
 
 forecast_crops <- state_crops %>% 
   bind_rows() %>% 
@@ -214,62 +215,3 @@ write.csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"),
           row.names = F)
 write_rds(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.rds"))
 
-# ---- county -------------------------------------------------------------
-
-# NOTE: a major issue in USDA county level data is that sometimes there are
-#  multiple counties combined together as "OTHER (COMBINED) COUNTIES" which
-#  should be where we simply impute downward at this level. This can be done
-#  by recognizing that the "asd_desc" is the level which counties are combined
-#  at. Therefore, group by "asd_desc" and check if values are missing. If they
-#  are missing, then replace them with the "OTHER (COMBINED) COUNTIES" which
-#  also has the county_code of "998
-# 
-# ohio_crops <- map(c(corn_vals, soy_vals, wheat_vals), function(x){
-#   nass_data(short_desc = x, agg_level_desc = "COUNTY", state_name = "OHIO",
-#             sector = "CROPS", source_desc = "SURVEY", token = api_nass_key,
-#             numeric_vals = T)
-# })
-# 
-# crops <- ohio_crops %>% 
-#   bind_rows() %>% 
-#   mutate(county = tolower(county_name),
-#          year = as.numeric(year),
-#          short_desc = factor(short_desc,
-#                              levels = c(corn_vals, soy_vals, wheat_vals),
-#                              labels = c(corn_names, soy_names, wheat_names))) %>% 
-#   select(year, county, county_code, asd_desc, val = Value, short_desc) %>% 
-#   spread(short_desc, val)
-# 
-# crops <- crops %>%
-#   expand(nesting(county, county_code, asd_desc), year) %>% 
-#   left_join(crops)
-# 
-# crops <- crops %>% 
-#   group_by(year, asd_desc) %>% 
-#   mutate_at(vars(corn_acres_planted:wheat_yield),
-#             funs(ifelse(is.na(.), .[county_code == "998"], .))) %>% 
-#   filter(county_code != "998")
-# 
-# # Drop out winter wheat, just have wheat
-# crops <- crops %>% 
-#   mutate(wheat_acres_harvest = ifelse(is.na(wheat_acres_harvest),
-#                                       wheat_winter_acres_harvest,
-#                                       wheat_acres_harvest),
-#          wheat_acres_planted = ifelse(is.na(wheat_acres_planted),
-#                                       wheat_winter_acres_planted,
-#                                       wheat_acres_planted),
-#          wheat_prod_bu = ifelse(is.na(wheat_prod_bu),
-#                                 wheat_winter_prod_bu, wheat_prod_bu),
-#          wheat_yield = ifelse(is.na(wheat_yield),
-#                               wheat_winter_yield, wheat_yield)) %>% 
-#   select(-contains("winter"))
-# 
-# # # Add in a blank holder for next year's prices
-# # annual <- data.frame(year = max(annual$year) + 1) %>% 
-# #   bind_rows(annual) %>% 
-# #   arrange(year)
-# 
-# 
-# write.csv(crops, paste0(local_dir, "/ohio_crops.csv"),
-#           row.names = F)
-# write_rds(crops, paste0(local_dir, "/ohio_crops.rds"))
