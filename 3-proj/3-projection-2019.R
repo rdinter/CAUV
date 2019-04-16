@@ -91,10 +91,12 @@ recreated <- ohio %>%
          cauv_2017 = round(cauv_2017, -1))
 
 # Determine the organic soils for calculating the correct value
-organic <- recreated %>% 
+organic1 <- recreated %>% 
   mutate(org_soil = ifelse(raw_val_o == cropland_unadj &
                              difference != 0, T, F)) %>% 
   select(id, org_soil)
+
+# write_csv(organic, "3-proj/3-organic-2017.csv")
 
 # dot_soils <- left_join(dot_soils, organic)
 
@@ -156,6 +158,20 @@ recreated2 <- ohio %>%
          cauv_2018 = ifelse(unadjusted > val_2017, unadjusted,
                             unadjusted + (val_2017 - unadjusted)/2),
          cauv_2018 = round(cauv_2018, -1))
+
+# Determine the organic soils for calculating the correct value
+organic2 <- recreated2 %>% 
+  mutate(org_soil = ifelse(raw_val_o == cropland_unadj &
+                             difference != 0, T, F)) %>% 
+  select(id, org_soil)
+
+organic <- organic1 %>% 
+  rename(org_soil_2017 = org_soil) %>% 
+  left_join(organic2) %>% 
+  rename(org_soil_2018 = org_soil) %>% 
+  mutate(org_soil = ifelse(org_soil_2017 | org_soil_2018, TRUE, FALSE))
+
+write_csv(organic, "3-proj/3-organic.csv")
 
 
 # ---- expected -----------------------------------------------------------
