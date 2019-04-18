@@ -14,7 +14,7 @@ if (!file.exists(yields)) dir.create(yields, recursive = T)
 j5 <- read_rds("1-tidy/yields/ohio_yields.rds")
 
 # Add on an additional year for Yields:
-yield_proj <- data_frame(year = max(j5$year) + 1) %>% 
+yield_proj <- tibble(year = max(j5$year) + 1) %>% 
   bind_rows(j5) %>% 
   arrange(year)
 

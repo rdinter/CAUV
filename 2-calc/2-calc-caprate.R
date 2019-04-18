@@ -14,8 +14,8 @@ if (!file.exists(cap)) dir.create(cap, recursive = T)
 j5 <- read_rds("1-tidy/cap/ohio_caprate.rds")
 
 # Add on an additional year for Capitalization Rate:
-cap_proj <- data_frame(year = max(j5$year) + 1, mortgage_pct_odt = 0.8,
-                       mortgage_years_odt = 25, sinking_years_odt = 25) %>% 
+cap_proj <- tibble(year = max(j5$year) + 1, mortgage_pct_odt = 0.8,
+                   mortgage_years_odt = 25, sinking_years_odt = 25) %>% 
   bind_rows(j5) %>% 
   arrange(year)
 
