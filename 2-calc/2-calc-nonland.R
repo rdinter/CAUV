@@ -11,6 +11,23 @@ nonland   <- paste0(local_dir, "/nonland")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(nonland)) dir.create(nonland, recursive = T)
 
+# Take the vector of costs that are averaged and replaced the most recent with
+#  a 0 for high and Inf for low -- these reference the CAUV projection
+mean_high <- function(x, ...) {
+  n    <- length(x)
+  x[n] <- 0
+  mean(x, ...)
+}
+mean_low <- function(x, ...) {
+  n    <- length(x)
+  x[n] <- Inf
+  mean(x, ...)
+}
+
+
+# ---- data ---------------------------------------------------------------
+
+
 j5 <- read_rds("1-tidy/nonland/ohio_nonland.rds")
 
 # Add on an additional year for Nonland Costs:
@@ -18,7 +35,7 @@ nonland_proj <- j5 %>%
   arrange(year) %>% 
   select(-contains("odt"))
 
-odt_nonland <- data_frame(year = max(j5$year) + 1) %>% 
+odt_nonland <- tibble(year = max(j5$year) + 1) %>% 
   bind_rows(j5) %>% 
   arrange(year) %>% 
   select(year, contains("odt")) %>% 
@@ -36,6 +53,9 @@ odt_nonland <- data_frame(year = max(j5$year) + 1) %>%
 # Last year of an official ODT value
 last_odt <- max(j5$year[!is.na(j5$corn_cost_odt)])
 
+# Potentially adding on the most recent "official" values from extension
+#  if there exists extension values after an ODT year then they are
+#  preliminary extimates for costs
 extra <- nonland_proj %>% 
   filter(year == last_odt) %>% 
   mutate(year = max(year) + 1)
@@ -43,6 +63,11 @@ extra <- nonland_proj %>%
 if (!((last_odt + 1) %in% nonland_proj$year)) {
   nonland_proj <- nonland_proj %>% 
     bind_rows(extra) %>% 
+    arrange(year)
+} else if (!((last_odt + 2) %in% nonland_proj$year)) {
+  extra$year   <- extra$year + 1
+  nonland_proj <- nonland_proj %>%
+    bind_rows(extra) %>%
     arrange(year)
 }
 
@@ -57,22 +82,8 @@ non_exp <- nonland_proj %>%
                                          1, variable_miscellaneous)) %>% 
   ungroup()
 
-extra1 <- non_exp %>% 
-  filter(year == max(year)) %>% 
-  select(year, crop, level, fixed_miscellaneous1)
 
-non_low <- non_high <- non_exp %>% 
-  filter(year != max(year)) %>% 
-  bind_rows(extra1) %>% 
-  arrange(year) %>% 
-  mutate(variable_miscellaneous = ifelse(level == "cost",
-                                         1, variable_miscellaneous))
-
-non_high[is.na(non_high)] <- 0
-non_low[is.na(non_low)] <- Inf
-
-
-# ---- calc ---------------------------------------------------------------
+# ---- calc-components -----------------------------------------------------
 
 # Calculate the 7 year olympic average, except for fixed misc because there 
 #  are not enough observations. Do not do for fixed misc as it started in 2015
@@ -80,47 +91,48 @@ non_land_costs <- non_exp %>%
   group_by(crop, level) %>% 
   arrange(year) %>% 
   mutate_at(vars(-fixed_miscellaneous1, -year, -crop, -level),
-            funs(ifelse(year > 2014,
+            list(~ifelse(year > 2014,
                         rollapplyr(., width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T),
+                                   trim = 1/7, na.rm = T, fill = NA),
                         rollapplyr(lag(.), width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T))))
+                                   trim = 1/7, na.rm = T, fill = NA))))
 
-# And repeat for high and low projections
-non_high_costs <- non_high %>% 
-  group_by(crop, level) %>% 
-  arrange(year) %>% 
-  mutate_at(vars(-fixed_miscellaneous1, -year, -crop, -level),
-            funs(ifelse(year > 2014,
-                        rollapplyr(., width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T),
-                        rollapplyr(lag(.), width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T)))) %>%
-  filter(year == max(year))
+# # And repeat for high and low projections
 
-non_low_costs <- non_low %>% 
-  group_by(crop, level) %>% 
-  arrange(year) %>% 
-  mutate_at(vars(-fixed_miscellaneous1, -year, -crop, -level),
-            funs(ifelse(year > 2014,
-                        rollapplyr(., width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T),
-                        rollapplyr(lag(.), width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, na.pad = T)))) %>%
-  filter(year == max(year))
+non_high_costs <- non_exp %>%
+  group_by(crop, level) %>%
+  arrange(year) %>%
+  mutate_at(vars(-fixed_miscellaneous1, -yield, -year, -crop, -level),
+            list(~ifelse(year > 2014,
+                        rollapplyr(., width = 7, FUN =  mean_high,
+                                   trim = 1/7, na.rm = T, fill = NA),
+                        rollapplyr(lag(.), width = 7, FUN =  mean_high,
+                                   trim = 1/7, na.rm = T, fill = NA)))) %>% 
+  # Yield affects the additive portion, need this to be the inverse
+  mutate(yield = ifelse(year > 2014,
+                        rollapplyr(yield, width = 7, FUN =  mean_low,
+                                   trim = 1/7, na.rm = T, fill = NA),
+                        rollapplyr(lag(yield), width = 7, FUN =  mean_low,
+                                   trim = 1/7, na.rm = T, fill = NA)))
 
-# non_exp_costs <- filter(non_land_costs, year == max(year))
+non_low_costs <- non_exp %>%
+  group_by(crop, level) %>%
+  arrange(year) %>%
+  mutate_at(vars(-fixed_miscellaneous1, -yield, -year, -crop, -level),
+            list(~ifelse(year > 2014,
+                         rollapplyr(., width = 7, FUN =  mean_low,
+                                    trim = 1/7, na.rm = T, fill = NA),
+                         rollapplyr(lag(.), width = 7, FUN =  mean_low,
+                                    trim = 1/7, na.rm = T, fill = NA)))) %>% 
+  # Yield affects the additive portion, need this to be the inverse
+  mutate(yield = ifelse(year > 2014,
+                        rollapplyr(yield, width = 7, FUN =  mean_high,
+                                   trim = 1/7, na.rm = T, fill = NA),
+                        rollapplyr(lag(yield), width = 7, FUN =  mean_high,
+                                   trim = 1/7, na.rm = T, fill = NA)))
 
-# non_exp <- non_exp %>% 
-#   group_by(crop, level) %>% 
-#   fill(chemicals:yield) %>% 
-#   mutate_at(vars(-fixed_miscellaneous, -year),
-#             funs(ifelse(year > 2014,
-#                         rollapplyr(., width = 7, FUN =  mean,
-#                                    trim = 1/7, na.rm = T, na.pad = T),
-#                         rollapplyr(lag(.), width = 7, FUN =  mean,
-#                                    trim = 1/7, na.rm = T, na.pad = T)))) %>%
-#   filter(year == 2018)
+
+# ---- calc-costs ---------------------------------------------------------
 
 # Function for computing the costs based on level
 base_value <- function(var, lev) var[lev == "l1_low"]*var[lev == "cost"]
@@ -163,41 +175,6 @@ non_land <- non_land_costs %>%
   spread(temp, val)
 
 # Now the projections...
-non_low <- non_low_costs %>% 
-  ungroup() %>% 
-  group_by(year, crop) %>% 
-  summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
-            base_yield = yield[level == "l1_low"],
-            interest_cost = interest[level=="cost"]*months[level=="cost"]/12,
-            base1 = base_value(seed, level) + base_value(n, level) +
-              base_value(p2o5, level) + base_value(k2o, level) +
-              base_value(lime, level) + chemicals[level == "cost"] +
-              fuel_oil_grease[level == "l1_low"] +
-              repairs[level == "l1_low"] +
-              crop_insurance[level == "l2_med"] +
-              variable_miscellaneous[level == "l1_low"] +
-              drying[level == "cost"]*yield[level == "l1_low"] +
-              trucking[level == "cost"]*yield[level == "l1_low"],
-            base = base1 + base1*interest_cost +
-              labor[level == "cost"] + machine[level == "cost"] +
-              ifelse(is.na(fixed_miscellaneous1[level == "l1_low"]), 0,
-                     fixed_miscellaneous1[level == "l1_low"]),
-            add1 = add_value(seed, level)/yield_adj +
-              add_value(n, level)/yield_adj +
-              add_value(p2o5, level)/yield_adj +
-              add_value(k2o, level)/yield_adj +
-              add_value(lime, level)/yield_adj +
-              add_value(variable_miscellaneous, level)/yield_adj +
-              drying[level == "cost"] + trucking[level == "cost"],
-            add = (1 + interest_cost)*add1) %>% 
-  arrange(desc(year)) %>%
-  select(year, crop, cost_cauv_l = base, cost_add_cauv_l = add,
-         base_cauv_l = base_yield) %>% 
-  gather(var, val, -year, -crop) %>% 
-  unite(temp, crop, var) %>% 
-  spread(temp, val)
-
-# Now the projections...
 non_high <- non_high_costs %>% 
   ungroup() %>% 
   group_by(year, crop) %>% 
@@ -232,12 +209,47 @@ non_high <- non_high_costs %>%
   unite(temp, crop, var) %>% 
   spread(temp, val)
 
+non_low <- non_low_costs %>% 
+  ungroup() %>% 
+  group_by(year, crop) %>% 
+  summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
+            base_yield = yield[level == "l1_low"],
+            interest_cost = interest[level=="cost"]*months[level=="cost"]/12,
+            base1 = base_value(seed, level) + base_value(n, level) +
+              base_value(p2o5, level) + base_value(k2o, level) +
+              base_value(lime, level) + chemicals[level == "cost"] +
+              fuel_oil_grease[level == "l1_low"] +
+              repairs[level == "l1_low"] +
+              crop_insurance[level == "l2_med"] +
+              variable_miscellaneous[level == "l1_low"] +
+              drying[level == "cost"]*yield[level == "l1_low"] +
+              trucking[level == "cost"]*yield[level == "l1_low"],
+            base = base1 + base1*interest_cost +
+              labor[level == "cost"] + machine[level == "cost"] +
+              ifelse(is.na(fixed_miscellaneous1[level == "l1_low"]), 0,
+                     fixed_miscellaneous1[level == "l1_low"]),
+            add1 = add_value(seed, level)/yield_adj +
+              add_value(n, level)/yield_adj +
+              add_value(p2o5, level)/yield_adj +
+              add_value(k2o, level)/yield_adj +
+              add_value(lime, level)/yield_adj +
+              add_value(variable_miscellaneous, level)/yield_adj +
+              drying[level == "cost"] + trucking[level == "cost"],
+            add = (1 + interest_cost)*add1) %>% 
+  arrange(desc(year)) %>%
+  select(year, crop, cost_cauv_l = base, cost_add_cauv_l = add,
+         base_cauv_l = base_yield) %>% 
+  gather(var, val, -year, -crop) %>% 
+  unite(temp, crop, var) %>% 
+  spread(temp, val)
+
+### Bring them together
 non_land_costs <- non_land %>% 
   left_join(non_low) %>% 
   left_join(non_high) %>% 
   left_join(odt_nonland) %>% 
   mutate_at(vars(contains("base")), round) %>% 
-  mutate_all(round, 2)
+  mutate_at(vars(-group_cols()), round, 2)
 
 write.csv(non_land_costs, paste0(nonland, "/ohio_forecast_nonland.csv"),
           row.names = F)
@@ -303,3 +315,4 @@ non_land_costs %>%
          "Expected Projection" = wheat_cost_add_cauv,
          "High Projection" = wheat_cost_add_cauv_h) %>% 
   knitr::kable()
+
