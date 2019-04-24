@@ -21,12 +21,12 @@ ohio <- read_rds("2-calc/prices/ohio_forecast_prices.rds") %>%
   left_join(read_rds("2-calc/nonland/ohio_forecast_nonland.rds")) %>% 
   left_join(read_rds("2-calc/cap/ohio_forecast_caprate.rds"))
 
-# HACK, cap rate has been finicky so just going to go with 0.08 in all
-#  projections for the moment.
-ohio$cap_rate_cauv[ohio$year %in% c(2018,2019)]     <- 0.08
-ohio$cap_rate_cauv_exp[ohio$year %in% c(2018,2019)] <- 0.08
-ohio$cap_rate_cauv_l[ohio$year %in% c(2018,2019)]   <- 0.081
-ohio$cap_rate_cauv_h[ohio$year %in% c(2018,2019)]   <- 0.079
+# # HACK, cap rate has been finicky so just going to go with 0.08 in all
+# #  projections for the moment.
+# ohio$cap_rate_cauv[ohio$year %in% c(2018,2019)]     <- 0.08
+# ohio$cap_rate_cauv_exp[ohio$year %in% c(2018,2019)] <- 0.08
+# ohio$cap_rate_cauv_l[ohio$year %in% c(2018,2019)]   <- 0.081
+# ohio$cap_rate_cauv_h[ohio$year %in% c(2018,2019)]   <- 0.079
 
 soils <- read_rds("0-data/soils/cauv_soils.rds")
 unadj <- read_rds("0-data/soils/cauv_unadj.rds")
@@ -415,12 +415,12 @@ ohio_soils_exp %>%
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var, label = dollars(val)),
                       nudge_x = 1.75, show.legend = FALSE,
-                      segment.color = NA) +
+                      segment.alpha = 0.5) +
       geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
       geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
                       aes(year, avg_cauv + 50, label = dollars(avg_cauv)),
                       nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.color = NA) +
+                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +

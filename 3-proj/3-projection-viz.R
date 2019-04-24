@@ -285,13 +285,13 @@ ohio_soils %>%
       geom_text_repel(data = filter(., year == 2018),
                       aes(color = var,
                           label = dollars(val)),
-                      nudge_x = 1.75, show.legend = FALSE, segment.color = NA) +
+                      nudge_x = 1.75, show.legend = FALSE, segment.alpha = 0.5) +
       geom_line(data = ohio_soils, aes(year, avg_cauv), size = 2) +
       geom_text_repel(data = filter(ohio_soils, year == 2018),
                       aes(year, avg_cauv,
                           label = dollars(avg_cauv)),
                       nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.color = NA) +
+                      show.legend = FALSE, segment.alpha = 0.5) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2019)) +
       scale_y_continuous(labels = dollar) +
@@ -355,13 +355,13 @@ ohio_soils_high %>%
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
                           label = dollars(val)),
-                      nudge_x = 1.75, show.legend = FALSE, segment.color = NA)+
+                      nudge_x = 1.75, show.legend = FALSE, segment.alpha = 0.5)+
       geom_line(data = ohio_soils_high, aes(year, avg_cauv), size = 2) +
       geom_text_repel(data = filter(ohio_soils_high, year == 2019),
                       aes(year, avg_cauv,
                           label = dollars(avg_cauv)),
                       nudge_x = 1.75, nudge_y = -50,
-                      show.legend = FALSE, segment.color = NA) +
+                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
@@ -396,13 +396,13 @@ ohio_soils_low %>%
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
                           label = dollars(val)),
-                      nudge_x = 1.75, show.legend = FALSE, segment.color = NA)+
+                      nudge_x = 1.75, show.legend = FALSE, segment.alpha = 0.5)+
       geom_line(data = ohio_soils_low, aes(year, avg_cauv), size = 2) +
       geom_text_repel(data = filter(ohio_soils_low, year == 2019),
                       aes(year, avg_cauv + 50,
                           label = dollars(avg_cauv)),
                       nudge_x = 1.75, nudge_y = 150,
-                      show.legend = FALSE, segment.color = NA) +
+                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
@@ -467,13 +467,13 @@ ohio_soils_exp %>%
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
                           label = dollars(val)),
-                      nudge_x = 1.75, show.legend = FALSE, segment.color = NA) +
+                      nudge_x = 1.75, show.legend = FALSE, segment.alpha = 0.5) +
       geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
       geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
                       aes(year, avg_cauv + 50,
                           label = dollars(avg_cauv)),
                       nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.color = NA) +
+                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
