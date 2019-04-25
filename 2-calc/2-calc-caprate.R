@@ -121,6 +121,7 @@ write_rds(ohio, paste0(cap, "/ohio_forecast_caprate.rds"))
 ohio %>% 
   filter(year > 2009) %>% 
   select("Year" = year, "ODT Value" = cap_rate_odt,
-         "Expected" = cap_rate_cauv, #"Maybe" = cap_rate_cauv_exp,
+         "Expected" = cap_rate_cauv_exp, #"Maybe" = cap_rate_cauv_exp,
          "Low" = cap_rate_cauv_l, "High" = cap_rate_cauv_h) %>% 
+  mutate_at(vars(-Year), ~scales::percent(., accuracy = 0.1)) %>% 
   knitr::kable()
