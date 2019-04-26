@@ -1,5 +1,7 @@
 # Ohio CAUV values:
 # http://www.tax.ohio.gov/real_property/cauv.aspx
+# Need to manually update the links from above for the cauv_files object for
+#  each new tax year. Values typically come out between July and August.
 
 # ---- start --------------------------------------------------------------
 
@@ -20,7 +22,7 @@ dot_soils  <- read_csv("0-data/soils/offline/pi_dat_orig84.csv") %>%
 
 # ---- cauv-values --------------------------------------------------------
 
-
+# Need to update the links, see top of file
 base_url <- "http://www.tax.ohio.gov/portals/0/"
 cauv_files <- c("real_property/cauv_table_ty2009.xls",
                 "real_property/cauv_table_ty2010.xls",
