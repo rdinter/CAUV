@@ -33,9 +33,30 @@ yield_calc <- function(crop, year) {
 
 # ---- calc ---------------------------------------------------------------
 
+# Trend yields, give the 30-year trend yields for the most recent data we have
+#  available on each component
+yield_trends <- yield_proj %>% 
+  select(year, corn_trend = corn_grain_yield,
+         soy_trend = soy_yield, wheat_trend = wheat_yield) %>% 
+  gather(var, val, -year) %>% 
+  group_by(var) %>% 
+  filter(year > max(year[!is.na(val)]) - 30) %>% 
+  nest() %>% 
+  mutate(model = data %>% map(~lm(val ~ year, data = .)),
+         trend = map2(model, data, predict)) %>% 
+  unnest(trend, data) %>% 
+  filter(is.na(val)) %>% # Only keep the missing values
+  select(-val) %>% 
+  spread(var, trend)
+
+
 ohio_yield <- yield_proj %>% 
   arrange(year) %>% 
-  fill(corn_grain_yield, soy_yield, wheat_yield) %>% 
+  left_join(yield_trends) %>% 
+  mutate(corn_grain_yield = if_else(is.na(corn_grain_yield),
+                                    corn_trend, corn_grain_yield),
+         soy_yield = if_else(is.na(soy_yield), soy_trend, soy_yield),
+         wheat_yield = if_else(is.na(wheat_yield), wheat_trend, wheat_yield)) %>% 
   
   mutate(corn_yield_cauv  = yield_calc(corn_grain_yield, year),
          corn_yield_adj_cauv = corn_yield_cauv / corn_grain_yield[year==1984],
