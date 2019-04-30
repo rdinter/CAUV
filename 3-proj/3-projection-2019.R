@@ -7,7 +7,6 @@ library("scales")
 library("tidyverse")
 library("viridis")
 library("zoo")
-dollars <- function(x, dig = 0) dollar_format(largest_with_cents = dig)(x)
 
 # Create a directory for the data
 local_dir <- "3-proj"
@@ -401,40 +400,44 @@ write_rds(ohio_soils_exp, paste0(future, "/ohio_soils_exp_2019.rds"))
 caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data")
 
+indxs     <-  c("indx_100", "indx_99", "indx_89", "indx_79",
+                "indx_69", "indx_59", "indx_49", "avg_cauv")
+indx_name <- c("100", "90 to 99", "80 to 89", "70 to 79",
+               "60 to 69", "50 to 59", "0 to 49", "Average")
+indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
+               "80 to 89" = 0.5, "70 to 79" = 0.5,
+               "60 to 69" = 0.5, "50 to 59" = 0.5,
+               "0 to 49" = 0.5, "Average" = 2)
+
 ohio_soils_exp %>%
-  select(-avg_cauv, -num_soils) %>%
+  select(-num_soils) %>%
   gather(var, val, -year) %>%
-  mutate(var = factor(var,
-                      levels =  c("indx_100", "indx_99", "indx_89", "indx_79",
-                                  "indx_69", "indx_59", "indx_49"),
-                      labels = c("100", "90 to 99", "80 to 89", "70 to 79",
-                                 "60 to 69", "50 to 59", "0 to 49"))) %>% 
-  {ggplot(.,aes(year, val)) +
-      geom_line(aes(color = var)) +
+  mutate(var = factor(var, levels = indxs, labels = indx_name)) %>% 
+  {
+    ggplot(., aes(year, val)) +
+      geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
       geom_text_repel(data = filter(., year == 2019),
-                      aes(color = var, label = dollars(val)),
+                      aes(color = var,
+                          label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
-      geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
-      geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
-                      aes(year, avg_cauv + 50, label = dollars(avg_cauv)),
-                      nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
-      labs(x = "", y = "", color = "Soil Productivity Index",
+      scale_size_manual(values = indx_size) +
+      labs(x = "", y = "", size = "Soil Productivity Index",
+           color = "Soil Productivity Index",
            title = "2019 Projection for CAUV Values of Cropland",
            subtitle = "in dollars per acre, average value in black",
            caption = caption_proj) +
       theme_bw() +
-      theme(legend.position = c(0.2, 0.7),
+      theme(legend.position = c(0.2, 0.65),
             legend.background = element_blank())
-    }
-# ggsave(filename = paste0(figures, "/cauv_expected_projections_2018.png"),
+  }
+# ggsave(filename = paste0(figures, "/cauv_expected_projections_2019.png"),
 #        width = 10, height = 7)
 

@@ -35,6 +35,12 @@ avg_low <- ohio_low %>%
             adjustment = mean(cauv_projected_low) - eventual) %>% 
   gather(var, val, -indx) 
 
+avg_high <- ohio_high %>% 
+  summarise(indx = "avg_cauv",
+            eventual = mean(unadjusted),
+            adjustment = mean(cauv_projected_high) - eventual) %>% 
+  gather(var, val, -indx) 
+
 avg_exp <- ohio_exp %>% 
   summarise(indx = "all",
             eventual = mean(unadjusted),
@@ -55,6 +61,15 @@ avg_2018 <- recreated_2018 %>%
 
 caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data")
+
+indxs     <-  c("indx_100", "indx_99", "indx_89", "indx_79",
+                "indx_69", "indx_59", "indx_49", "avg_cauv")
+indx_name <- c("100", "90 to 99", "80 to 89", "70 to 79",
+               "60 to 69", "50 to 59", "0 to 49", "Average")
+indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
+               "80 to 89" = 0.5, "70 to 79" = 0.5,
+               "60 to 69" = 0.5, "50 to 59" = 0.5,
+               "0 to 49" = 0.5, "Average" = 2)
 
 # ---- viz-cap ------------------------------------------------------------
 
@@ -271,39 +286,31 @@ ohio %>%
 # ---- cropland-trend -----------------------------------------------------
 
 ohio_soils %>%
-  select(-avg_cauv, -num_soils) %>%
+  select(-num_soils) %>%
   gather(var, val, -year) %>%
-  mutate(var = factor(var,
-                      levels =  c("indx_100", "indx_99", "indx_89", "indx_79",
-                                  "indx_69", "indx_59", "indx_49"),
-                      labels = c("100", "90 to 99", "80 to 89", "70 to 79",
-                                 "60 to 69", "50 to 59", "0 to 49"))) %>% 
+  mutate(var = factor(var, levels = indxs, labels = indx_name)) %>% 
   {
     ggplot(., aes(year, val)) +
-      geom_line(aes(color = var)) +
+      geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
       geom_text_repel(data = filter(., year == 2018),
                       aes(color = var,
-                          label = dollars(val)),
+                          label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
-      geom_line(data = ohio_soils, aes(year, avg_cauv), size = 2) +
-      geom_text_repel(data = filter(ohio_soils, year == 2018),
-                      aes(year, avg_cauv,
-                          label = dollars(avg_cauv)),
-                      nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.alpha = 0.5) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2019)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
-      labs(x = "", y = "", color = "Soil Productivity Index",
+      scale_size_manual(values = indx_size) +
+      labs(x = "", y = "", size = "Soil Productivity Index",
+           color = "Soil Productivity Index",
            title = "Official CAUV Values of Cropland through 2018",
            subtitle = "in dollars per acre, average value in black",
-           caption = "Source: Ohio Department of Taxation") +
+           caption = caption_proj) +
       theme_bw() +
-      theme(legend.position = c(0.2, 0.7),
+      theme(legend.position = c(0.2, 0.65),
             legend.background = element_blank())
   }
 ggsave(filename = paste0(figures, "/cauv_2018.png"),
@@ -342,35 +349,27 @@ ggsave(filename = paste0(figures, "/cauv_phase_in_2018.png"),
 # ---- high-trend ---------------------------------------------------------
 
 ohio_soils_high %>%
-  select(-avg_cauv, -num_soils) %>%
+  select(-num_soils) %>%
   gather(var, val, -year) %>%
-  mutate(var = factor(var,
-                      levels =  c("indx_100", "indx_99", "indx_89", "indx_79",
-                                  "indx_69", "indx_59", "indx_49"),
-                      labels = c("100", "90 to 99", "80 to 89", "70 to 79",
-                                 "60 to 69", "50 to 59", "0 to 49"))) %>% 
+  mutate(var = factor(var, levels = indxs, labels = indx_name)) %>% 
   {
     ggplot(.,aes(year, val)) +
-      geom_line(aes(color = var)) +
+      geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
-                          label = dollars(val)),
+                          label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
-      geom_line(data = ohio_soils_high, aes(year, avg_cauv), size = 2) +
-      geom_text_repel(data = filter(ohio_soils_high, year == 2019),
-                      aes(year, avg_cauv,
-                          label = dollars(avg_cauv)),
-                      nudge_x = 1.75, nudge_y = -50,
-                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
+      scale_size_manual(values = indx_size) +
       labs(x = "", y = "", color = "Soil Productivity Index",
+           size = "Soil Productivity Index",
            title = "2019 High Projection for CAUV Values of Cropland",
            subtitle = "in dollars per acre, average value in black",
            caption = caption_proj) +
@@ -381,38 +380,56 @@ ohio_soils_high %>%
 ggsave(filename = paste0(figures, "/cauv_high_projections_2019.png"),
        width = 7, height = 5.25)
 
+# ---- high-2019 -----------------------------------------------------------
+
+# ohio_high %>% 
+#   group_by(indx) %>% 
+#   summarise(eventual = mean(unadjusted),
+#             adjustment = mean(cauv_projected_high) - eventual) %>% 
+#   gather(var, val, -indx) %>% 
+#   bind_rows(avg_high) %>% 
+#   mutate(indx = factor(indx, levels = indxs, labels = indx_name),
+#          var = factor(var, levels = c("adjustment", "eventual"),
+#                       labels = c("Adjustment", "Eventual Value"))) %>% 
+#   ggplot(aes(indx, val, fill = var)) +
+#   geom_col() +
+#   scale_y_continuous(labels = dollar, limits = c(0, 4000)) +
+#   scale_fill_viridis(discrete = T, option = "C", direction = -1, end = 0.9) + 
+#   labs(x = "", y = "",
+#        title = "Phase-In for High Projection of 2019 CAUV Values",
+#        subtitle = "by Productivity Indexes, actual value is full bar",
+#        caption = caption_proj,
+#        fill = "") +
+#   theme_bw() +
+#   theme(legend.position = c(0.85, 0.85), legend.background = element_blank())
+# ggsave(filename = paste0(figures, "/cauv_high_phase_in_2019.png"),
+#        width = 10, height = 7)
+
 # ---- low-trend ----------------------------------------------------------
 
+
 ohio_soils_low %>%
-  select(-avg_cauv, -num_soils) %>%
+  select(-num_soils) %>%
   gather(var, val, -year) %>%
-  mutate(var = factor(var,
-                      levels =  c("indx_100", "indx_99", "indx_89", "indx_79",
-                                  "indx_69", "indx_59", "indx_49"),
-                      labels = c("100", "90 to 99", "80 to 89", "70 to 79",
-                                 "60 to 69", "50 to 59", "0 to 49"))) %>% 
+  mutate(var = factor(var, levels = indxs, labels = indx_name)) %>% 
   {
     ggplot(.,aes(year, val)) +
-      geom_line(aes(color = var)) +
+      geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
-                          label = dollars(val)),
+                          label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
-                      segment.alpha = 0.5)+
-      geom_line(data = ohio_soils_low, aes(year, avg_cauv), size = 2) +
-      geom_text_repel(data = filter(ohio_soils_low, year == 2019),
-                      aes(year, avg_cauv + 50,
-                          label = dollars(avg_cauv)),
-                      nudge_x = 1.75, nudge_y = 150,
-                      show.legend = FALSE, segment.alpha = 0.5) +
+                      segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
+      scale_size_manual(values = indx_size) +
       labs(x = "", y = "", color = "Soil Productivity Index",
+           size = "Soil Productivity Index",
            title = "2019 Low Projection for CAUV Values of Cropland",
            subtitle = "in dollars per acre, average value in black",
            caption = caption_proj) +
@@ -456,40 +473,32 @@ ggsave(filename = paste0(figures, "/cauv_low_phase_in_2019.png"),
 # ---- exp-trend ----------------------------------------------------------
 
 ohio_soils_exp %>%
-  select(-avg_cauv, -num_soils) %>%
+  select(-num_soils) %>%
   gather(var, val, -year) %>%
-  mutate(var = factor(var,
-                      levels =  c("indx_100", "indx_99", "indx_89", "indx_79",
-                                  "indx_69", "indx_59", "indx_49"),
-                      labels = c("100", "90 to 99", "80 to 89", "70 to 79",
-                                 "60 to 69", "50 to 59", "0 to 49"))) %>% 
+  mutate(var = factor(var, levels = indxs, labels = indx_name)) %>% 
   {
-    ggplot(.,aes(year, val)) +
-      geom_line(aes(color = var)) +
+    ggplot(., aes(year, val)) +
+      geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
       geom_text_repel(data = filter(., year == 2019),
                       aes(color = var,
-                          label = dollars(val)),
+                          label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
-      geom_line(data = ohio_soils_exp, aes(year, avg_cauv), size = 2) +
-      geom_text_repel(data = filter(ohio_soils_exp, year == 2019),
-                      aes(year, avg_cauv + 50,
-                          label = dollars(avg_cauv)),
-                      nudge_x = 1.75, nudge_y = 100,
-                      show.legend = FALSE, segment.alpha = 0.5) +
       geom_vline(xintercept = 2018) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2020)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
-      labs(x = "", y = "", color = "Soil Productivity Index",
+      scale_size_manual(values = indx_size) +
+      labs(x = "", y = "", size = "Soil Productivity Index",
+           color = "Soil Productivity Index",
            title = "2019 Projection for CAUV Values of Cropland",
            subtitle = "in dollars per acre, average value in black",
            caption = caption_proj) +
       theme_bw() +
-      theme(legend.position = c(0.2, 0.7),
+      theme(legend.position = c(0.2, 0.65),
             legend.background = element_blank())
   }
 ggsave(filename = paste0(figures, "/cauv_expected_projections_2019.png"),
