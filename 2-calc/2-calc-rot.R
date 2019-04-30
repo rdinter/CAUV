@@ -34,9 +34,33 @@ rotate_calc <- function(crop, year) {
 
 # ---- calc ---------------------------------------------------------------
 
+# Trends for acreage, give the 30-year trend harvested acres for the most
+#  recent data we have available on each component
+acre_trends <- rot_proj %>% 
+  select(year, corn_trend = corn_grain_acres_harvest,
+         soy_trend = soy_acres_harvest, wheat_trend = wheat_acres_harvest) %>% 
+  gather(var, val, -year) %>% 
+  group_by(var) %>% 
+  filter(year > max(year[!is.na(val)]) - 30) %>% 
+  nest() %>% 
+  mutate(model = data %>% map(~lm(val ~ year, data = .)),
+         trend = map2(model, data, predict)) %>% 
+  unnest(trend, data) %>% 
+  filter(is.na(val)) %>% # Only keep the missing values
+  select(-val) %>% 
+  spread(var, trend)
+
+
 ohio_rot <- rot_proj %>% 
   arrange(year) %>% 
-  fill(corn_grain_acres_harvest, soy_acres_harvest, wheat_acres_harvest) %>% 
+  left_join(acre_trends) %>% 
+  mutate(corn_grain_acres_harvest = if_else(is.na(corn_grain_acres_harvest),
+                                    corn_trend, corn_grain_acres_harvest),
+         soy_acres_harvest = if_else(is.na(soy_acres_harvest),
+                                     soy_trend, soy_acres_harvest),
+         wheat_acres_harvest = if_else(is.na(wheat_acres_harvest),
+                                       wheat_trend, wheat_acres_harvest)) %>% 
+  # fill(corn_grain_acres_harvest, soy_acres_harvest, wheat_acres_harvest) %>% 
   mutate(corn_harvest_cauv    = rotate_calc(corn_grain_acres_harvest, year),
          soy_harvest_cauv     = rotate_calc(soy_acres_harvest, year),
          wheat_harvest_cauv   = rotate_calc(wheat_acres_harvest, year),
@@ -59,6 +83,8 @@ write_rds(ohio, paste0(rot, "/ohio_forecast_rotate.rds"))
 
 ohio %>% 
   filter(year > 2009) %>% 
+  mutate(corn_rotate_cauv = scales::percent(corn_rotate_cauv, accuracy = 0.1),
+         corn_rotate_odt = scales::percent(corn_rotate_odt, accuracy = 0.1)) %>% 
   select("Year" = year, "ODT Value" = corn_rotate_odt,
          "USDA Acres Harvested" = corn_grain_acres_harvest,
          "AVG Acres Harvested" = corn_harvest_cauv,
@@ -69,6 +95,8 @@ ohio %>%
 
 ohio %>% 
   filter(year > 2009) %>% 
+  mutate(soy_rotate_cauv = scales::percent(soy_rotate_cauv, accuracy = 0.1),
+         soy_rotate_odt = scales::percent(soy_rotate_odt, accuracy = 0.1)) %>% 
   select("Year" = year, "ODT Value" = soy_rotate_odt,
          "USDA Acres Harvested" = soy_acres_harvest,
          "AVG Acres Harvested" = soy_harvest_cauv,
@@ -79,6 +107,8 @@ ohio %>%
 
 ohio %>% 
   filter(year > 2009) %>% 
+  mutate(wheat_rotate_cauv = scales::percent(wheat_rotate_cauv, accuracy = 0.1),
+         wheat_rotate_odt = scales::percent(wheat_rotate_odt, accuracy = 0.1)) %>% 
   select("Year" = year, "ODT Value" = wheat_rotate_odt,
          "USDA Acres Harvested" = wheat_acres_harvest,
          "AVG Acres Harvested" = wheat_harvest_cauv,
