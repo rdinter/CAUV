@@ -20,6 +20,146 @@ price_proj <- tibble(year = max(j5$year) + 1) %>%
   arrange(year)
 
 
+# ---- calc ---------------------------------------------------------------
+
+# For a tax year, Ohio will use state-wide prices for the previous 8 to 1 years
+#  of official USDA data. For example, the 2019 tax year will use price data 
+#  from 2012 to 2018.
+
+# Olympic average based on weighted prices over a seven-year average with
+#  one year lag since ODT adjusted in 2015 (it was a 2 year lag). This is kinda
+#  involved in calculation! But here's one way to produce a function for it:
+
+olympic.mean <- function(x, w, exp = "") {
+  n = length(x)
+  if (exp == "") {
+    x = x # no change in the most recent value
+  } else if (exp == "high") {
+    x[n] = Inf # if it is the high projection, replace the most recent with Inf
+  } else if (exp == "low") {
+    x[n] = 0  # if it is the low projection, replace the most recent with 0
+  }
+  dat      = data.frame(x, w)
+  sort_dat <- dat[order(dat$x, dat$w),]
+  
+  # There's a 95% adjustment cost
+  0.95*weighted.mean(sort_dat[-c(1, n), 1], sort_dat[-c(1, n), 2])
+}
+projection_price <- function(x, w, exp = "") {
+  rollapplyr(data.frame(x, w), width = 7,
+             FUN = function(x) olympic.mean(x[,1], x[,2], exp = exp),
+             fill = NA, by.column = FALSE)
+}
+
+price_projection <- price_proj %>% 
+  select(year, c_p = corn_price, c_w = corn_grain_prod_bu,
+         s_p = soy_price, s_w = soy_prod_bu,
+         w_p = wheat_price, w_w = wheat_prod_bu) %>% 
+  fill(c_p:w_w) %>% # This step passes current price forward, better way?
+  mutate(corn_price_cauv = ifelse(year > 2014,
+                                  projection_price(lag(c_p), lag(c_w)),
+                                  projection_price(lag(c_p, 2), lag(c_w, 2))),
+         corn_price_cauv_exp = corn_price_cauv,
+         corn_price_cauv_l = ifelse(year > 2014,
+                                  projection_price(lag(c_p),
+                                                   lag(c_w), exp = "low"),
+                                  projection_price(lag(c_p, 2),
+                                                   lag(c_w, 2), exp = "low")),
+         corn_price_cauv_h = ifelse(year > 2014,
+                                  projection_price(lag(c_p),
+                                                   lag(c_w), exp = "high"),
+                                  projection_price(lag(c_p, 2),
+                                                   lag(c_w, 2), exp = "high")),
+         soy_price_cauv = ifelse(year > 2014,
+                                  projection_price(lag(s_p),
+                                                   lag(s_w)),
+                                  projection_price(lag(s_p, 2),
+                                                   lag(s_w, 2))),
+         soy_price_cauv_exp = soy_price_cauv,
+         soy_price_cauv_l = ifelse(year > 2014,
+                                    projection_price(lag(s_p),
+                                                     lag(s_w), exp = "low"),
+                                    projection_price(lag(s_p, 2),
+                                                     lag(s_w, 2), exp = "low")),
+         soy_price_cauv_h = ifelse(year > 2014,
+                                    projection_price(lag(s_p),
+                                                     lag(s_w), exp = "high"),
+                                    projection_price(lag(s_p, 2),
+                                                     lag(s_w, 2), exp = "high")),
+         wheat_price_cauv = ifelse(year > 2014,
+                                  projection_price(lag(w_p),
+                                                   lag(w_w)),
+                                  projection_price(lag(w_p, 2),
+                                                   lag(w_w, 2))),
+         wheat_price_cauv_exp = wheat_price_cauv,
+         wheat_price_cauv_l = ifelse(year > 2014,
+                                    projection_price(lag(w_p),
+                                                     lag(w_w), exp = "low"),
+                                    projection_price(lag(w_p, 2),
+                                                     lag(w_w, 2), exp = "low")),
+         wheat_price_cauv_h = ifelse(year > 2014,
+                                    projection_price(lag(w_p),
+                                                     lag(w_w), exp = "high"),
+                                    projection_price(lag(w_p, 2),
+                                                     lag(w_w, 2), exp = "high"))) %>% 
+  select(year, contains("cauv"))
+
+price_proj <- left_join(price_proj, price_projection)
+
+
+write.csv(price_proj, paste0(prices, "/ohio_forecast_prices.csv"),
+          row.names = F)
+write_rds(price_proj, paste0(prices, "/ohio_forecast_prices.rds"))
+
+# ---- corn ---------------------------------------------------------------
+
+
+price_proj %>%
+  filter(year > 2005) %>%
+  select(
+    "Year" = year,
+    "ODT Price" = corn_price_odt,
+    "USDA Price" = corn_price,
+    "Low Projection" = corn_price_cauv_l,
+    "Expected Projection" = corn_price_cauv_exp,
+    "High Projection" = corn_price_cauv_h
+  ) %>%
+  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  knitr::kable()
+
+# ---- soy ----------------------------------------------------------------
+
+
+price_proj %>%
+  filter(year > 2005) %>%
+  select(
+    "Year" = year,
+    "ODT Price" = soy_price_odt,
+    "USDA Price" = soy_price,
+    "Low Projection" = soy_price_cauv_l,
+    "Expected Projection" = soy_price_cauv_exp,
+    "High Projection" = soy_price_cauv_h
+  ) %>%
+  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  knitr::kable()
+
+
+# ---- wheat --------------------------------------------------------------
+
+
+price_proj %>%
+  filter(year > 2005) %>%
+  select(
+    "Year" = year,
+    "ODT Price" = wheat_price_odt,
+    "USDA Price" = wheat_price,
+    "Low Projection" = wheat_price_cauv_l,
+    "Expected Projection" = wheat_price_cauv_exp,
+    "High Projection" = wheat_price_cauv_h
+  ) %>%
+  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  knitr::kable()
+
 # ---- prediction ---------------------------------------------------------
 
 
@@ -66,172 +206,9 @@ iffy_prices %>%
   ggplot(aes(date, val, color = var)) + geom_line()
 
 derp <- iffy_prices[nrow(iffy_prices),
-            c("year", "mkt_year1", "mkt_year2",
-              "corn_roll", "soy_roll", "wheat_roll")]
+                    c("year", "mkt_year1", "mkt_year2",
+                      "corn_roll", "soy_roll", "wheat_roll")]
 
 # ADD INTO marketing year values for price_proj
 
 ##
-
-
-# ---- calc ---------------------------------------------------------------
-
-# For a tax year, Ohio will use state-wide prices for the previous 8 to 1 years
-#  of official USDA data. For example, the 2019 tax year will use price data 
-#  from 2012 to 2018.
-
-# Olympic average based on weighted prices over a seven-year average with
-#  one year lag since ODT adjusted in 2015 (it was a 2 year lag). This is kinda
-#  involved in calculation! But here's one way to produce a function for it:
-
-
-price_ave <- function(x, w, lags = 1, adj = 0.95){
-  # x is the price and w is the production
-  # lags is number of lags for beginning the 7 year Olympic average
-  # adj is the management adjustment to the price, set at 5% and hasn't changed
-  # Drop the highest and lowest price, then average based on production
-  min_p  <- rollapplyr(lag(x, lags), 7, min, fill = NA)
-  max_p  <- rollapplyr(lag(x, lags), 7, max, fill = NA)
-  
-  
-  value <- function(i) ifelse(lag(x, i) == min_p | lag(x, i) == max_p, 0,
-                              lag(x, i)*lag(w, i))
-  lag1   <- value(lags)
-  lag2   <- value(lags + 1)
-  lag3   <- value(lags + 2)
-  lag4   <- value(lags + 3)
-  lag5   <- value(lags + 4)
-  lag6   <- value(lags + 5)
-  lag7   <- value(lags + 6)
-  
-  prod  <- function(i) ifelse(lag(x, i) == min_p | lag(x, i) == max_p, 0,
-                              lag(w, i))
-  g1   <- prod(lags)
-  g2   <- prod(lags + 1)
-  g3   <- prod(lags + 2)
-  g4   <- prod(lags + 3)
-  g5   <- prod(lags + 4)
-  g6   <- prod(lags + 5)
-  g7   <- prod(lags + 6)
-  
-  # Adjust for the 5% management allowance
-  price <- adj*(lag1 + lag2 + lag3 + lag4 + lag5 + lag6 + lag7) /
-    (g1 + g2 + g3 + g4 + g5 + g6 + g7)
-  return(price)
-}
-
-
-price_proj_high <- price_proj_low <- price_proj
-
-price_proj_low[is.na(price_proj_low)] <- 0
-price_proj_high[is.na(price_proj_high)] <- Inf
-
-price_proj$corn_price_cauv <- ifelse(price_proj$year > 2014,
-                               price_ave(price_proj$corn_price,
-                                         price_proj$corn_grain_prod_bu),
-                               price_ave(price_proj$corn_price,
-                                         price_proj$corn_grain_prod_bu, 2))
-price_proj$soy_price_cauv <- ifelse(price_proj$year > 2014,
-                              price_ave(price_proj$soy_price,
-                                        price_proj$soy_prod_bu),
-                              price_ave(price_proj$soy_price,
-                                        price_proj$soy_prod_bu, 2))
-price_proj$wheat_price_cauv <- ifelse(price_proj$year > 2014,
-                                price_ave(price_proj$wheat_price,
-                                          price_proj$wheat_prod_bu),
-                                price_ave(price_proj$wheat_price,
-                                          price_proj$wheat_prod_bu, 2))
-
-# Fill forward the previous price values to get an estimate for future
-#  values in the CAUV projections!!!
-
-# This is where the monthly data might come in handy.
-price_proj$corn_price_cauv_exp <-
-  price_ave(
-    fill(price_proj, corn_price)$corn_price,
-    fill(price_proj, corn_grain_prod_bu)$corn_grain_prod_bu
-  )
-price_proj$soy_price_cauv_exp <-
-  price_ave(fill(price_proj, soy_price)$soy_price,
-            fill(price_proj, soy_prod_bu)$soy_prod_bu)
-price_proj$wheat_price_cauv_exp <-
-  price_ave(
-    fill(price_proj, wheat_price)$wheat_price,
-    fill(price_proj, wheat_prod_bu)$wheat_prod_bu
-  )
-
-# Fill in the missing CAUV values with the expected ones!
-price_proj <- price_proj %>% 
-  mutate(corn_price_cauv = if_else(is.na(corn_price_cauv), corn_price_cauv_exp,
-                                   corn_price_cauv),
-         soy_price_cauv = if_else(is.na(soy_price_cauv), soy_price_cauv_exp,
-                                   soy_price_cauv),
-         wheat_price_cauv = if_else(is.na(wheat_price_cauv),
-                                    wheat_price_cauv_exp, wheat_price_cauv))
-
-# highest and lowest possible values
-price_proj$corn_price_cauv_h <- price_ave(price_proj_high$corn_price,
-                                    price_proj_high$corn_grain_prod_bu)
-price_proj$corn_price_cauv_l <- price_ave(price_proj_low$corn_price,
-                                    price_proj_low$corn_grain_prod_bu)
-
-price_proj$soy_price_cauv_h <- price_ave(price_proj_high$soy_price,
-                                   price_proj_high$soy_prod_bu)
-price_proj$soy_price_cauv_l <- price_ave(price_proj_low$soy_price,
-                                   price_proj_low$soy_prod_bu)
-
-price_proj$wheat_price_cauv_h <- price_ave(price_proj_high$wheat_price,
-                                     price_proj_high$wheat_prod_bu)
-price_proj$wheat_price_cauv_l <- price_ave(price_proj_low$wheat_price,
-                                     price_proj_low$wheat_prod_bu)
-
-
-write.csv(price_proj, paste0(prices, "/ohio_forecast_prices.csv"),
-          row.names = F)
-write_rds(price_proj, paste0(prices, "/ohio_forecast_prices.rds"))
-
-# ---- corn ---------------------------------------------------------------
-
-
-price_proj %>%
-  filter(year > 2005) %>%
-  select(
-    "Year" = year,
-    "ODT Price" = corn_price_odt,
-    "USDA Price" = corn_price,
-    "Low Projection" = corn_price_cauv_l,
-    "Expected Projection" = corn_price_cauv_exp,
-    "High Projection" = corn_price_cauv_h
-  ) %>%
-  knitr::kable()
-
-# ---- soy ----------------------------------------------------------------
-
-
-price_proj %>%
-  filter(year > 2005) %>%
-  select(
-    "Year" = year,
-    "ODT Price" = soy_price_odt,
-    "USDA Price" = soy_price,
-    "Low Projection" = soy_price_cauv_l,
-    "Expected Projection" = soy_price_cauv_exp,
-    "High Projection" = soy_price_cauv_h
-  ) %>%
-  knitr::kable()
-
-
-# ---- wheat --------------------------------------------------------------
-
-
-price_proj %>%
-  filter(year > 2005) %>%
-  select(
-    "Year" = year,
-    "ODT Price" = wheat_price_odt,
-    "USDA Price" = wheat_price,
-    "Low Projection" = wheat_price_cauv_l,
-    "Expected Projection" = wheat_price_cauv_exp,
-    "High Projection" = wheat_price_cauv_h
-  ) %>%
-  knitr::kable()
