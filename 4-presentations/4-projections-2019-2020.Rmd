@@ -51,7 +51,7 @@ The purpose of this report is to provide projections of property tax for agricul
 
 In 2018, the average CAUV value across all soil types was `r dollar(ohio_soils_exp$avg_cauv[ohio_soils_exp$year == 2018])` per Ohio Department of Taxation (ODT). Our projection for the average value of CAUV in the 2019 tax year is `r dollar(ohio_soils_exp$avg_cauv[ohio_soils_exp$year == 2019], accuracy = 1)`. Our projections for the 2019 average CAUV values could have a high of `r dollar(ohio_soils_high$avg_cauv[ohio_soils_high$year == 2019], accuracy = 1)` and a low of `r dollar(ohio_soils_low$avg_cauv[ohio_soils_low$year == 2019], accuracy = 1)` based on current available information and the nature of how certain components in the CAUV formula use Olympic averaging -- however with as much information currently known these high/low scenarios are unlikely and we anticipate only slight divergences from average CAUV value projection of `r dollar(ohio_soils_exp$avg_cauv[ohio_soils_exp$year == 2019], accuracy = 1)`. ODT provides [general information](https://www.tax.ohio.gov/real_property/cauv.aspx) on their calculations for CAUV and how they calculate the CAUV value for each soil type across Ohio although this document will also describe the calculation procedure. Their information also includes the official values of inputs that ODT uses in the formula for CAUV values and is the only official documentation and values for CAUV.
 
-Updates to CAUV values do not occur equally across Ohio as there is a triennial rotating schedule for new CAUV values to apply as well as other property assessments in that county. About a quarter of the state received an update in 2018, another quarter in 2019, and about half of the state will see updates in 2020. Figure \ref{fig:update-map} provides a reference for when a county receives an update to their CAUV values:
+Updates to CAUV values do not occur equally across Ohio as there is a rotating schedule for tax assessments in Ohio. [Once every six years](https://www.tax.ohio.gov/real_estate/reappraisal_and_triennial_update.aspx), a county receives a full reappraisal of their property with an adjustment in the third year in between. Each county receives an update to their CAUV values for the years a reappraisal or adjustment occurs. About a quarter of the state received a CAUV value update in 2018, another quarter in 2019, and about half of the state will see updates in 2020. Figure \ref{fig:update-map} provides a reference for when a county receives an update to their CAUV values:
 
 ```{r update-map, fig.cap="\\label{fig:update-map}"}
 ```
@@ -59,7 +59,7 @@ Updates to CAUV values do not occur equally across Ohio as there is a triennial 
 
 CAUV values contain 5 major components used as inputs for projecting values: capitalization rate, commodity yields, commodity prices, commodity acreage/rotation, and nonland input costs. The commodities used in CAUV are corn, soybeans, and wheat. Each of these components are projected into the future to obtain the projections for 2019 and 2020 CAUV values. 
 
-Our expectations for the CAUV values for the 2019 tax year are for the components of commodity yields, commodity rotation, and capitalization rate to remain largely unchanged from 2018. Input costs are expected to decline, although this is counteracted with commodity prices similarly expected to decline. Current data on these early data on these inputs into the CAUV formula still being uncertain as of today. Under the expectation scenario, the average CAUV value will continue to decline by a similar proportion as the fall in the CAUV values from 2016 to 2017 to 2018. Grouping soil types based on a productivity index can help display how similarly productive soils are expected to decline in our 2019 projections:
+Our projections for the CAUV values for the 2019 tax year are for the components of commodity yields, commodity rotation, and capitalization rate to remain largely unchanged from 2018. Input costs are expected to decline, although this is counteracted with commodity prices similarly expected to decline. Under the expected scenario, the average CAUV value will continue to decline by a similar proportion as the fall in the CAUV values from 2016 to 2017 to 2018. Grouping soil types based on a productivity index can help display how similarly productive soils are expected to decline in our 2019 projections:
 
 ```{r exp-trend, fig.cap="\\label{fig:exp-trend}"}
 ```
@@ -182,7 +182,7 @@ where $Yield_{c,Ohio,t}$ is an Olympic average for state-wide yields in Ohio and
 
 ### Prices
 
-Prices are based on USDA-NASS data and are weighted based on state production as measured in total bushels for each commodity produced. Our 2019 projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for wheat. For 2020, the projeccted prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for wheat.
+Prices are based on USDA-NASS data and are weighted based on state production as measured in total bushels for each commodity produced. Our 2019 projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2019], accuracy = 20)` per bushel for wheat. For 2020, the projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2020], accuracy = 20)` per bushel for wheat.
 
 The yearly commodity prices since 1991 and values used in ODT calculations since 2006 can be seen in figure \ref{fig:prices} along with the projected prices.
 
@@ -295,19 +295,24 @@ Low productivity soils were largely unaffected as many of the lowest quality soi
 
 # Possible Ranges
 
-While our projections are noted at the beginning of this report, we also provide the high and low potential projections for both 2019 and 2020. 
+While our expected projections are noted at the beginning of this report, we also provide the high and low potential projections for both 2019 and 2020.
+
+## High 2019
 
 ```{r high-trend, fig.cap="\\label{fig:high-trend}"}
 ```
 
+## Low 2019
 
 ```{r low-trend, fig.cap="\\label{fig:low-trend}"}
 ```
 
+## High 2020
 
 ```{r high-trend-2020, fig.cap="\\label{fig:high-trend-2020}"}
 ```
 
+## Low 2020
 
 ```{r low-trend-2020, fig.cap="\\label{fig:low-trend-2020}"}
 ```
@@ -320,4 +325,5 @@ While our projections are noted at the beginning of this report, we also provide
 - ODT CAUV Information page https://www.tax.ohio.gov/real_property/cauv.aspx
 - USDA-NASS price and yield data https://quickstats.nass.usda.gov
 
-Projections for 2019 CAUV values are available at https://aede.osu.edu/file/cauvprojections2019xlsx
+Projections for 2019 CAUV values are available at https://aede.osu.edu/file/cauvprojections2019.xlsx
+Projections for 2020 CAUV values are available at https://aede.osu.edu/file/cauvprojections2020.xlsx

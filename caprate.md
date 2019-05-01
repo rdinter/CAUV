@@ -35,12 +35,12 @@ The calculation procedure of the capitalization rate has had a few changes since
 
 The capitalization rate requires the knowledge of an interest rate on a loan and an equity rate as well as the term and debt percentage for determining from the [Mortgage-Equity Method](http://www.commercialappraisalsoftware.dcfsoftware.com/mtgequity.htm). But it can be defined as:
 
-$$\begin{eqnarray}
+$$\begin{aligned}
 {CAP_t} &= {Loan \%}_t \times {Annual Debt Service}_t + \\
 & {Equity \%}_t \times {Equity Yield}_t - \nonumber \\
 & {Buildup}_t + \nonumber \\
 & {Tax Additur Adjustment}_t \nonumber
-\end{eqnarray}$$
+\end{aligned}$$
 
 
 The ${Loan \%}_t$ plus ${Equity \%}_t$ must equal one and is currently an 80% to 20% ratio respectively. Prior to 2015, the values were based on 60% loan and 40% equity appreciation.
