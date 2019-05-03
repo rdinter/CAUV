@@ -307,7 +307,7 @@ ohio_soils %>%
       labs(x = "", y = "", size = "Soil Productivity Index",
            color = "Soil Productivity Index",
            title = "Official CAUV Values of Cropland through 2018",
-           subtitle = "in dollars per acre, average value in black",
+           subtitle = "in dollars per acre",
            caption = caption_proj) +
       theme_bw() +
       theme(legend.position = c(0.2, 0.65),
@@ -371,7 +371,7 @@ ohio_soils_high %>%
       labs(x = "", y = "", color = "Soil Productivity Index",
            size = "Soil Productivity Index",
            title = "2019 High Projection for CAUV Values of Cropland",
-           subtitle = "in dollars per acre, average value in black",
+           subtitle = "in dollars per acre",
            caption = caption_proj) +
       theme_bw() +
       theme(legend.position = c(0.2, 0.7),
@@ -431,7 +431,7 @@ ohio_soils_low %>%
       labs(x = "", y = "", color = "Soil Productivity Index",
            size = "Soil Productivity Index",
            title = "2019 Low Projection for CAUV Values of Cropland",
-           subtitle = "in dollars per acre, average value in black",
+           subtitle = "in dollars per acre",
            caption = caption_proj) +
       theme_bw() +
       theme(legend.position = c(0.2, 0.7),
@@ -495,7 +495,7 @@ ohio_soils_exp %>%
       labs(x = "", y = "", size = "Soil Productivity Index",
            color = "Soil Productivity Index",
            title = "2019 Projection for CAUV Values of Cropland",
-           subtitle = "in dollars per acre, average value in black",
+           subtitle = "in dollars per acre",
            caption = caption_proj) +
       theme_bw() +
       theme(legend.position = c(0.2, 0.65),
