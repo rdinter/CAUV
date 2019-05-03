@@ -31,10 +31,10 @@ The purpose of this report is to provide projections of property tax for agricul
 
 **Key Findings**
 
-- Project a decrease in the average CAUV value across all soil types in Ohio to approximately $870 in the 2019 tax year. This represents a -14% change from the average 2018 CAUV value of $1,015.
+- Project a decrease in the average CAUV value across all soil types in Ohio to approximately $870 in the 2019 tax year. This represents a -14% change from the average 2018 CAUV value of $1,015, although counties receiving updates in 2019 last updated CAUV values in 2016 and we project a -33% change from the average 2016 CAUV value of $1,310.
 - The 2019 tax year is the third year of the phase-in from large-scale changes in the calculation of CAUV values. If the phase-in procedure was not in place, then the average 2019 CAUV values would have further dropped to approximately $730.
 - Due to uncertainty in finalized input data used in our 2019 CAUV calculations, it is possible for the average CAUV value to change from 2018 average CAUV value by as much as -23% while it is also possible for the average CAUV value to rise by over 27%. However, an increase in CAUV values for 2019 is unlikely.
-- Current CAUV projections for the 2020 tax year, which represents the first year without the phased-in procedure, expects a further decline in the average CAUV value to $585 which would be a 14% change from current projections in 2019.
+- Current CAUV projections for the 2020 tax year, which represents the first year without the phased-in procedure, expects a further decline in the average CAUV value to $585 which would be a -33% change from current projections in 2019. Counties receiving an update in 2020 last received an update in 2017 and we anticipate a -49% change from 2017 when the average CAUV value was $1,155.
 - Due to uncertainty in finalized input data used in our 2020 CAUV calculations, it is possible for the average CAUV value to change from 2019 average CAUV value by as much as -42% while it is also possible for the average CAUV value to rise by over 6%. However, an increase in CAUV values for 2020 is unlikely.
 
 \newpage
@@ -42,7 +42,7 @@ The purpose of this report is to provide projections of property tax for agricul
 
 # CAUV Value Projections for 2019 and 2020
 
-In 2018, the average CAUV value across all soil types was $1,015 per Ohio Department of Taxation (ODT). Our projection for the average value of CAUV in the 2019 tax year is $872. Our projections are partially based on how the CAUV formula use Olympic averaging[^olympic] for certain components and it is possible for a potential high of $1,287 and a low of $787 for average CAUV values. However, it is unlikely to have large divergence from our expected projections based on the currently available data for components which use Olympic averaging.
+In 2018, the average CAUV value across all soil types was $1,015 per Ohio Department of Taxation (ODT). Our projection for the average value of CAUV in the 2019 tax year is $872. Our projections are partially based on how the CAUV formula use Olympic averaging[^olympic] for certain components and it is possible for a potential high of $1,287 and a low of $787 for average CAUV values. However, eventual CAUV values are unlikely to have a substantial divergence from our expected projections based on the currently available data for components which use Olympic averaging.
 
 <!-- ODT provides [general information](https://www.tax.ohio.gov/real_property/cauv.aspx) on their calculations for CAUV and how they calculate the CAUV value for each soil type across Ohio although this document will also describe the calculation procedure. Their information also includes the official values of inputs that ODT uses in the formula for CAUV values and is the only official documentation and values for CAUV. -->
 
@@ -74,7 +74,7 @@ The projected CAUV values are partially offset by the current provision in the C
 <p class="caption">\label{fig:exp-2019}</p>
 </div>
 
-This adjustment procedure will not be present in tax year of 2020 and beyond as the phase-in was only intended to affect one one set of phased-in values based on the triennial update of property assessments. Because of this, we have further pushed our projections for the 2020 tax year by extending each component in the CAUV calculation an additional year with as much of the available data as possible.
+This adjustment procedure will not be present in the 2020 tax year and beyond as the phase-in was only intended to affect one set of phased-in values based on the triennial update of property assessments. Because of this, we have further pushed our projections for the 2020 tax year by extending each component in the CAUV calculation an additional year with as much of the available data as possible.
 
 Our preliminary results indicate stable values for commodity yields, commodity rotation, and capitalization to remain similar to our projections for 2019. Further, the input costs and commodity prices are anticipated to further decline with a more pronounced decline for prices than input costs. At this time, our expected projections for the 2020 tax year are:
 
@@ -111,18 +111,18 @@ where $CAP_t$ represents the capitalization rate and $NOI_{s,t}$ represents the 
 Net operating income, ${NOI_{s,t}}$, captures the average returns to an acre of land under normal management practices which is adjusted by the state-wide rotation pattern of commodities. In other words, a net income for corn, soybeans, and wheat is calculated for each soil type and then these net incomes for a given soil type are averaged in proportion to the state-wide acreage of harvested corn, soybeans, and wheat. This can be defined as:
 
 $$
-NOI_{s,t} = \sum_{c} w_{c,t}\times(GOI_{s,c,t} - {non-land}_{s,c,t})
+NOI_{s,t} = \sum_{c} w_{c,t}\times(GOI_{s,c,t} - {nonland}_{s,c,t})
 $$
 
-where $c$ denotes the commodity type, which is either corn, soybeans, or wheat which represent the dominant commodities in Ohio and $w_{c,t}$ is commodity's share of state production. $GOI_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the commodity types (corn, soybeans, and wheat) based on yields and prices. ${non-land}_{s,c,t}$ is the non-land costs associated with each commodity type. Both of these variables are further explained in the following sections.
+where $c$ denotes the commodity type, which is either corn, soybeans, or wheat which represent the dominant commodities in Ohio and $w_{c,t}$ is commodity's share of state production. $GOI_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the commodity types (corn, soybeans, and wheat) based on yields and prices. ${nonland}_{s,c,t}$ is the non-land costs associated with each commodity type. Both of these variables are further explained in the following sections.
 
 ### Rotation
 
 Each commodity's share of state production is based on a 5-year average of total acres harvested between the three commodities -- with weights summing to 1. This is done by summing up the total harvested acreage for corn, for soybeans, and for wheat over the past six years ignoring the current -- i.e. 2019 value for CAUV calculations uses 2014 to 2018 harvested acres. Once summed up, each commodity is then assigned their share of total harvested for the entire state based on those past six years ignoring the current.
 
-These data are from the United States Department of Agriculture (USDA) [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046). Typically there is an August, September, October, and November forecast for Ohio's corn, soybeans, and wheat acreage with the [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occurring in January of the following year -- i.e. 2018 harvested acres was finalized in January 2019. The values are lagged one year -- the 2019 values for commodity rotation percentages are based on the 2014 through 2018 harvested acreage which is known at this time but the 2020 value will will use the 2018 harvested acreage for a preliminary estimate of 2019 harvested acreage. 
+These data are from the United States Department of Agriculture (USDA) [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046). Typically there is an August, September, October, and November forecast for Ohio's corn, soybeans, and wheat acreage with the [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occurring in January of the following year -- i.e. 2018 harvested acreage was finalized in January 2019. The values calculated for CAUV are lagged one year -- i.e. the tax year of 2019 CAUV values for commodity rotation percentages are based on the 2014 through 2018 harvested acreage.
 
-The values of rotation used in ODT calculations since 2010 are displayed in the following tables along with the values used in our 2019 and 2020 CAUV value projections.
+The values for rotation used in ODT calculations since 2010 are displayed in the following tables along with the values used in our 2019 and 2020 CAUV value projections.
 
 
 Table: Historical Corn Rotation
@@ -302,7 +302,7 @@ Price for each commodity is a 7-year Olympic average of past marketing year pric
 
 Prior to 2015, the Olympic average for price was lagged two years -- i.e. the 2014 tax year used the USDA prices from 2006 through 2012. Since 2015, the lag has been reduced to one year -- i.e. the 2015 tax year used the USDA prices from 2008 through 2014. Because of the nature of an Olympic average, the prices used in 2019 CAUV calculations is bounded between a high and a low value by averaging the previous 6-years after dropping only the lowest or highest prices respectively. In the event that the high CAUV value of our projected prices occur, then this is where the 2019 prices are all the highest values in the previous 7-years which causes the CAUV to be a higher value. The opposite is true for the low CAUV value in that the prices are 7-year lows.
 
-Our 2019 projected prices are: $3.68 per bushel for corn, $9.78 per bushel for soybeans, and $5.15 per bushel for wheat. For 2020, the projected prices are: $3.53 per bushel for corn, $9.00 per bushel for soybeans, and $4.81 per bushel for wheat. The yearly commodity prices since 1991 and values used in ODT calculations since 2006 can be seen in figure \ref{fig:prices} along with the projected prices.
+Our 2019 projected prices are: $3.68 per bushel for corn, $9.78 per bushel for soybeans, and $5.15 per bushel for wheat. For 2020, our projected prices are: $3.53 per bushel for corn, $9.00 per bushel for soybeans, and $4.81 per bushel for wheat. The yearly commodity prices since 1991 and values used in ODT calculations since 2006 can be seen in figure \ref{fig:prices} along with the projected prices.
 
 
 <div class="figure">
