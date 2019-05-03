@@ -96,6 +96,7 @@ Typical timeline, using Tax Year 2019 as example:
 | December 2018  | Crop   | |
 | January 2019   | Crop    | Finalized corn, soybeans, and wheat acres/yield |
 | February 2019  | ERS | ERS finalizes the value for return to equity |
-| March 2019     | Finalized marketing year prices | Corn, soybeans, and wheat |
+| March 2019     | Prices | First published marketing year price data on corn, soybeans, and wheat for 2018 |
 | May 2019       | Budgets | unofficial, there is no hard date for this but usually the  |
-| August 2019    | ODT Official Values; FCS Interest Rate for Cap. Rate | Rough estimate |
+| August 2019    | ODT Official Values; FCS Interest Rate for Cap Rate | Rough estimate |
+| November 2019  | Prices | Official marketing year price data on corn, soybeans, and wheat for 2018 |
