@@ -52,7 +52,7 @@ Where $i$ is the item on the OSU budget sheet and all values used are the associ
 Gross operating income, ${GOI}_{s,c,t}$, is based on historical yields and prices for each crop. The gross operating income across each soil type and crop is defined as:
 
 $$
-{GOI}_{s,c,t} = \frac{ {Yield}_{c,Ohio,t} }{ {Yield}_{c,Ohio,1984} } \times {Yield}_{c,s,1984} \times {Price}_{c,Ohio,t}
+{GOI}_{s,c,t} = {Price}_{c,Ohio,t} \times \left( \frac{ {Yield}_{c,Ohio,t} }{ {Yield}_{c,Ohio,1984} } \times {Yield}_{c,s,1984} \right)
 $$
 
 where $Yield_{c,Ohio,t}$ is an Olympic average for state-wide yields in Ohio and $Price_{c,Ohio,t}$ is a weighted Olympic average for state-wide prices in Ohio. Prior to 2015, both yield and price were lagged two years in its calculation. Since 2015, yields and prices have a one year lag. The prices are based on 7-year Olympic averages while yields are based on a 10-year average. The $Yield_{c,Ohio,1984}$ variable is a state-wide adjustment for the yields of each crop (corn, soybeans, and wheat) in 1984 to account for yield increases. And the $Yield_{c,s,1984}$ is the yield for each soil type ($s$) for each crop in 1984 to account for differences in soil productivity.
@@ -76,12 +76,12 @@ ODT began adjusting for yield trends in 2006 through the current method of takin
 
 The capitalization rate requires the knowledge of an interest rate on a loan and an equity rate as well as the term and debt percentage for determining from the [Mortgage-Equity Method](http://www.commercialappraisalsoftware.dcfsoftware.com/mtgequity.htm). But it can be defined as:
 
-$$\begin{eqnarray}
+$$\begin{aligned}
 {CAP_t} &= {Loan \%}_t \times {Annual Debt Service}_t + \\
 & {Equity \%}_t \times {Equity Yield}_t - \nonumber \\
 & {Buildup}_t + \nonumber \\
 & {Tax Additur Adjustment}_t \nonumber
-\end{eqnarray}$$
+\end{aligned}$$
 
 
 The ${Loan \%}_t$ plus ${Equity \%}_t$ must equal one and is currently an 80% to 20% ratio respectively. Prior to 2015, the values were based on 60% loan and 40% equity appreciation.
