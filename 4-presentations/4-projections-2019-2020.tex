@@ -88,7 +88,7 @@ Katchova\footnote{Associate Professor and Farm Income Enhancement Chair}}
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-05-01}
+    \date{2019-05-02}
 
 \usepackage{floatrow}
 \floatsetup[figure]{capposition=top}
@@ -155,19 +155,16 @@ legislation} for the new calculations.
 
 In 2018, the average CAUV value across all soil types was \$1,015 per
 Ohio Department of Taxation (ODT). Our projection for the average value
-of CAUV in the 2019 tax year is \$872. Our projections for the 2019
-average CAUV values could have a high of \$1,287 and a low of \$787
-based on current available information and the nature of how certain
-components in the CAUV formula use Olympic averaging -- however with as
-much information currently known these high/low scenarios are unlikely
-and we anticipate only slight divergences from average CAUV value
-projection of \$872. ODT provides
-\href{https://www.tax.ohio.gov/real_property/cauv.aspx}{general
-information} on their calculations for CAUV and how they calculate the
-CAUV value for each soil type across Ohio although this document will
-also describe the calculation procedure. Their information also includes
-the official values of inputs that ODT uses in the formula for CAUV
-values and is the only official documentation and values for CAUV.
+of CAUV in the 2019 tax year is \$872. Our projections are partially
+based on how the CAUV formula use Olympic averaging\footnote{A 7-year
+  Olympic average is a mean of the previous 7 values after first
+  removing the highest and lowest values from calculation. For
+  projections, we assume the most recent data is either the
+  highest/lowest value in the 7 year span.} for certain components and
+it is possible for a potential high of \$1,287 and a low of \$787 for
+average CAUV values. However, it is unlikely to have large divergence
+from our expected projections based on the currently available data for
+components which use Olympic averaging.
 
 Updates to CAUV values do not occur equally across Ohio as there is a
 rotating schedule for tax assessments in Ohio.
@@ -186,41 +183,38 @@ when a county receives an update to their CAUV values:
 
 CAUV values contain 5 major components used as inputs for projecting
 values: capitalization rate, commodity yields, commodity prices,
-commodity acreage/rotation, and nonland input costs. The commodities
+commodity acreage/rotation, and non-land input costs. The commodities
 used in CAUV are corn, soybeans, and wheat. Each of these components are
 projected into the future to obtain the projections for 2019 and 2020
 CAUV values.
 
-Our projections for the CAUV values for the 2019 tax year are for the
+Our projections for the CAUV values in the 2019 tax year are for the
 components of commodity yields, commodity rotation, and capitalization
 rate to remain largely unchanged from 2018. Input costs are expected to
 decline, although this is counteracted with commodity prices similarly
 expected to decline. Under the expected scenario, the average CAUV value
 will continue to decline by a similar proportion as the fall in the CAUV
-values from 2016 to 2017 to 2018. Grouping soil types based on a
-productivity index can help display how similarly productive soils are
+values from 2016 to 2017 and then to 2018. Grouping soil types based on
+a productivity index can help display how similarly productive soils are
 expected to decline in our 2019 projections:
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/exp-trend-1} \caption{\label{fig:exp-trend}}\label{fig:exp-trend}
 \end{figure}
 
-Our projected CAUV values are partially offset by the current provision
+The projected CAUV values are partially offset by the current provision
 in the CAUV calculations that phases in the new formula for CAUV,
 smoothing the adjustment to lower CAUV values the one cycle of property
-reassessment rather than these declines occurring immediately. Counties
-in Ohio have a set schedule for receiving new CAUV values along with
-updates to their other assessed values of property.
-
-The 2018 values had an adjustment factor where only half of the
-difference was included between the 2017 CAUV value and what the
-pre-adjusted 2018 CAUV would have been. This also occurs for 2019, where
-if the calculated CAUV value in 2019 is lower than the 2018 CAUV value
-for a soil type then only half of the difference is factored into the
-actual 2019 CAUV value. While the projected average CAUV value for 2019
-is \$872, the value would have been \$729 without the phase-in. Figure
-\ref{fig:exp-2019} shows how much this adjustment for phasing in of the
-new calculations differ by soil types:
+reassessment rather than these declines occurring immediately. The 2018
+values had an adjustment factor where only half of the difference was
+included between the 2017 CAUV value and what the pre-adjusted 2018 CAUV
+would have been. This also occurs for 2019, where if the calculated CAUV
+value in 2019 is lower than the 2018 CAUV value for a soil type then
+only half of the difference is factored into the actual 2019 CAUV value.
+While the projected average CAUV value for 2019 is \$872, the value
+would have been \$729 without the phase-in. Figure \ref{fig:exp-2019}
+shows how much this adjustment for phasing in of the new calculations
+differ by soil types:
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/exp-2019-1} \caption{\label{fig:exp-2019}}\label{fig:exp-2019}
@@ -231,12 +225,14 @@ beyond as the phase-in was only intended to affect one one set of
 phased-in values based on the triennial update of property assessments.
 Because of this, we have further pushed our projections for the 2020 tax
 year by extending each component in the CAUV calculation an additional
-year with as much of the available data as possible. Our preliminary
-results indicate stable values for commodity yields, commodity rotation,
-and capitalization to remain similar to our projections for 2019.
-Further, the input costs and commodity prices are anticipated to further
-decline with a more pronounced decline for prices than input costs. At
-this time, our expected projections for the 2020 tax year are:
+year with as much of the available data as possible.
+
+Our preliminary results indicate stable values for commodity yields,
+commodity rotation, and capitalization to remain similar to our
+projections for 2019. Further, the input costs and commodity prices are
+anticipated to further decline with a more pronounced decline for prices
+than input costs. At this time, our expected projections for the 2020
+tax year are:
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/exp-trend-2020-1} \caption{\label{fig:exp-trend-2020}}\label{fig:exp-trend-2020}
@@ -318,10 +314,14 @@ costs for corn, soybeans, and wheat.
 
 Net operating income, \({NOI_{s,t}}\), captures the average returns to
 an acre of land under normal management practices which is adjusted by
-the state-wide rotation pattern of commodities. This is defined as:
+the state-wide rotation pattern of commodities. In other words, a net
+income for corn, soybeans, and wheat is calculated for each soil type
+and then these net incomes for a given soil type are averaged in
+proportion to the state-wide acreage of harvested corn, soybeans, and
+wheat. This can be defined as:
 
 \[
-NOI_{s,t} = \sum_{c} w_{c,t}\times(GOI_{s,c,t} - {nonland}_{s,c,t})
+NOI_{s,t} = \sum_{c} w_{c,t}\times(GOI_{s,c,t} - {non-land}_{s,c,t})
 \]
 
 where \(c\) denotes the commodity type, which is either corn, soybeans,
@@ -329,9 +329,9 @@ or wheat which represent the dominant commodities in Ohio and
 \(w_{c,t}\) is commodity's share of state production. \(GOI_{s,c,t}\) is
 the gross operating income for a soil type and is calculated for each of
 the commodity types (corn, soybeans, and wheat) based on yields and
-prices. \({nonland}_{s,c,t}\) is the non-land costs associated with each
-commodity type. Both of these variables are further explained in the
-following sections.
+prices. \({non-land}_{s,c,t}\) is the non-land costs associated with
+each commodity type. Both of these variables are further explained in
+the following sections.
 
 \hypertarget{rotation}{%
 \subsubsection{Rotation}\label{rotation}}
@@ -340,24 +340,23 @@ Each commodity's share of state production is based on a 5-year average
 of total acres harvested between the three commodities -- with weights
 summing to 1. This is done by summing up the total harvested acreage for
 corn, for soybeans, and for wheat over the past six years ignoring the
-current (ie 2019 value for CAUV calculations uses 2014 to 2018 harvested
-acres). Once summed up, each commodity is then assigned their share of
-total harvested for the entire state based on those past six years
-ignoring the current.
+current -- i.e.~2019 value for CAUV calculations uses 2014 to 2018
+harvested acres. Once summed up, each commodity is then assigned their
+share of total harvested for the entire state based on those past six
+years ignoring the current.
 
-These data technically come from the United States Department of
-Agriculture (USDA)
+These data are from the United States Department of Agriculture (USDA)
 \href{https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046}{Crop
 Production Reports}. Typically there is an August, September, October,
 and November forecast for Ohio's corn, soybeans, and wheat acreage with
 the
 \href{https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047}{finalized
-values} occurring in January of the following year (ie 2018 harvested
-acres was finalized in January 2019). The values are lagged one year --
-the 2019 values for commodity rotation percentages are based on the 2014
-through 2018 harvested acreage which is known at this time but the 2020
-value will will use the 2018 harvested acreage for a preliminary
-estimate of 2019 harvested acreage.
+values} occurring in January of the following year -- i.e.~2018
+harvested acres was finalized in January 2019. The values are lagged one
+year -- the 2019 values for commodity rotation percentages are based on
+the 2014 through 2018 harvested acreage which is known at this time but
+the 2020 value will will use the 2018 harvested acreage for a
+preliminary estimate of 2019 harvested acreage.
 
 The values of rotation used in ODT calculations since 2010 are displayed
 in the following tables along with the values used in our 2019 and 2020
@@ -441,8 +440,8 @@ Projected\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{non-land-costs}{%
-\subsubsection{Non-Land Costs}\label{non-land-costs}}
+\hypertarget{non-land-cost}{%
+\subsubsection{Non-Land Cost}\label{non-land-cost}}
 
 The non-land costs are calculated as 7-year Olympic averages for typical
 costs of producing each commodity (corn, soybeans, and wheat). The
@@ -451,28 +450,30 @@ Office} at The Ohio State University Extension conducts annual surveys
 for costs of production which serve as the yearly estimates that are
 used in the 7-year Olympic average. Budgets for a commodity marketing
 year are generally released in October of the prior year and then
-finalized in May of the marketing year (ie the 2019 marketing year was
-initially released in October 2018 and will likely be finalized sometime
-after May 2019).
+finalized in May of the marketing year -- i.e.~the 2019 marketing year
+was initially released in October 2018 and will likely be finalized
+sometime after May 2019. These budgets will include both fixed
+(machinery, equipment, labor, etc.) and variable (seeds, fertilizer,
+chemicals, hauling, etc.) costs involved in producing corn, wheat, or
+soybeans and each of these individual components are averaged for use in
+CAUV calculation.
 
 Prior to 2015, the non-land costs were lagged one year -- i.e.~tax year
-2014 used the values from 2007 to 2013. From 2015 onward, the current
-year values are included in the non-land cost calculations. Because of
-the nature of an Olympic average, the non-land costs used in 2019 CAUV
-is bounded between a ``high'' and a ``low'' value by averaging the
-previous 6-years after dropping only the highest or lowest value
+2014 used the values from budgets in 2007 to 2013. From 2015 onward, the
+current year values are included in the non-land cost calculations.
+Because of the nature of an Olympic average, the non-land costs used in
+2019 CAUV is bounded between a ``high'' and a ``low'' value by averaging
+the previous 6-years after dropping only the highest or lowest value
 respectively. In the event that the ``high'' value of our projected
 non-land costs occur, then this is where the 2019 non-land costs are all
 the lowest values in the previous 7-years which causes the CAUV to be a
 higher value. The opposite is true for the ``low'' value in that the
 non-land costs are all 7-year highs.
 
-Our projection of non-land base costs for corn is \$1,000; for soybeans
-is \$0; and for wheat is \$0 per acre for 2019. For 2020, our
-projections are \$1,000 for corn; \$0 for soybeans; and \$0 for wheat.
-However, we also calculate hypothetical high/low scenarios for this year
-as a way to place bounds on the non-land costs of each commodity. The
-historical and projected values for each commodity are displayed in
+Our projection of non-land base costs for corn is \$519; for soybeans is
+\$339; and for wheat is \$320 per acre for 2019. For 2020, our
+projections are \$500 for corn; \$330 for soybeans; and \$308 for wheat.
+The historical and projected values for each commodity are displayed in
 figure \ref{fig:viz-nonland}:
 
 \begin{figure}[H]
@@ -491,9 +492,11 @@ the base costs with a 7-year Olympic average. However, these additional
 costs vary across soil types which makes it difficult to present for all
 soil types.
 
+However, we also calculate hypothetical high or low scenarios for this
+year as a way to place bounds on the non-land costs of each commodity.
 The base and additional costs for all commodities are displayed in
-tables on the following pages with the associated ranges of the high/low
-projections.
+tables on the following pages with the associated ranges of the high or
+low projections.
 
 \newpage
 
@@ -644,88 +647,163 @@ Projection\tabularnewline
 \hypertarget{gross-operating-income}{%
 \subsection{Gross Operating Income}\label{gross-operating-income}}
 
-Gross operating income, \(GOI_{s,c,t}\), is based on historical yields
-and prices for each commodity. The gross operating income across each
-soil type and commodity is defined as:
+Gross operating income, \(GOI_{s,c,t}\), is based on historical
+state-wide yields and prices for each commodity which are multiplied
+together to approximate the expected revenues. The gross operating
+income across soil types and for each commodity is defined as:
 
 \[
-GOI_{s,c,t} = \frac{Yield_{c,Ohio,t}}{Yield_{c,Ohio,1984}} \times Yield_{c,s,1984} \times Price_{c,Ohio,t}
+GOI_{s,c,t} = Price_{c,Ohio,t} \times \left( \frac{Yield_{c,Ohio,t}}{Yield_{c,Ohio,1984}} \times Yield_{c,s,1984} \right)
 \]
 
-where \(Yield_{c,Ohio,t}\) is an Olympic average for state-wide yields
-in Ohio and \(Price_{c,Ohio,t}\) is a weighted Olympic average for
-state-wide prices in Ohio. Prior to 2015, both yield and price were
-lagged two years in its calculation and yields were based on a 10-year
-Olympic average. Since 2015, yields and prices have a one year lag and
-yields are now based on 7-year Olympic averages. The
-\(Yield_{c,Ohio,1984}\) variable is a state-wide adjustment for the
-yields of each commodity (corn, soybeans, and wheat) in 1984 to account
-for yield increases. And the \(Yield_{c,s,1984}\) is the yield for each
-soil type (\(s\)) for each commodity in 1984 to account for differences
-in soil productivity.
+\hypertarget{price}{%
+\subsubsection{Price}\label{price}}
 
-\hypertarget{prices}{%
-\subsubsection{Prices}\label{prices}}
+Price for each commodity is a 7-year Olympic average of past marketing
+year prices that is also weighted by total production as measured in
+bushels for each marketing year with 5\% subtracted from the price to
+account for management costs. Both the price and production values are
+from USDA-NASS reports.
 
-Prices are based on USDA-NASS data and are weighted based on state
-production as measured in total bushels for each commodity produced. Our
-2019 projected prices are: \$0 per bushel for corn, \$0 per bushel for
-soybeans, and \$0 per bushel for wheat. For 2020, the projected prices
-are: \$0 per bushel for corn, \$0 per bushel for soybeans, and \$0 per
-bushel for wheat.
+Prior to 2015, the Olympic average for price was lagged two years --
+i.e.~the 2014 tax year used the USDA prices from 2006 through 2012.
+Since 2015, the lag has been reduced to one year -- i.e.~the 2015 tax
+year used the USDA prices from 2008 through 2014. Because of the nature
+of an Olympic average, the prices used in 2019 CAUV calculations is
+bounded between a high and a low value by averaging the previous 6-years
+after dropping only the lowest or highest prices respectively. In the
+event that the high CAUV value of our projected prices occur, then this
+is where the 2019 prices are all the highest values in the previous
+7-years which causes the CAUV to be a higher value. The opposite is true
+for the low CAUV value in that the prices are 7-year lows.
 
-The yearly commodity prices since 1991 and values used in ODT
-calculations since 2006 can be seen in figure \ref{fig:prices} along
-with the projected prices.
-
-The Olympic averaging
-
-Due to the nature of Olympic averaging, the ``high'' and ``low''
-projections for commodity prices can be determined for the 2019 tax year
-value even though the 2017 price data are not available yet. These
-projections are displayed as numerical values in figure
-\ref{fig:prices}.
+Our 2019 projected prices are: \$3.68 per bushel for corn, \$9.78 per
+bushel for soybeans, and \$5.15 per bushel for wheat. For 2020, the
+projected prices are: \$3.53 per bushel for corn, \$9.00 per bushel for
+soybeans, and \$4.81 per bushel for wheat. The yearly commodity prices
+since 1991 and values used in ODT calculations since 2006 can be seen in
+figure \ref{fig:prices} along with the projected prices.
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/viz-prices-1} \caption{\label{fig:prices}}\label{fig:viz-prices}
 \end{figure}
 
-In the event that the ``high'' value of our projected commodity prices
-arises, then this is where the 2019 prices are all the highest values in
-the previous 7-years and causes the CAUV to be a higher value. The
-opposite is the scenario of a ``low'' CAUV where the 2017 commodity
-prices are the lowest values in the past 7 years.
+In the event that the high or low values of our projected commodity
+prices arises, we have calculated those scenarios for historical price
+data in the following tables:
 
-\hypertarget{yields}{%
-\subsubsection{Yields}\label{yields}}
+\begin{longtable}[]{@{}rlllll@{}}
+\caption{Historical Corn Prices}\tabularnewline
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endhead
+2011 & \$2.89 & \$6.44 & \$2.89 & \$2.57 & \$3.05\tabularnewline
+2012 & \$3.19 & \$7.09 & \$3.26 & \$2.80 & \$3.26\tabularnewline
+2013 & \$3.91 & \$4.41 & \$3.93 & \$3.26 & \$3.93\tabularnewline
+2014 & \$4.48 & \$3.78 & \$4.54 & \$3.93 & \$4.54\tabularnewline
+2015 & \$4.55 & \$3.89 & \$4.57 & \$4.55 & \$5.18\tabularnewline
+2016 & \$4.49 & \$3.61 & \$4.50 & \$4.42 & \$5.00\tabularnewline
+2017 & \$4.51 & \$3.61 & \$4.50 & \$4.50 & \$5.09\tabularnewline
+2018 & \$4.18 & \$3.65 & \$4.16 & \$4.17 & \$4.73\tabularnewline
+2019 & \$NA & \$NA & \$3.68 & \$3.68 & \$4.22\tabularnewline
+2020 & \$NA & \$NA & \$3.53 & \$3.52 & \$3.68\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}rlllll@{}}
+\caption{Historical Soybean Prices}\tabularnewline
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endhead
+2011 & \$7.22 & \$13.00 & \$7.45 & \$6.63 & \$7.42\tabularnewline
+2012 & \$7.74 & \$14.60 & \$7.93 & \$7.16 & \$7.93\tabularnewline
+2013 & \$8.98 & \$13.00 & \$9.08 & \$7.94 & \$9.08\tabularnewline
+2014 & \$10.13 & \$10.30 & \$10.40 & \$9.08 & \$10.40\tabularnewline
+2015 & \$11.09 & \$9.16 & \$11.08 & \$11.00 & \$11.95\tabularnewline
+2016 & \$10.91 & \$9.66 & \$10.91 & \$10.91 & \$11.78\tabularnewline
+2017 & \$10.83 & \$9.62 & \$10.83 & \$10.77 & \$11.78\tabularnewline
+2018 & \$10.43 & \$8.75 & \$10.46 & \$10.38 & \$11.35\tabularnewline
+2019 & \$NA & \$NA & \$9.78 & \$9.78 & \$10.70\tabularnewline
+2020 & \$NA & \$NA & \$9.00 & \$9.00 & \$9.78\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}rlllll@{}}
+\caption{Historical Wheat Prices}\tabularnewline
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Year & ODT Price & USDA Price & Projection & Low Projection & High
+Projection\tabularnewline
+\midrule
+\endhead
+2011 & \$3.64 & \$6.73 & \$3.62 & \$3.37 & \$3.95\tabularnewline
+2012 & \$3.98 & \$7.94 & \$3.96 & \$3.64 & \$4.20\tabularnewline
+2013 & \$4.54 & \$6.54 & \$4.55 & \$3.96 & \$4.55\tabularnewline
+2014 & \$5.16 & \$5.60 & \$5.19 & \$4.55 & \$5.19\tabularnewline
+2015 & \$5.67 & \$4.57 & \$5.69 & \$5.38 & \$5.99\tabularnewline
+2016 & \$5.53 & \$4.25 & \$5.53 & \$5.32 & \$6.02\tabularnewline
+2017 & \$5.53 & \$4.90 & \$5.53 & \$5.53 & \$6.02\tabularnewline
+2018 & \$5.52 & \$5.05 & \$5.51 & \$5.33 & \$5.97\tabularnewline
+2019 & \$NA & \$NA & \$5.15 & \$4.96 & \$5.62\tabularnewline
+2020 & \$NA & \$NA & \$4.81 & \$4.62 & \$5.15\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{yield}{%
+\subsubsection{Yield}\label{yield}}
 
 Each soil type has a corresponding base yield of production for each
 commodity from 1984 -- which is the most recent comprehensive soil
 survey for the state of Ohio and separate from the base yield of
 non-land costs. Prior to 2006, ODT did not adjust for yield trends and
 calculated gross operating income for each soil type via their 1984
-yields thus suppressing estimated revenues. ODT began adjusting for
-yield trends through the current method of taking the 7-year averages of
-state-wide yields (irrespective of soil type), dividing by the
-state-wide yields for each commodity in 1984, then multiplying this
-value based on the 1984 commodity yield for the particular soil type
-evaluated. Prior to 2014, the 7-year calculation involved a 2 year lag.
-In 2015 and beyond, there is only a one year lag. Therefore, the yield
-value for CAUV in 2017 was based on an average of yields of 2007 through
-2016.
+yields which suppressed revenues -- in the formula this would
+effectively mean that the \(Yield_{c,Ohio,t}\) equaled
+\(Yield_{c,Ohio,1984}\).
+
+ODT began adjusting for yield trends through the current method of
+taking the 7-year averages of state-wide yields (irrespective of soil
+type), dividing by the state-wide yields for each commodity in 1984,
+then multiplying this value based on the 1984 commodity yield for the
+particular soil type evaluated. This can be thought of as an adustment
+factor to account for the general trend of increasing yields in corn,
+wheat, and soybeans. Prior to 2014, the 7-year calculation involved a
+two year lag -- i.e.~the 2014 tax year used average yield values from
+2003 through 2012. In 2015 and beyond, there is only a one year lag --
+i.e.~2015 tax year used average yield values from 2005 through 2014.
 
 The values for commodity yields for tax year 2019 are known because USDA
 has published their 2018 values for each commodity -- however for
-unknown values we use the 30-year yield trend. The yield values for the
-2019 CAUV calculations are 163 for corn, 50.4 for soybeans, and 69.7 for
-wheat. Our yield projections for the 2020 CAUV calculations are 163.2
-for corn, 50.8 for soybeans, and 70.1 for wheat.
-
-These yield trends are displayed in figure \ref{fig:yields}:
+unknown future values we use the 30-year yield trend. The yield values
+for the 2019 CAUV calculations are 163 for corn, 50.4 for soybeans, and
+69.7 for wheat. Our yield projections for the 2020 CAUV calculations are
+163.2 for corn, 50.8 for soybeans, and 70.1 for wheat. These historical
+yield trends are displayed in figure \ref{fig:yields} and in the
+following tables:
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/viz-yields-1} \caption{\label{fig:yields}}\label{fig:viz-yields}
 \end{figure}
+
+\newpage
 
 \begin{longtable}[]{@{}rrrr@{}}
 \caption{Historical Corn Yields}\tabularnewline
@@ -737,7 +815,6 @@ Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 \midrule
 \endhead
-2006 & 132.0 & 159 & 132.1\tabularnewline
 2007 & 134.0 & 150 & 134.3\tabularnewline
 2008 & 139.0 & 131 & 139.1\tabularnewline
 2009 & 140.7 & 171 & 140.7\tabularnewline
@@ -765,7 +842,6 @@ Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 \midrule
 \endhead
-2006 & 40.0 & 47.0 & 39.8\tabularnewline
 2007 & 40.0 & 47.0 & 40.5\tabularnewline
 2008 & 42.0 & 36.0 & 41.6\tabularnewline
 2009 & 42.0 & 49.0 & 42.0\tabularnewline
@@ -793,7 +869,6 @@ Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 \midrule
 \endhead
-2006 & 63.0 & 68 & 62.8\tabularnewline
 2007 & 64.0 & 61 & 63.8\tabularnewline
 2008 & 67.0 & 67 & 66.7\tabularnewline
 2009 & 66.7 & 71 & 66.5\tabularnewline
@@ -814,29 +889,35 @@ Year & ODT Yield & USDA Yield & Projected Yield\tabularnewline
 \hypertarget{capitalization-rate}{%
 \subsection{Capitalization Rate}\label{capitalization-rate}}
 
+Of the factors going into the CAUV calculation, the capitalization rate
+is in the denominator of the equation and has a significant impact on
+overall CAUV values because of it's relatively small value and range
+(see historical values in the next section). The economic purpose of a
+capitalization rate is to capture the future stream of revenues form an
+asset into a present value and thus the capitalization rate acts as an
+interest rate.
+
 Prior to 2015, the capitalization rate was based on a 60\% loan and 40\%
 equity appreciation with interest rates for each value based on a 7-year
-Olympic average\footnote{A 7-year Olympic average is a mean of the
-  previous 7 values after first removing the highest and lowest values
-  from calculation.} where the value for the loan interest rate came
-from a 15-year mortgage from Farm Credit Services (FCS) and the equity
-interest rate was the Federal Funds rate plus two percentage points.
-Both of these interest rates use the current tax year's value in
-calculation so the value calculated for 2014 was an Olympic average over
-the years 2008 through 2014. This loan/equity mix is calculated and then
-5 years of equity buildup and appreciation are subtracted from the
-interest rate plus a tax additur -- the average effective tax rate for
-agricultural land applied at 35\% of the market value.
+Olympic average where the value for the loan interest rate came from a
+15-year mortgage from Farm Credit Services (FCS) and the equity interest
+rate was the Federal Funds rate plus two percentage points. Both of
+these interest rates use the current tax year's value in calculation so
+the value calculated for 2014 was an Olympic average over the years 2008
+through 2014. This loan/equity mix is calculated and then 5 years of
+equity buildup and appreciation are subtracted from the interest rate
+plus a tax additur -- the average effective tax rate for agricultural
+land applied at 35\% of the market value.
 
 For the 2015 tax year, the capitalization rate changed to an 80\% loan
 (based on 25-year mortgage from FCS) and 20\% equity appreciation. Then
-in 2017, ODT changed the interest rate used for equity appreciation to
-the 25-year average total rate of return on farm equity from USDA-ERS --
-this amount is lagged two years so the 2017 value is based on 1991
-through 2015 values. The loan interest rate remains a 7-year Olympic
-average that is not lagged, so the 2017 interest rate used values from
-2011 through 2017. The formula dropped appreciation from calculations
-and changed the equity buildup calculation from 5 years to 25 years.
+in 2017, ODT changed the interest rate used for equity Economic Research
+Services (ERS) -- this amount is lagged two years so the 2017 value is
+based on 1991 through 2015 values. The loan interest rate remains a
+7-year Olympic average that is not lagged, so the 2017 interest rate
+used values from 2011 through 2017. The formula dropped appreciation
+from calculations and changed the equity buildup calculation from 5
+years to 25 years.
 
 The capitalization rate requires the knowledge of an interest rate on a
 loan and an equity rate as well as the term and debt percentage for
@@ -859,11 +940,11 @@ were based on 60\% loan and 40\% equity appreciation.
 25-year term mortgage with an associated interest rate. The interest
 rate used for a particular year is based on a 7-year Olympic average
 where the value for the loan interest rate came from a 25-year mortgage
-from Farm Credit Services (FCS). Prior to 2015, a 15-year term was used
-instead of 25 and there were no lags in this formula. For example, the
-2017 interest rate used comes from FCS values between 2011 and 2017. The
-formula for calculating the debt servicing factor with \(r\) as the
-interest rate (from FCS) and \(n\) the term length (currently 25) is:
+from FCS. Prior to 2015, a 15-year term was used instead of 25 and there
+were no lags in this formula. For example, the 2017 interest rate used
+comes from FCS values between 2011 and 2017. The formula for calculating
+the debt servicing factor with \(r\) as the interest rate (from FCS) and
+\(n\) the term length (currently 25) is:
 
 \[ {Annual Debt Service} = \frac{r \times (1 + r)^n}{(1 + r)^n - 1} \]
 
@@ -911,6 +992,10 @@ of mills and the tax additur is then expressed as:
 The tax additur component remained in the calculation and between 2006
 and 2017 it ranged from 1.30\% to 1.60\%.
 
+\hypertarget{capitalization-rate-values}{%
+\subsection{Capitalization Rate
+Values}\label{capitalization-rate-values}}
+
 The capitalization rates used by the ODT in CAUV calculations since 2003
 are displayed in figure \ref{fig:viz-cap}, which shows a steady decline
 until the formula change in 2015. The projected capitalization rate for
@@ -929,10 +1014,6 @@ rate will be 0 (infinite) and calculates the value used in ODT
 calculations for this. The ``high'' value of our projected
 capitalization rate of 7.80\% leads to a high CAUV value whereas our
 capitalization rate is 8.14\% for a ``low'' CAUV value.
-
-\begin{figure}[H]
-\includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/viz-cap-1} \caption{\label{fig:viz-cap}}\label{fig:viz-cap}
-\end{figure}
 
 Of the capitalization rate projections, only the tax additur and FCS
 interest rate are currently unknown for 2019 and beyond. The equity
@@ -968,6 +1049,11 @@ Year & ODT Value & Projected & Low & High\tabularnewline
 2020 & NA\% & 8.0\% & 8.1\% & 7.8\%\tabularnewline
 \bottomrule
 \end{longtable}
+
+\newpage
+
+\hypertarget{cauv-values}{%
+\section{CAUV Values}\label{cauv-values}}
 
 \hypertarget{cauv-values-by-soil-type}{%
 \subsection{CAUV Values by Soil Type}\label{cauv-values-by-soil-type}}
@@ -1018,35 +1104,35 @@ average. If the phase-in period was not in effect, the average CAUV
 value would have been \$874.
 
 \hypertarget{possible-ranges}{%
-\section{Possible Ranges}\label{possible-ranges}}
+\subsection{Possible Ranges}\label{possible-ranges}}
 
 While our expected projections are noted at the beginning of this
 report, we also provide the high and low potential projections for both
 2019 and 2020.
 
 \hypertarget{high-2019}{%
-\subsection{High 2019}\label{high-2019}}
+\subsubsection{High 2019}\label{high-2019}}
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/high-trend-1} \caption{\label{fig:high-trend}}\label{fig:high-trend}
 \end{figure}
 
 \hypertarget{low-2019}{%
-\subsection{Low 2019}\label{low-2019}}
+\subsubsection{Low 2019}\label{low-2019}}
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/low-trend-1} \caption{\label{fig:low-trend}}\label{fig:low-trend}
 \end{figure}
 
 \hypertarget{high-2020}{%
-\subsection{High 2020}\label{high-2020}}
+\subsubsection{High 2020}\label{high-2020}}
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/high-trend-2020-1} \caption{\label{fig:high-trend-2020}}\label{fig:high-trend-2020}
 \end{figure}
 
 \hypertarget{low-2020}{%
-\subsection{Low 2020}\label{low-2020}}
+\subsubsection{Low 2020}\label{low-2020}}
 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{4-projections-2019-2020_files/figure-latex/low-trend-2020-1} \caption{\label{fig:low-trend-2020}}\label{fig:low-trend-2020}
@@ -1068,11 +1154,15 @@ report, we also provide the high and low potential projections for both
   \url{https://www.tax.ohio.gov/real_property/cauv.aspx}
 \item
   USDA-NASS price and yield data \url{https://quickstats.nass.usda.gov}
+\item
+  USDA-ERS total rate of return on farm equity data
+  \url{https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/}
 \end{itemize}
 
 Projections for 2019 CAUV values are available at
-\url{https://aede.osu.edu/file/cauvprojections2019.xlsx} Projections for
-2020 CAUV values are available at
+\url{https://aede.osu.edu/file/cauvprojections2019.xlsx}
+
+Projections for 2020 CAUV values are available at
 \url{https://aede.osu.edu/file/cauvprojections2020.xlsx}
 
 

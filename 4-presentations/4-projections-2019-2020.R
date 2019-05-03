@@ -168,7 +168,7 @@ ohio %>%
   scale_color_viridis(option = "C", end = 0.9, discrete = T) +
   labs(x = "", y = "", color = "", shape = "",
        title = "Commodity Prices in Ohio",
-       subtitle = "solid lines are official values \nused in CAUV calculation",
+       subtitle = "solid lines are official ODT values \nused in CAUV calculation",
        caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT and NASS data")) +
   theme_bw() +
@@ -178,7 +178,7 @@ ohio %>%
 
 
 ohio %>%
-  filter(year > 2005) %>%
+  filter(year > 2010) %>%
   select(
     "Year" = year,
     "ODT Price" = corn_price_odt,
@@ -194,7 +194,7 @@ ohio %>%
 
 
 ohio %>%
-  filter(year > 2005) %>%
+  filter(year > 2010) %>%
   select(
     "Year" = year,
     "ODT Price" = soy_price_odt,
@@ -211,7 +211,7 @@ ohio %>%
 
 
 ohio %>%
-  filter(year > 2005) %>%
+  filter(year > 2010) %>%
   select(
     "Year" = year,
     "ODT Price" = wheat_price_odt,
@@ -267,7 +267,7 @@ ohio %>%
   scale_color_viridis(option = "C", end = 0.9, discrete = T) +
   labs(x = "", y = "", color = "", shape = "",
        title = "Commodity Yields in Ohio",
-       subtitle = "solid lines are values used in CAUV calculation",
+       subtitle = "solid lines are official ODT values \nused in CAUV calculation",
        caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT and NASS data")) +
   theme_bw() +
@@ -276,7 +276,7 @@ ohio %>%
 # ---- corn-yield ---------------------------------------------------------
 
 ohio %>% 
-  filter(year > 2005) %>% 
+  filter(year > 2006) %>% 
   mutate(corn_yield_cauv = round(corn_yield_cauv, digits = 1)) %>% 
   select("Year" = year, "ODT Yield" = corn_yield_odt,
          "USDA Yield" = corn_grain_yield,
@@ -286,7 +286,7 @@ ohio %>%
 # ---- soy-yield ----------------------------------------------------------
 
 ohio %>% 
-  filter(year > 2005) %>% 
+  filter(year > 2006) %>% 
   mutate(soy_yield_cauv = round(soy_yield_cauv, digits = 1)) %>% 
   select("Year" = year, "ODT Yield" = soy_yield_odt,
          "USDA Yield" = soy_yield, "Projected Yield" = soy_yield_cauv) %>% 
@@ -295,13 +295,30 @@ ohio %>%
 # ---- wheat-yield --------------------------------------------------------
 
 ohio %>% 
-  filter(year > 2005) %>% 
+  filter(year > 2006) %>% 
   mutate(wheat_yield_cauv = round(wheat_yield_cauv, digits = 1)) %>% 
   select("Year" = year, "ODT Yield" = wheat_yield_odt,
          "USDA Yield" = wheat_yield,
          "Projected Yield" = wheat_yield_cauv) %>% 
   kable(caption = "Historical Wheat Yields")
 
+
+# ---- tab-yields ---------------------------------------------------------
+
+ohio %>% 
+  filter(year > 2005) %>% 
+  mutate_if(is.numeric, ~round(., digits = 1)) %>% 
+  select("Year" = year,
+         "ODT Corn" = corn_yield_odt,
+         "USDA Corn" = corn_grain_yield,
+         "Projected Corn" = corn_yield_cauv,
+         "ODT Soy" = soy_yield_odt,
+         "USDA Soy" = soy_yield,
+         "Projected Soy" = soy_yield_cauv,
+         "ODT Wheat" = wheat_yield_odt,
+         "USDA Wheat" = wheat_yield,
+         "Projected Wheat" = wheat_yield_cauv) %>% 
+  kable(caption = "Historical Yields")
 
 # ---- viz-rotate ---------------------------------------------------------
 
