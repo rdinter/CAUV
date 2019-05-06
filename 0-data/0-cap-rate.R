@@ -54,7 +54,52 @@ ers_equity <- ers %>%
   mutate(equity_rate_usda = Amount / 100) %>% 
   select(tax_year = Year, equity_rate_usda)
 
-cap_rate %>% 
+cap_rate <- cap_rate %>% 
   select(-equity_rate_usda) %>% 
-  left_join(ers_equity) %>% 
+  left_join(ers_equity)
+
+# ---- suggestion ---------------------------------------------------------
+
+# Suggestion for a different source of interest rates is from the Chicago Fed
+#  AG Letter: https://www.chicagofed.org/research/data/ag-conditions/index
+#  go to the interest rates charged on new farm loans table, download CSV
+
+fed_credit <- paste0("https://www.chicagofed.org/~/",
+                     "media/others/research/data/agconditions/",
+                     "interest-rates-csv.csv")
+fed_file   <- paste(data_source, basename(fed_credit), sep = "/")
+download.file(fed_credit, fed_file)
+
+fed_credit <- read_csv(fed_file,
+                       col_names = c("YYYYQ", "operating_loans",
+                                     "feeder_loans", "real_estate_loans"),
+                       skip = 2) %>% 
+  mutate(date = as.Date(paste0(YYYYQ, "/01"), format = "%Y/%m/%d"))
+
+chicago_fed <- fed_credit %>% 
+  mutate(month = lubridate::month(date),
+         tax_year = lubridate::year(date),
+         chicago_fed_re = real_estate_loans / 100,
+         chicago_fed_operating = operating_loans / 100) %>% 
+  filter(month == 1) %>% 
+  select(tax_year, chicago_fed_re, chicago_fed_operating)
+
+cap_rate %>% 
+  left_join(chicago_fed) %>% 
   write_csv("0-data/cap_rate/capitalization_rate.csv")
+
+# Another suggestion, the Kansas City Fed also has interest rates for their
+#  region in their ag finance data book:
+#  https://www.kansascityfed.org/research/indicatorsdata/agfinancedatabook
+
+# Small issue with how it is handled from a webpage download issue
+# Maybe here: https://www.kansascityfed.org/research/indicatorsdata
+
+
+kc_credit <- paste0("https://www.kansascityfed.org/research/indicatorsdata/~/",
+                     "media/a10e43ee52c945fe8d92ef16838b40bf.ashx")
+fed_file   <- paste(data_source, basename(kc_credit), sep = "/")
+download.file(kc_credit, fed_file)
+
+
+
