@@ -15,6 +15,7 @@
 # ---- start --------------------------------------------------------------
 
 library("httr")
+library("readxl")
 library("rvest")
 library("tidyverse")
 
@@ -24,7 +25,8 @@ data_source  <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
-cap_rate <- read_csv("0-data/cap_rate/capitalization_rate.csv")
+cap_rate <- read_csv("0-data/cap_rate/capitalization_rate.csv") %>% 
+  select(-contains("fed"))
 
 # ---- automated ----------------------------------------------------------
 
@@ -64,42 +66,130 @@ cap_rate <- cap_rate %>%
 #  AG Letter: https://www.chicagofed.org/research/data/ag-conditions/index
 #  go to the interest rates charged on new farm loans table, download CSV
 
-fed_credit <- paste0("https://www.chicagofed.org/~/",
-                     "media/others/research/data/agconditions/",
-                     "interest-rates-csv.csv")
-fed_file   <- paste(data_source, basename(fed_credit), sep = "/")
-download.file(fed_credit, fed_file)
+chicago_rates <- paste0("https://www.chicagofed.org/~/",
+                        "media/others/research/data/agconditions/",
+                        "interest-rates-csv.csv")
+fed_file   <- paste(data_source, basename(chicago_rates), sep = "/")
+download.file(chicago_rates, fed_file)
 
-fed_credit <- read_csv(fed_file,
+chicago_rates <- read_csv(fed_file,
                        col_names = c("YYYYQ", "operating_loans",
                                      "feeder_loans", "real_estate_loans"),
                        skip = 2) %>% 
-  mutate(date = as.Date(paste0(YYYYQ, "/01"), format = "%Y/%m/%d"))
-
-chicago_fed <- fed_credit %>% 
+  mutate(date = as.Date(paste0(YYYYQ, "/01"), format = "%Y/%m/%d") - 1) %>% 
   mutate(month = lubridate::month(date),
          tax_year = lubridate::year(date),
-         chicago_fed_re = real_estate_loans / 100,
-         chicago_fed_operating = operating_loans / 100) %>% 
-  filter(month == 1) %>% 
-  select(tax_year, chicago_fed_re, chicago_fed_operating)
+         chicago_fed_re = real_estate_loans,
+         chicago_fed_operating = operating_loans)
 
-cap_rate %>% 
-  left_join(chicago_fed) %>% 
-  write_csv("0-data/cap_rate/capitalization_rate.csv")
+chicago_fed <- chicago_rates  %>% 
+  filter(!is.na(date)) %>% 
+  select(date, chicago_fed_re)
+
 
 # Another suggestion, the Kansas City Fed also has interest rates for their
 #  region in their ag finance data book:
-#  https://www.kansascityfed.org/research/indicatorsdata/agfinancedatabook
-
 # Small issue with how it is handled from a webpage download issue
 # Maybe here: https://www.kansascityfed.org/research/indicatorsdata
 
+kc_rates <- paste0("https://www.kansascityfed.org/~/media/files/publicat/",
+                   "research/indicatorsdata/agcredit/latestdata/",
+                   c("variableinterestrates_kc.xls",
+                     "fixedinterestrates_kc.xls"))
+fed_file   <- paste(data_source, basename(kc_rates), sep = "/")
+set_config(config(ssl_verifypeer = 0L))
+map2(kc_rates, fed_file, function(x, y) GET(x, write_disk(y, overwrite = T)))
 
-kc_credit <- paste0("https://www.kansascityfed.org/research/indicatorsdata/~/",
-                     "media/a10e43ee52c945fe8d92ef16838b40bf.ashx")
+# excel_sheets(fed_file[2])
+
+kc_rates <- read_excel(fed_file[2], sheet = "Real Estate", skip = 5) %>% 
+  fill(Year) %>% 
+  mutate(quarter = case_when(Qtr. == 1 ~ "-03-31",
+                             Qtr. == 2 ~ "-06-30",
+                             Qtr. == 3 ~ "-09-30",
+                             Qtr. == 4 ~ "-12-31"),
+         date = as.Date(paste0(Year, quarter)))
+
+kc_fed <- kc_rates %>% 
+  filter(!is.na(date)) %>% 
+  select(date, kansas_fed_re = District)
+
+# Dallas Fed Agricultural Survey:
+#  https://www.dallasfed.org/research/econdata/ag.aspx
+
+dallas_rates <- paste0("https://www.dallasfed.org/-/media/Documents/",
+                       "research/agsurvey/data/agrates.xlsx")
+fed_file   <- paste(data_source, basename(dallas_rates), sep = "/")
+download.file(dallas_rates, fed_file)
+
+dallas_rates <- read_excel(fed_file, "fixed", skip = 3) %>% 
+  mutate(year = str_sub(Date, 1, 4),
+         Qtr = str_sub(Date, -2),
+         quarter = case_when(Qtr == "Q1" ~ "-03-31",
+                             Qtr == "Q2" ~ "-06-30",
+                             Qtr == "Q3" ~ "-09-30",
+                             Qtr == "Q4" ~ "-12-31"),
+         date = as.Date(paste0(year, quarter)))
+
+dallas_fed <- dallas_rates %>% 
+  select(date, dallas_fed_re = "Long-term farm real estate")
+
+suggestion <- dallas_fed %>% 
+  full_join(kc_fed) %>% 
+  full_join(chicago_fed) %>% 
+  arrange(date)
+
+cap_rate <- suggestion %>% 
+  mutate(tax_year = lubridate::year(date)) %>% 
+  select(-date) %>% 
+  group_by(tax_year) %>% 
+  summarise_all(~mean(. / 100, na.rm = T)) %>% 
+  left_join(cap_rate, .) 
+
+write_csv(cap_rate, "0-data/cap_rate/capitalization_rate.csv")
+
+# ---- ag-finance-databook ------------------------------------------------
+
+
+# Kansas City Fed puts together the Ag Finance Databook:
+#  https://www.kansascityfed.org/research/indicatorsdata/agfinancedatabook/past-issues
+
+kc_credit <- paste0("https://www.kansascityfed.org/~/media/files/publicat/",
+                     "research/indicatorsdata/agfinance/",
+                    "2019_q1_afd_historical_data.xlsx")
 fed_file   <- paste(data_source, basename(kc_credit), sep = "/")
-download.file(kc_credit, fed_file)
+set_config(config(ssl_verifypeer = 0L))
+GET(kc_credit, write_disk(fed_file, overwrite = T))
 
+# excel_sheets(fed_file)
+# "afdr_c4"
+j5 <- read_excel(fed_file, sheet = "afdr_c4")
 
+j5 <- j5 %>% 
+  select(Period, contains("real estate")) %>% 
+  rename_all(~str_remove_all(., " \\-.*")) %>% 
+  rename_all(~str_to_lower(str_remove_all(., '[[:punct:] ]+'))) %>% 
+  mutate_at(vars(-period), ~as.numeric(.) / 100) %>%
+  mutate(year = str_sub(period, 1, 4),
+         quarter = case_when(str_sub(period, 5, 6) == "Q1" ~ "-03-31",
+                             str_sub(period, 5, 6) == "Q2" ~ "-06-30",
+                             str_sub(period, 5, 6) == "Q3" ~ "-09-30",
+                             str_sub(period, 5, 6) == "Q4" ~ "-12-31"),
+         date = as.Date(paste0(year, quarter))) %>% 
+  select(-period, -year, -quarter)
 
+#######
+j5 %>% 
+  gather(var, val, -date) %>% 
+  ggplot(aes(date, val, color = var, linetype = var)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal()
+#######
+
+j5 %>% 
+  rename_all(~paste0(., "_fed_re")) %>% 
+  mutate(tax_year = lubridate::year(date_fed_re)) %>% 
+  group_by(tax_year) %>% 
+  summarise_all(~mean(., na.rm = T)) %>% 
+  View()
