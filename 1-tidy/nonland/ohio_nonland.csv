@@ -2258,7 +2258,7 @@ year,corn_cost_odt,soy_cost_odt,wheat_cost_odt,hay_cost_odt,corn_cost_add_odt,so
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,repairs,wheat,l1_low,18.72,variable costrepairswheatl1_low
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,repairs,wheat,l2_med,18.72,variable costrepairswheatl2_med
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,repairs,wheat,l3_high,18.72,variable costrepairswheatl3_high
-2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,seed,corn,cost,3.8,variable costseedcorncost
+2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,seed,corn,cost,3.5,variable costseedcorncost
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,seed,soy,cost,0.428,variable costseedsoycost
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,seed,wheat,cost,0.031,variable costseedwheatcost
 2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,variable cost,trucking,corn,cost,0.184,variable costtruckingcorncost

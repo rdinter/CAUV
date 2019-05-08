@@ -5,7 +5,7 @@ subtitle:  |
   | The Ohio State University
 author:
 - Robert Dinterman^[Post-Doctoral Researcher] and Ani L. Katchova^[Associate Professor and Farm Income Enhancement Chair]
-date: "2019-05-02"
+date: "2019-05-08"
 output:
   html_document:
     keep_md: yes
@@ -208,7 +208,7 @@ Table: Historical Corn Base Costs
  2017  $538.78         $540.77      $559.88          $521.58         
  2018  $529.28         $532.45      $561.46          $527.62         
  2019  $NA             $519.19      $553.37          $509.98         
- 2020  $NA             $500.25      $532.23          $493.05         
+ 2020  $NA             $500.25      $530.50          $493.05         
 
 
 Table: Historical Corn Additional Costs
@@ -222,7 +222,7 @@ Table: Historical Corn Additional Costs
  2017  $1.45          $1.47        $1.54            $1.40           
  2018  $1.44          $1.44        $1.52            $1.42           
  2019  $NA            $1.41        $1.53            $1.34           
- 2020  $NA            $1.39        $1.49            $1.33           
+ 2020  $NA            $1.39        $1.48            $1.33           
 
 \newpage
 

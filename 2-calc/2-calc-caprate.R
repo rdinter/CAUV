@@ -37,6 +37,19 @@ mortgage_alt <- function(r, n) {
   y = (1 - 1 / (1 + r)^(n - 5))
   return((x - y) / x)
 }
+# Take the vector of costs that are averaged and replaced the most recent with
+#  a 0 for high and Inf for low -- these reference the CAUV projection
+mean_high <- function(x, ...) {
+  n    <- length(x)
+  x[n] <- 0
+  mean(x, ...)
+}
+mean_low <- function(x, ...) {
+  n    <- length(x)
+  x[n] <- Inf
+  mean(x, ...)
+}
+
 
 # ---- calc ---------------------------------------------------------------
 

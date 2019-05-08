@@ -2,7 +2,7 @@
 
 Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each soil type in Ohio, based on the [2017 formulation](https://ofbf.org/2017/08/24/cauv-reform-passed/) which substantially changed from previous years. The Ohio Department of Taxation (ODT) provides an [overview of the caclulation for CAUV values](https://www.tax.ohio.gov/real_property/cauv.aspx) which are used within this repository.
 
-The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation. Likely of most interest is the [current projections](3-proj/) for CAUV that you can find by clicking that link.
+The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation. Likely of most interest is the [current projections](3-proj/) for CAUV that you can find by clicking that link. A more dynamic version with descriptions is available at [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020) -- [PDF version also available](4-presentations/4-projections-2019-2020.pdf)
 
 # Components:
 
@@ -48,6 +48,7 @@ The structure of the repository is as follows:
         - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
 - [4-presentations/](4-presentations/)
     - [Farm Science Review](4-presentations/4-FSR-2018)
+    - [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020)
 
 
 ## Years Used in CAUV Calculation
