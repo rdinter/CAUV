@@ -5,7 +5,7 @@ subtitle:  |
   | The Ohio State University
 author:
 - Robert Dinterman^[Post-Doctoral Researcher] and Ani L. Katchova^[Associate Professor and Farm Income Enhancement Chair]
-date: "2019-05-08"
+date: "2019-05-17"
 output:
   html_document:
     keep_md: yes
@@ -31,22 +31,22 @@ The purpose of this report is to provide projections of property tax for agricul
 
 **Key Findings**
 
-- Project a decrease in the average CAUV value across all soil types in Ohio to approximately $870 in the 2019 tax year. This represents a -14% change from the average 2018 CAUV value of $1,015, although counties receiving updates in 2019 last updated CAUV values in 2016 and we project a -33% change from the average 2016 CAUV value of $1,310.
-- The 2019 tax year is the third year of the phase-in from large-scale changes in the calculation of CAUV values. If the phase-in procedure was not in place, then the average 2019 CAUV values would have further dropped to approximately $730.
-- Due to uncertainty in finalized input data used in our 2019 CAUV calculations, it is possible for the average CAUV value to change from 2018 average CAUV value by as much as -23% while it is also possible for the average CAUV value to rise by over 27%. However, an increase in CAUV values for 2019 is unlikely.
-- Current CAUV projections for the 2020 tax year, which represents the first year without the phased-in procedure, expects a further decline in the average CAUV value to $585 which would be a -33% change from current projections in 2019. Counties receiving an update in 2020 last received an update in 2017 and we anticipate a -49% change from 2017 when the average CAUV value was $1,155.
-- Due to uncertainty in finalized input data used in our 2020 CAUV calculations, it is possible for the average CAUV value to change from 2019 average CAUV value by as much as -42% while it is also possible for the average CAUV value to rise by over 6%. However, an increase in CAUV values for 2020 is unlikely.
+- Project a decrease in the average CAUV value across all soil types in Ohio to approximately $870 in the 2019 tax year. This represents a -14% change from the average 2018 CAUV value of $1,015, although counties receiving updates in 2019 last updated CAUV values in 2016 and we project a -34% change from the average 2016 CAUV value of $1,310.
+- The 2019 tax year is the third year of the phase-in from large-scale changes in the calculation of CAUV values. If the phase-in procedure was not in place, then the average 2019 CAUV values would have further dropped to approximately $725.
+- Due to uncertainty in finalized input data used in our 2019 CAUV calculations, it is possible for the average CAUV value to change from 2018 average CAUV value by as much as -22% while it is also possible for the average CAUV value to rise by over 27%. However, an increase in CAUV values for 2019 is unlikely.
+- Current CAUV projections for the 2020 tax year, which represents the first year without the phased-in procedure, expects a further decline in the average CAUV value to $580 which would be a -33% change from current projections in 2019. Counties receiving an update in 2020 last received an update in 2017 and we anticipate a -50% change from 2017 when the average CAUV value was $1,155.
+- Due to uncertainty in finalized input data used in our 2020 CAUV calculations, it is possible for the average CAUV value to change from 2019 average CAUV value by as much as -42% while it is also possible for the average CAUV value to rise by over 7%. However, an increase in CAUV values for 2020 is unlikely.
 
 \newpage
 \setstretch{1.5}
 
 # CAUV Value Projections for 2019 and 2020
 
-In 2018, the average CAUV value across all soil types was $1,015 per Ohio Department of Taxation (ODT). Our projection for the average value of CAUV in the 2019 tax year is $872. Our projections are partially based on how the CAUV formula use Olympic averaging[^olympic] for certain components and it is possible for a potential high of $1,287 and a low of $787 for average CAUV values. However, eventual CAUV values are unlikely to have a substantial divergence from our expected projections based on the currently available data for components which use Olympic averaging.
+In 2018, the average CAUV value across all soil types was $1,015 per Ohio Department of Taxation (ODT). Our projection for the average value of CAUV in the 2019 tax year is $871. Our projections are partially based on how the CAUV formula use Olympic averaging[^olympic] for certain components and it is possible for a potential high of $1,288 and a low of $787 for average CAUV values. However, eventual CAUV values are unlikely to have a substantial divergence from our expected projections based on the currently available data for components which use Olympic averaging.
 
 <!-- ODT provides [general information](https://www.tax.ohio.gov/real_property/cauv.aspx) on their calculations for CAUV and how they calculate the CAUV value for each soil type across Ohio although this document will also describe the calculation procedure. Their information also includes the official values of inputs that ODT uses in the formula for CAUV values and is the only official documentation and values for CAUV. -->
 
- <!-- -- however with as much information currently known these high or low scenarios are unlikely and we anticipate only slight divergences from average CAUV value projection of $872 -->
+ <!-- -- however with as much information currently known these high or low scenarios are unlikely and we anticipate only slight divergences from average CAUV value projection of $871 -->
 
 [^olympic]: A 7-year Olympic average is a mean of the previous 7 values after first removing the highest and lowest values from calculation. For projections, we assume the most recent data is either the highest/lowest value in the 7 year span.
 
@@ -67,7 +67,7 @@ Our projections for the CAUV values in the 2019 tax year are for the components 
 <p class="caption">\label{fig:exp-trend}</p>
 </div>
 
-The projected CAUV values are partially offset by the current provision in the CAUV calculations that phases in the new formula for CAUV, smoothing the adjustment to lower CAUV values the one cycle of property reassessment rather than these declines occurring immediately. The 2018 values had an adjustment factor where only half of the difference was included between the 2017 CAUV value and what the pre-adjusted 2018 CAUV would have been. This also occurs for 2019, where if the calculated CAUV value in 2019 is lower than the 2018 CAUV value for a soil type then only half of the difference is factored into the actual 2019 CAUV value. While the projected average CAUV value for 2019 is $872, the value would have been $729 without the phase-in. Figure \ref{fig:exp-2019} shows how much this adjustment for phasing in of the new calculations differ by soil types:
+The projected CAUV values are partially offset by the current provision in the CAUV calculations that phases in the new formula for CAUV, smoothing the adjustment to lower CAUV values the one cycle of property reassessment rather than these declines occurring immediately. The 2018 values had an adjustment factor where only half of the difference was included between the 2017 CAUV value and what the pre-adjusted 2018 CAUV would have been. This also occurs for 2019, where if the calculated CAUV value in 2019 is lower than the 2018 CAUV value for a soil type then only half of the difference is factored into the actual 2019 CAUV value. While the projected average CAUV value for 2019 is $871, the value would have been $727 without the phase-in. Figure \ref{fig:exp-2019} shows how much this adjustment for phasing in of the new calculations differ by soil types:
 
 <div class="figure">
 <img src="4-projections-2019-2020_files/figure-html/exp-2019-1.png" alt="\label{fig:exp-2019}" width="100%" />
@@ -172,8 +172,8 @@ Table: Historical Wheat Rotation
  2016  6.8%        560,000                593,000               6.9%      
  2017  6.0%        460,000                535,000               6.2%      
  2018  6.0%        450,000                537,000               6.2%      
- 2019  NA%         NA                     499,000               5.7%      
- 2020  NA%         NA                     486,947               5.6%      
+ 2019  NA%         420,000                499,000               5.7%      
+ 2020  NA%         NA                     474,000               5.5%      
 
 
 ### Non-Land Cost
@@ -182,7 +182,7 @@ The non-land costs are calculated as 7-year Olympic averages for typical costs o
 
 Prior to 2015, the non-land costs were lagged one year -- i.e. tax year 2014 used the values from budgets in 2007 to 2013. From 2015 onward, the current year values are included in the non-land cost calculations. Because of the nature of an Olympic average, the non-land costs used in 2019 CAUV is bounded between a "high" and a "low" value by averaging the previous 6-years after dropping only the highest or lowest value respectively. In the event that the "high" value of our projected non-land costs occur, then this is where the 2019 non-land costs are all the lowest values in the previous 7-years which causes the CAUV to be a higher value. The opposite is true for the "low" value in that the non-land costs are all 7-year highs.
 
-Our projection of non-land base costs for corn is $519; for soybeans is $339; and for wheat is $320 per acre for 2019. For 2020, our projections are $500 for corn; $330 for soybeans; and $308 for wheat. The historical and projected values for each commodity are displayed in figure \ref{fig:viz-nonland}:
+Our projection of non-land base costs for corn is $520; for soybeans is $339; and for wheat is $319 per acre for 2019. For 2020, our projections are $502 for corn; $330 for soybeans; and $308 for wheat. The historical and projected values for each commodity are displayed in figure \ref{fig:viz-nonland}:
 
 <div class="figure">
 <img src="4-projections-2019-2020_files/figure-html/viz-nonland-1.png" alt="\label{fig:viz-nonland}" width="100%" />
@@ -207,8 +207,8 @@ Table: Historical Corn Base Costs
  2016  $524.47         $526.74      $545.30          $502.49         
  2017  $538.78         $540.77      $559.88          $521.58         
  2018  $529.28         $532.45      $561.46          $527.62         
- 2019  $NA             $519.19      $553.37          $509.98         
- 2020  $NA             $500.25      $530.50          $493.05         
+ 2019  $NA             $520.23      $553.31          $509.92         
+ 2020  $NA             $501.78      $532.06          $493.05         
 
 
 Table: Historical Corn Additional Costs
@@ -222,7 +222,7 @@ Table: Historical Corn Additional Costs
  2017  $1.45          $1.47        $1.54            $1.40           
  2018  $1.44          $1.44        $1.52            $1.42           
  2019  $NA            $1.41        $1.53            $1.34           
- 2020  $NA            $1.39        $1.48            $1.33           
+ 2020  $NA            $1.39        $1.49            $1.32           
 
 \newpage
 
@@ -237,8 +237,8 @@ Table: Historical Soybeans Base Costs
  2016  $336.33         $336.63      $346.37          $317.49         
  2017  $347.10         $346.25      $358.49          $332.90         
  2018  $346.26         $346.69      $362.95          $338.83         
- 2019  $NA             $338.88      $360.66          $330.01         
- 2020  $NA             $329.95      $349.23          $322.37         
+ 2019  $NA             $339.13      $360.62          $329.97         
+ 2020  $NA             $330.22      $349.67          $321.96         
 
 
 Table: Historical Soybeans Additional Costs
@@ -251,8 +251,8 @@ Table: Historical Soybeans Additional Costs
  2016  $1.07          $1.07        $1.14            $1.06           
  2017  $1.05          $1.04        $1.13            $1.04           
  2018  $0.94          $0.95        $1.03            $0.93           
- 2019  $NA            $0.92        $0.99            $0.83           
- 2020  $NA            $0.91        $0.96            $0.84           
+ 2019  $NA            $0.91        $0.99            $0.83           
+ 2020  $NA            $0.91        $0.96            $0.81           
 
 \newpage
 
@@ -267,8 +267,8 @@ Table: Historical Wheat Base Costs
  2016  $323.52         $320.21      $330.25          $296.77         
  2017  $336.21         $336.08      $348.08          $316.21         
  2018  $330.53         $331.13      $349.74          $326.08         
- 2019  $NA             $319.52      $341.07          $311.39         
- 2020  $NA             $307.73      $328.28          $302.81         
+ 2019  $NA             $319.14      $340.90          $311.23         
+ 2020  $NA             $307.97      $329.05          $300.32         
 
 
 Table: Historical Wheat Additional Costs
@@ -281,8 +281,8 @@ Table: Historical Wheat Additional Costs
  2016  $1.64          $1.64        $1.75            $1.62           
  2017  $1.62          $1.62        $1.74            $1.63           
  2018  $1.49          $1.49        $1.65            $1.47           
- 2019  $NA            $1.39        $1.54            $1.30           
- 2020  $NA            $1.33        $1.45            $1.26           
+ 2019  $NA            $1.40        $1.54            $1.30           
+ 2020  $NA            $1.33        $1.45            $1.24           
 
 \newpage
 
@@ -367,7 +367,7 @@ Each soil type has a corresponding base yield of production for each commodity f
 
 ODT began adjusting for yield trends through the current method of taking the 7-year averages of state-wide yields (irrespective of soil type), dividing by the state-wide yields for each commodity in 1984, then multiplying this value based on the 1984 commodity yield for the particular soil type evaluated. This can be thought of as an adustment factor to account for the general trend of increasing yields in corn, wheat, and soybeans. Prior to 2014, the 7-year calculation involved a two year lag -- i.e. the 2014 tax year used average yield values from 2003 through 2012. In 2015 and beyond, there is only a one year lag -- i.e. 2015 tax year used average yield values from 2005 through 2014.
 
-The values for commodity yields for tax year 2019 are known because USDA has published their 2018 values for each commodity -- however for unknown future values we use the 30-year yield trend. The yield values for the 2019 CAUV calculations are 163 for corn, 50.4 for soybeans, and 69.7 for wheat. Our yield projections for the 2020 CAUV calculations are 163.2 for corn, 50.8 for soybeans, and 70.1 for wheat. These historical yield trends are displayed in figure \ref{fig:yields} and in the following tables:
+The values for commodity yields for tax year 2019 are known because USDA has published their 2018 values for each commodity -- however for unknown future values we use the 30-year yield trend. The yield values for the 2019 CAUV calculations are 163 for corn, 50.4 for soybeans, and 69.7 for wheat. Our yield projections for the 2020 CAUV calculations are 163.2 for corn, 50.8 for soybeans, and 69.5 for wheat. These historical yield trends are displayed in figure \ref{fig:yields} and in the following tables:
 
 <div class="figure">
 <img src="4-projections-2019-2020_files/figure-html/viz-yields-1.png" alt="\label{fig:yields}" width="100%" />
@@ -433,8 +433,8 @@ Table: Historical Wheat Yields
  2016        66.7           80              66.4
  2017        67.9           74              67.6
  2018        69.2           75              68.9
- 2019          NA           NA              69.7
- 2020          NA           NA              70.1
+ 2019          NA           69              69.7
+ 2020          NA           NA              69.5
 
 
 ## Capitalization Rate

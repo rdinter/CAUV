@@ -7,12 +7,12 @@ author:
 - Robert Dinterman^[Post-Doctoral Researcher] and Ani L. Katchova^[Associate Professor and Farm Income Enhancement Chair]
 date: "`r Sys.Date()`"
 output:
+  html_document:
+    keep_md: yes
+  word_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
-  word_document: default
-  html_document:
-    keep_md: yes
 header-includes:
    - \usepackage{floatrow}
    - \floatsetup[figure]{capposition=top}
