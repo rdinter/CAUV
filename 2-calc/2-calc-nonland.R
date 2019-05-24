@@ -145,7 +145,7 @@ non_land <- non_land_costs %>%
   group_by(year, crop) %>% 
   summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
             base_yield = yield[level == "l1_low"],
-            interest_cost = interest[level=="cost"]*months[level=="cost"]/12,
+            # Variable Costs except interest
             base1 = base_value(seed, level) + base_value(n, level) +
               base_value(p2o5, level) + base_value(k2o, level) +
               base_value(lime, level) + chemicals[level == "cost"] +
@@ -155,7 +155,13 @@ non_land <- non_land_costs %>%
               variable_miscellaneous[level == "l1_low"] +
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
-            base = base1 + base1*interest_cost +
+            # Interest on variable costs except drying, hauling, crop insurance
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
+                                             drying[level == "cost"]*yield[level == "l1_low"] -
+                                             trucking[level == "cost"]*yield[level == "l1_low"]),
+            # Add in fixed costs
+            base = base1 + interest_cost +
               labor[level == "cost"] + machine[level == "cost"] +
               ifelse(is.na(fixed_miscellaneous1[level == "l1_low"]), 0,
                      fixed_miscellaneous1[level == "l1_low"]),
@@ -166,7 +172,7 @@ non_land <- non_land_costs %>%
               add_value(lime, level)/yield_adj +
               add_value(variable_miscellaneous, level)/yield_adj +
               drying[level == "cost"] + trucking[level == "cost"],
-            add = (1 + interest_cost)*add1) %>% 
+            add = (1 + interest_rate*(add1 - drying[level == "cost"] - trucking[level == "cost"]))*add1) %>% 
   arrange(desc(year)) %>%
   select(year, crop, cost_cauv = base, cost_add_cauv = add,
          base_cauv = base_yield) %>% 
@@ -180,7 +186,7 @@ non_high <- non_high_costs %>%
   group_by(year, crop) %>% 
   summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
             base_yield = yield[level == "l1_low"],
-            interest_cost = interest[level=="cost"]*months[level=="cost"]/12,
+            # Variable Costs except interest
             base1 = base_value(seed, level) + base_value(n, level) +
               base_value(p2o5, level) + base_value(k2o, level) +
               base_value(lime, level) + chemicals[level == "cost"] +
@@ -190,7 +196,13 @@ non_high <- non_high_costs %>%
               variable_miscellaneous[level == "l1_low"] +
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
-            base = base1 + base1*interest_cost +
+            # Interest on variable costs except drying, hauling, crop insurance
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
+                                             drying[level == "cost"]*yield[level == "l1_low"] -
+                                             trucking[level == "cost"]*yield[level == "l1_low"]),
+            # Add in fixed costs
+            base = base1 + interest_cost +
               labor[level == "cost"] + machine[level == "cost"] +
               ifelse(is.na(fixed_miscellaneous1[level == "l1_low"]), 0,
                      fixed_miscellaneous1[level == "l1_low"]),
@@ -201,7 +213,7 @@ non_high <- non_high_costs %>%
               add_value(lime, level)/yield_adj +
               add_value(variable_miscellaneous, level)/yield_adj +
               drying[level == "cost"] + trucking[level == "cost"],
-            add = (1 + interest_cost)*add1) %>% 
+            add = (1 + interest_rate*(add1 - drying[level == "cost"] - trucking[level == "cost"]))*add1) %>% 
   arrange(desc(year)) %>%
   select(year, crop, cost_cauv_h = base, cost_add_cauv_h = add,
          base_cauv_h = base_yield) %>% 
@@ -214,7 +226,7 @@ non_low <- non_low_costs %>%
   group_by(year, crop) %>% 
   summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
             base_yield = yield[level == "l1_low"],
-            interest_cost = interest[level=="cost"]*months[level=="cost"]/12,
+            # Variable Costs except interest
             base1 = base_value(seed, level) + base_value(n, level) +
               base_value(p2o5, level) + base_value(k2o, level) +
               base_value(lime, level) + chemicals[level == "cost"] +
@@ -224,7 +236,13 @@ non_low <- non_low_costs %>%
               variable_miscellaneous[level == "l1_low"] +
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
-            base = base1 + base1*interest_cost +
+            # Interest on variable costs except drying, hauling, crop insurance
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
+                                             drying[level == "cost"]*yield[level == "l1_low"] -
+                                             trucking[level == "cost"]*yield[level == "l1_low"]),
+            # Add in fixed costs
+            base = base1 + interest_cost +
               labor[level == "cost"] + machine[level == "cost"] +
               ifelse(is.na(fixed_miscellaneous1[level == "l1_low"]), 0,
                      fixed_miscellaneous1[level == "l1_low"]),
@@ -235,7 +253,7 @@ non_low <- non_low_costs %>%
               add_value(lime, level)/yield_adj +
               add_value(variable_miscellaneous, level)/yield_adj +
               drying[level == "cost"] + trucking[level == "cost"],
-            add = (1 + interest_cost)*add1) %>% 
+            add = (1 + interest_rate*(add1 - drying[level == "cost"] - trucking[level == "cost"]))*add1) %>% 
   arrange(desc(year)) %>%
   select(year, crop, cost_cauv_l = base, cost_add_cauv_l = add,
          base_cauv_l = base_yield) %>% 
