@@ -82,12 +82,14 @@ pd30_vals <- map(tax_files, function(x){
                    "total_property_tax", "special_assessments")
   }
   j5 <- mutate_at(j5, vars(real_property_value:special_assessments),
-                  funs(1000*as.numeric(gsub(",", "", gsub("\\$", "", .)))))
+                  list(~1000*as.numeric(gsub(",", "", gsub("\\$", "", .)))))
   j5$county <- tolower(j5$county)
   j5$county <- ifelse(j5$county == "putnum", "putnam", j5$county)
   j5$year <- as.numeric(substr(basename(x), 7, 8))
-  # hack for creating a year variable
-  j5$year <- ifelse(j5$year < 80, 2000 + j5$year, 1900 + j5$year)
+  # hack for creating a year variable, table comes out in 2018 calendar year
+  #  but is for the 2017 tax year so subtract a year
+  j5$year <- ifelse(j5$year < 80, 2000 + j5$year - 1, 1900 + j5$year - 1)
+  
   return(j5)
 })
 

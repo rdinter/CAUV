@@ -82,13 +82,15 @@ pr6_vals <- map(tax_files, function(x){
                  "tangible_millage")
   j5 <- j5 %>% 
     group_by(county) %>% 
-    mutate_all(funs(as.numeric(gsub(",", "", gsub("\\$", "", .))))) %>% 
+    mutate_at(vars(-group_cols()),
+              list(~as.numeric(gsub(",", "", gsub("\\$", "", .))))) %>% 
     ungroup()
   j5$county <- tolower(j5$county)
   j5$county <- ifelse(j5$county == "putnum", "putnam", j5$county)
   j5$year <- as.numeric(substr(basename(x), 6, 7))
-  # hack for creating a year variable
-  j5$year <- ifelse(j5$year < 80, 2000 + j5$year, 1900 + j5$year)
+  # hack for creating a year variable, table comes out in 2018 calendar year
+  #  but is for the 2017 tax year so subtract a year
+  j5$year <- ifelse(j5$year < 80, 2000 + j5$year - 1, 1900 + j5$year - 1)
   return(j5)
 })
 
