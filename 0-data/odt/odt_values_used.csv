@@ -1,4 +1,5 @@
 tax_year,cap_rate_odt,corn_yield_odt,soy_yield_odt,wheat_yield_odt,corn_price_odt,soy_price_odt,wheat_price_odt,hay_price_odt,corn_cost_odt,soy_cost_odt,wheat_cost_odt,hay_cost_odt,corn_cost_add_odt,soy_cost_add_odt,wheat_cost_add_odt,hay_cost_add_odt,corn_base_odt,soy_base_odt,wheat_base_odt,hay_base_odt,corn_rotate_odt,soy_rotate_odt,wheat_rotate_odt,hay_rotate_odt
+2019,0.08,164.1,50.4,69.9,3.68,9.78,5.15,,517.63,338.54,319.08,,1.43,0.9,1.41,,131,39,58,,0.38,0.56,0.06,
 2018,0.08,158.9,48.2,69.2,4.18,10.43,5.52,,529.28,346.26,330.53,,1.44,0.94,1.49,,129,38,58,,0.39,0.55,0.06,
 2017,0.08,156.2,47.9,67.9,4.51,10.83,5.53,,538.78,347.1,336.21,,1.45,1.05,1.62,,127,37,56,,0.4,0.54,0.06,
 2016,0.063,156.2,47.2,66.7,4.49,10.91,5.53,,524.47,336.33,323.52,,1.38,1.07,1.64,,125,37,55,,0.402,0.53,0.068,

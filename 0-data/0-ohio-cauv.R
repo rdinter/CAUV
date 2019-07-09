@@ -34,18 +34,19 @@ cauv_files <- c("real_property/cauv_table_ty2009.xls",
                 "real_property/2015_Table_for_ODT_Web.xls",
                 "real_property/CAUV2016Table.xlsx",
                 "real_property/CAUV2017Table.xlsx",
-                "real_property/CAUV2018Table.xlsx")
+                "real_property/CAUV2018Table.xlsx",
+                "real_property/CAUV2019Table.xlsx")
 
 cauv_urls <- paste0(base_url, cauv_files)
 
 cauv_files <- c("cauv_2009.xls", "cauv_2010.xls", "cauv_2011.xls",
                 "cauv_2012.xls", "cauv_2013.xlsx", "cauv_2014.xlsx",
                 "cauv_2015.xls", "cauv_2016.xlsx", "cauv_2017.xlsx",
-                "cauv_2018.xlsx")
+                "cauv_2018.xlsx", "cauv_2019.xlsx")
 
 map2(cauv_urls, cauv_files, function(x, y) {
   file_name <- paste0(data_source, "/", y)
-  if (!file.exists(file_name)) download.file(x, file_name)
+  if (!file.exists(file_name)) download.file(x, file_name, mode = "wb")
 })
 
 cauv_files <- dir(data_source, full.names = T, pattern = "cauv")
@@ -169,6 +170,13 @@ cauv <- cauv %>%
 write_csv(cauv, paste0(local_dir, "/cauv_soils.csv"))
 write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
 
+# Wide values for cropland CAUV
+
+cauv %>% 
+  select(-woodland) %>% 
+  spread(year, cropland) %>% 
+  write_csv(paste0(local_dir, "/ohio_cauv_soils_wide.csv"))
+
 # Now calculate the non-adjusted 2017 values
 
 readjust <- function(x) ifelse((max(x) - min(x)) == 0, max(x),
@@ -194,7 +202,17 @@ unadj2018 <- cauv %>%
             year = 2018) %>% 
   ungroup()
 
-unadj <- bind_rows(unadj2017, unadj2018)
+# And finally 2019 ones
+unadj2019 <- cauv %>% 
+  filter(year %in% c(2018, 2019)) %>% 
+  group_by(id, soil_series, texture, slope, erosion, drainage,
+           prod_index, indx) %>% 
+  summarise(cropland_unadj = readjust(cropland),
+            woodland_unadj = readjust(woodland),
+            year = 2019) %>% 
+  ungroup()
+
+unadj <- bind_rows(unadj2017, unadj2018, unadj2019)
 
 write_csv(unadj, paste0(local_dir, "/cauv_unadj.csv"))
 write_rds(unadj, paste0(local_dir, "/cauv_unadj.rds"))
@@ -226,7 +244,7 @@ tax_download <- purrr::map(tax_urls, function(x){
     paste0("http://www.tax.ohio.gov", .)
   dfile <- paste0(data_source, "/", tolower(basename(dlinks)))
   purrr::map2(dfile, dlinks, function(x, y){
-    if (!file.exists(x)) download.file(y, x)
+    if (!file.exists(x)) download.file(y, x, mode = "wb")
   })
 })
 
