@@ -152,11 +152,11 @@ cauv <- cauv %>%
                           prod_index < 80  ~ "indx_79",
                           prod_index < 90  ~ "indx_89",
                           prod_index < 100 ~ "indx_99",
-                          T ~ "indx_100")) %>% 
+                          T ~ "indx_100"),
+         indx = factor(indx, c("indx_100", "indx_99",
+                               "indx_89", "indx_79",
+                               "indx_69", "indx_59", "indx_49"))) %>% 
   ungroup()
-
-cauv$indx <- factor(cauv$indx, c("indx_100", "indx_99", "indx_89", "indx_79",
-                                 "indx_69", "indx_59", "indx_49"))
 
 cauv <- mutate(cauv,
                id = paste0(soil_series, texture, slope, erosion, drainage))
@@ -165,7 +165,19 @@ cauv <- cauv %>%
   rename(prod = prod_index) %>% 
   left_join(dot_soils) %>% 
   mutate(prod_index = ifelse(is.na(prod_index), prod, prod_index)) %>% 
-  select(-prod, soy_base = soybeans_base)
+  select(-prod, soy_base = soybeans_base) %>% 
+  # A new productivity index based on only corn, soybeans, and wheat with a max of 15,024
+  mutate(prod_index_new = round((56*corn_base + 60*soy_base + 60*wheat_base) / 150),
+         indx_new = case_when(prod_index_new < 50  ~ "indx_49",
+                              prod_index_new < 60  ~ "indx_59",
+                              prod_index_new < 70  ~ "indx_69",
+                              prod_index_new < 80  ~ "indx_79",
+                              prod_index_new < 90  ~ "indx_89",
+                              prod_index_new < 100 ~ "indx_99",
+                              T ~ "indx_100"),
+         indx_new = factor(indx_new, c("indx_100", "indx_99",
+                                       "indx_89", "indx_79",
+                                       "indx_69", "indx_59", "indx_49")))
 
 write_csv(cauv, paste0(local_dir, "/cauv_soils.csv"))
 write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
