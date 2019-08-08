@@ -17,7 +17,8 @@ if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 prices <- map(c("CORN", "HAY", "SOYBEANS", "WHEAT"), function(x){
   nass_data(commodity_desc = x, statisticcat_desc = "PRICE RECEIVED",
-            state_name = "OHIO", numeric_vals = T)})
+            state_name = "OHIO", numeric_vals = T)
+  })
 
 from_price <- c("CORN, GRAIN - PRICE RECEIVED, MEASURED IN $ / BU",
                 "HAY, ALFALFA - PRICE RECEIVED, MEASURED IN $ / TON",
@@ -215,3 +216,71 @@ write.csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"),
           row.names = F)
 write_rds(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.rds"))
 
+
+# ---- county -------------------------------------------------------------
+
+county_crops <- map(c(corn_vals, soy_vals, wheat_vals), function(x){
+  nass_data(short_desc = x, agg_level_desc = "COUNTY", state_name = "OHIO",
+            sector = "CROPS", source_desc = "SURVEY",
+            numeric_vals = T)
+})
+
+
+crops <- county_crops %>% 
+  bind_rows() %>% 
+  mutate(county = tolower(county_name),
+         year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = c(corn_vals, soy_vals, wheat_vals),
+                                      to = c(corn_names, soy_names, wheat_names))) %>% 
+  select(year, county, county_code, asd_desc, val = Value, short_desc) %>% 
+  spread(short_desc, val)
+
+# Livestock
+## DO WE NEED ADDITIONAL?
+cattle <- c("CATTLE, COWS, MILK - INVENTORY",
+            "CATTLE, INCL CALVES - INVENTORY")
+cattle_names <- c("cattle_milk_inventory", "cattle_inventory")
+ohio_livestock <- map(cattle, function(x){
+  nass_data(short_desc = x, agg_level_desc = "COUNTY", state_name = "OHIO",
+            source_desc = "SURVEY", numeric_vals = T)
+})
+
+livestock <- ohio_livestock %>% 
+  bind_rows() %>% 
+  mutate(county = tolower(county_name),
+         year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = cattle,
+                                      to = cattle_names)) %>% 
+  select(year, county, county_code, asd_desc, val = Value, short_desc) %>% 
+  spread(short_desc, val)
+
+crops <- crops %>%
+  full_join(livestock) %>% 
+  expand(nesting(county, county_code, asd_desc), year) %>% 
+  left_join(crops) %>% 
+  left_join(livestock)
+
+crops <- crops %>% 
+  group_by(year, asd_desc) %>% 
+  mutate_at(vars(corn_acres_planted:cattle_milk_inventory),
+            list(~ifelse(is.na(.), .[county_code == "998"], .))) %>% 
+  filter(county_code != "998")
+
+# Drop out winter wheat, just have wheat
+crops <- crops %>% 
+  mutate(wheat_acres_harvest = ifelse(is.na(wheat_acres_harvest),
+                                      wheat_winter_acres_harvest,
+                                      wheat_acres_harvest),
+         wheat_acres_planted = ifelse(is.na(wheat_acres_planted),
+                                      wheat_winter_acres_planted,
+                                      wheat_acres_planted),
+         wheat_prod_bu = ifelse(is.na(wheat_prod_bu),
+                                wheat_winter_prod_bu, wheat_prod_bu),
+         wheat_yield = ifelse(is.na(wheat_yield),
+                              wheat_winter_yield, wheat_yield)) %>% 
+  select(-contains("winter"))
+
+write.csv(crops, paste0(local_dir, "/ohio_county_crops.csv"), row.names = F)
+write_rds(crops, paste0(local_dir, "/ohio_county_crops.rds"))
