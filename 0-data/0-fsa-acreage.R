@@ -177,7 +177,8 @@ df_summary <- df_all %>%
   group_by(year, fips, state_code, county_code,
            crop_code, crop, irrigation_practice) %>%
   summarise_at(vars(planted_acres, prevented_acres, failed_acres,
-                    not_planted_acres, planted_and_failed_acres), sum)
+                    not_planted_acres, planted_and_failed_acres), sum) %>% 
+  ungroup()
 
 write_csv(df_summary, paste0(local_dir, "/acreage/fsa_acreage.csv"))
 write_rds(df_summary, paste0(local_dir, "/acreage/fsa_acreage.rds"))

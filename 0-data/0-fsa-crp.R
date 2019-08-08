@@ -13,9 +13,12 @@ if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 # crp_url <- paste0("https://www.fsa.usda.gov/Assets/USDA-FSA-Public/",
 #                   "usdafiles/Conservation/Excel/countypayments8616.xlsx")
+# crp_url <- paste0("https://www.fsa.usda.gov/Assets/USDA-FSA-Public/",
+#                   "usdafiles/Conservation/Excel/",
+#                   "CRP%20Rental%20Payment%20History%20By%20County1.xlsx")
 crp_url <- paste0("https://www.fsa.usda.gov/Assets/USDA-FSA-Public/",
-                  "usdafiles/Conservation/Excel/",
-                  "CRP%20Rental%20Payment%20History%20By%20County1.xlsx")
+                  "usdafiles/Conservation/Excel/CRP%20Enrollment%20and%20",
+                  "Rental%20Payments%20by%20County%201986-2018.xlsx")
 
 crp_file <- paste0(data_source, "/", basename(crp_url))
 
