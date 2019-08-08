@@ -74,6 +74,13 @@ pd30_vals <- map(tax_files, function(x){
                    "total_property_value", "real_property_tax",
                    "public_utility_property_tax", "tangible_property_tax",
                    "total_property_tax", "special_assessments")
+  } else if (ncol(j5) == 14) {
+    j5 <- j5[,1:10]
+    names(j5) <- c("county", "real_property_value",
+                   "public_utility_property_value", "tangible_property_value",
+                   "total_property_value", "real_property_tax",
+                   "public_utility_property_tax", "tangible_property_tax",
+                   "total_property_tax", "special_assessments")
   } else {
     j5 <- j5[,1:8]
     names(j5) <- c("county", "real_property_value",
@@ -88,13 +95,18 @@ pd30_vals <- map(tax_files, function(x){
   j5$year <- as.numeric(substr(basename(x), 7, 8))
   # hack for creating a year variable, table comes out in 2018 calendar year
   #  but is for the 2017 tax year so subtract a year
-  j5$year <- ifelse(j5$year < 80, 2000 + j5$year - 1, 1900 + j5$year - 1)
+  # j5$tax_year <- ifelse(j5$year < 70, 2000 + j5$year + 1, 1900 + j5$year + 1)
+  j5$year     <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
   
   return(j5)
 })
 
 pd30_vals <- bind_rows(pd30_vals) %>% 
-  mutate(county = ifelse(county == "guernesey", "guernsey", county))
+  mutate(county = ifelse(county == "guernesey", "guernsey", county)) %>% 
+  # Problem between tax year 1995 and 2012 where values are off by $1,000
+  mutate_at(vars(real_property_value:special_assessments),
+            ~case_when(year > 1994 & year < 2013 ~ 1000*.,
+                       T ~ .))
 
 pd30_vals <- arrange(pd30_vals, year, county)
 

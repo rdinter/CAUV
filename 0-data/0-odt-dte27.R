@@ -2,6 +2,8 @@
 # http://www.tax.ohio.gov/tax_analysis/tax_data_series/
 #  publications_tds_property.aspx
 
+# NEED TO: adjust year for tax_year
+
 # ---- start --------------------------------------------------------------
 
 library("httr")

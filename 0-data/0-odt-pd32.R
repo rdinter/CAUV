@@ -82,7 +82,9 @@ cauv_vals_map <- map(tax_files, function(x){
   j5$year <- as.numeric(substr(basename(x), 7, 8))
   
   # hack for creating a year variable
-  j5$year <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
+  # j5$tax_year <- ifelse(j5$year < 70, 2000 + j5$year + 1, 1900 + j5$year + 1)
+  j5$year     <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
+  
   return(j5)
 })
 
@@ -118,8 +120,7 @@ hack_vals <- hack %>%
             acres_cauv = sum(ACRES, na.rm = T),
             cauv = sum(`CAUV TAXVAL`, na.rm = T),
             market_value = sum(`MARKET TAXVAL`, na.rm = T)) %>% 
-  mutate(county = unique(cauv_vals$county),
-         year = 2018) %>% 
+  mutate(county = unique(cauv_vals$county), year = 2018) %>% 
   select(-CNTY)
 
 # Reappraisals:

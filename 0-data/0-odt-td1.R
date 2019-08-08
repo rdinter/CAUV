@@ -96,7 +96,9 @@ td1_vals <- map(tax_files, function(x){
   j5$year <- as.numeric(substr(basename(x), 6, 7))
   # hack for creating a year variable, table comes out in 2018 calendar year
   #  but is for the 2017 tax year so subtract a year
-  j5$year <- ifelse(j5$year < 80, 2000 + j5$year - 1, 1900 + j5$year - 1)
+  # j5$tax_year <- ifelse(j5$year < 70, 2000 + j5$year + 1, 1900 + j5$year + 1)
+  j5$year     <- ifelse(j5$year < 70, 2000 + j5$year - 1, 1900 + j5$year - 1)
+  
   return(j5)
 })
 
