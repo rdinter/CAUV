@@ -4,6 +4,11 @@ Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each so
 
 The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation. Likely of most interest is the [current projections](3-proj/) for CAUV that you can find by clicking that link. A more dynamic version with descriptions is available at [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020) -- [PDF version also available](4-presentations/4-projections-2019-2020.pdf)
 
+Current 2020 projection:
+
+![](3-proj/figures/cauv_expected_projections_2020.png)
+
+
 # Components:
 
 An oversimplified description of how to calculate the CAUV value for a particular soil type is that it is the expected net returns from farming corn, soybeans, and wheat on an acre of land divided by capitalization rate to give a present value for owning a piece of land for commercial agricultural production. Please read the [CAUV formula description](formula) for a more in-depth understanding of the program. The following pages provide description of the data involved with each component:

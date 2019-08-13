@@ -202,7 +202,7 @@ ohio_exp <- ohio %>%
          soy_revenue = soy_yield*soy_price_cauv_exp,
          wheat_revenue = wheat_yield*wheat_price_cauv_exp,
          
-         corn_cost = corn_cost_add_cauv_exp*(corn_yield-corn_base_cauv_exp) +
+         corn_cost = corn_cost_add_cauv_exp*(corn_yield - corn_base_cauv_exp) +
            corn_cost_cauv_exp,
          soy_cost = soy_cost_add_cauv_exp*(soy_yield - soy_base_cauv_exp) +
            soy_cost_cauv_exp,
@@ -210,15 +210,17 @@ ohio_exp <- ohio %>%
                                                  wheat_base_cauv_exp) +
            wheat_cost_cauv_exp,
          
-         net_return = corn_rotate_cauv*(corn_revenue - corn_cost) +
-           soy_rotate_cauv*(soy_revenue - soy_cost) +
-           wheat_rotate_cauv*(wheat_revenue - wheat_cost),
+         net_corn = corn_revenue - corn_cost,
+         net_soy = soy_revenue - soy_cost,
+         net_wheat = wheat_revenue - wheat_cost,
          
-         organic = 0.5*(corn_revenue - corn_cost) +
-           0.5*(soy_revenue - soy_cost),
+         net_return = corn_rotate_cauv*net_corn + soy_rotate_cauv*net_soy +
+           wheat_rotate_cauv*net_wheat,
          
-         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits=-1),
-         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits=-1),
+         organic = 0.5*net_corn + 0.5*net_soy,
+         
+         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits = -1),
+         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits = -1),
          raw = ifelse(org_soil, raw_val_o, raw_val),
          unadjusted = ifelse(raw < 350, 350, raw)) %>% 
   arrange(id) %>% 
@@ -230,11 +232,10 @@ ohio_exp <- ohio %>%
 ohio_exp %>%
   select(year, cauv_projected_exp, soil_series:id,
          indx, val_2018, unadjusted) %>%
-  write_csv(paste0(future, "/expected_projections_2018.csv"))
+  write_csv(paste0(future, "/expected_projections_2019.csv"))
 
 ohio_soils_exp <- ohio_exp %>% 
-  mutate(val = ifelse(unadjusted > val_2018, unadjusted,
-                      unadjusted + (val_2018 - unadjusted)/2),
+  mutate(val = cauv_projected_exp,
          num_soils = n(),
          avg_cauv = mean(val)) %>% 
   group_by(indx) %>% 
