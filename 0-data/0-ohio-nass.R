@@ -265,7 +265,7 @@ crops <- crops %>%
 crops <- crops %>% 
   group_by(year, asd_desc) %>% 
   mutate_at(vars(corn_acres_planted:cattle_milk_inventory),
-            list(~ifelse(is.na(.), .[county_code == "998"], .))) %>% 
+            list(impute = ~ifelse(is.na(.), .[county_code == "998"], .))) %>% 
   filter(county_code != "998")
 
 # Drop out winter wheat, just have wheat
@@ -284,3 +284,194 @@ crops <- crops %>%
 
 write.csv(crops, paste0(local_dir, "/ohio_county_crops.csv"), row.names = F)
 write_rds(crops, paste0(local_dir, "/ohio_county_crops.rds"))
+
+
+# --- rents ---------------------------------------------------------------
+
+ohio_rent <- nass_data(commodity_desc = "RENT", agg_level_desc = "COUNTY",
+                       state_name = "OHIO", numeric_vals = T)
+
+from_rent <- c("RENT, CASH, CROPLAND, IRRIGATED - EXPENSE, MEASURED IN $ / ACRE",
+               "RENT, CASH, CROPLAND, NON-IRRIGATED - EXPENSE, MEASURED IN $ / ACRE",
+               "RENT, CASH, LAND & BUILDINGS - EXPENSE, MEASURED IN $",
+               "RENT, CASH, LAND & BUILDINGS - OPERATIONS WITH EXPENSE",
+               "RENT, CASH, PASTURELAND - EXPENSE, MEASURED IN $ / ACRE",
+               "RENT, PER HEAD OR ANIMAL UNIT MONTH - OPERATIONS WITH EXPENSE")
+to_rent   <- c("rent_irrigated", "rent_nonirrigated", "rent_expense",
+               "operations_with_rent", "rent_pasture", "operations_head")
+
+ohio <- ohio_rent %>% 
+  mutate(year = as.numeric(year),
+         #location_desc = gsub("OHIO, ", "", location_desc),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = from_rent,
+                                      to = to_rent)) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+# Add on acreage from Census on rented land: these are only for part-owners
+ohio_rent <- map(c("AG LAND, OWNED, IN FARMS - ACRES",
+                   "AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES",
+                   "AG LAND, CROPLAND - ACRES",
+                   "AG LAND, PASTURELAND, (EXCL CROPLAND & WOODLAND) - ACRES",
+                   "AG LAND, WOODLAND - ACRES",
+                   "AG LAND, WOODLAND, PASTURED - ACRES"),
+                 function(x){
+                   nass_data(commodity_desc = "AG LAND",
+                             agg_level_desc = "COUNTY",
+                             state_name = "OHIO", #domain_desc = "TOTAL",
+                             #source_desc = "SURVEY", 
+                             short_desc = x, numeric_vals = T)
+                 })
+
+ohio_rent <- ohio_rent %>% 
+  bind_rows() %>% 
+  filter(domain_desc != "IRRIGATION STATUS") %>% 
+  mutate(year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = c("AG LAND, OWNED, IN FARMS - ACRES",
+                                               "AG LAND, CROPLAND - ACRES",
+                                               "AG LAND, PASTURELAND, (EXCL CROPLAND & WOODLAND) - ACRES",
+                                               "AG LAND, WOODLAND - ACRES",
+                                               "AG LAND, WOODLAND, PASTURED - ACRES",
+                                               "AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES"),
+                                      to = c("acres_part_owned", "cropland_acres", "pasture_acres",
+                                             "woodland_acres", "woodland_pastured_acres", "acres_part_rented"))) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+ohio <- left_join(ohio, ohio_rent)
+
+# Now for the other general all categories:
+ohio_rent <- nass_data(commodity_desc = "FARM OPERATIONS",
+                       agg_level_desc = "COUNTY", state_name = "OHIO",
+                       source_desc = "CENSUS", domain_desc = "TENURE",
+                       short_desc = "FARM OPERATIONS - ACRES OPERATED",
+                       numeric_vals = T)
+
+ohio_rent <- ohio_rent %>% 
+  bind_rows() %>% 
+  #filter(domain_desc != "IRRIGATION STATUS") %>% 
+  mutate(year = as.numeric(year),
+         domaincat_desc = plyr::mapvalues(domaincat_desc,
+                                          from = c("TENURE: (FULL OWNER)",
+                                                   "TENURE: (PART OWNER)",
+                                                   "TENURE: (TENANT)"),
+                                          to = c("acres_owned", "acres_part",
+                                                 "acres_tenant_rented"))) %>% 
+  select(year, val = Value, domaincat_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(domaincat_desc, val)
+
+ohio <- left_join(ohio, ohio_rent)
+
+####
+# NOW ADD IN THOSE RENTED AND OWNED ACRES
+#####
+ohio$owned_acres  <- ohio$acres_owned + ohio$acres_part_owned
+ohio$rented_acres <- ohio$acres_part_rented + ohio$acres_tenant_rented
+
+# Correct for missing values in the "other" but call these imputed
+ohio <- ohio %>% 
+  expand(year, nesting(county_code, county_name, asd_desc)) %>% 
+  left_join(ohio) %>% 
+  group_by(year, asd_desc) %>% 
+  mutate_at(vars(rent_irrigated, rent_nonirrigated, rent_pasture),
+            list(impute = ~ifelse(is.na(.), .[county_code == "998"], .))) %>% 
+  filter(county_code != "998")
+
+ohio_tax <- nass_data(commodity_desc = "TAXES", agg_level_desc = "COUNTY",
+                      state_name = "OHIO", numeric_vals = T)
+
+from_tax <- c("TAXES, PROPERTY, REAL ESTATE & NON-REAL ESTATE, (EXCL PAID BY LANDLORD) - EXPENSE, MEASURED IN $",
+              "TAXES, PROPERTY, REAL ESTATE & NON-REAL ESTATE, (EXCL PAID BY LANDLORD) - OPERATIONS WITH EXPENSE")
+ohio_tax <- ohio_tax %>% 
+  mutate(year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = from_tax,
+                                      to = c("taxes", "taxes_operations"))) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+ohio_income <- map(c("INCOME, FARM-RELATED - OPERATIONS WITH RECEIPTS",
+                     "INCOME, FARM-RELATED - RECEIPTS, MEASURED IN $",
+                     "INCOME, NET CASH FARM, OF OPERATIONS - NET INCOME, MEASURED IN $",
+                     "INCOME, NET CASH FARM, OF OPERATIONS - OPERATIONS WITH NET INCOME"),
+                   function(x){
+                     nass_data(agg_level_desc = "COUNTY",
+                               state_name = "OHIO", domain_desc = "TOTAL",
+                               #source_desc = "SURVEY", 
+                               short_desc = x, numeric_vals = T)
+                   })
+
+ohio_income <- ohio_income %>% 
+  bind_rows() %>% 
+  mutate(year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = c("INCOME, FARM-RELATED - OPERATIONS WITH RECEIPTS",
+                                               "INCOME, FARM-RELATED - RECEIPTS, MEASURED IN $",
+                                               "INCOME, NET CASH FARM, OF OPERATIONS - NET INCOME, MEASURED IN $",
+                                               "INCOME, NET CASH FARM, OF OPERATIONS - OPERATIONS WITH NET INCOME"),
+                                      to = c("receipt_operations", "receipts", "net_cash_total", "net_cash_operations"))) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+ohio_land <- nass_data(commodity_desc = "AG LAND", agg_level_desc = "COUNTY",
+                       state_name = "OHIO", domain_desc = "TOTAL",
+                       statisticcat_desc = "ASSET VALUE", numeric_vals = T)
+
+ohio_land <- ohio_land %>% 
+  mutate(year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = c("AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
+                                               "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / ACRE",
+                                               "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / OPERATION",
+                                               "AG LAND, INCL BUILDINGS - OPERATIONS WITH ASSET VALUE"),
+                                      to = c("agland", "agland_per_acre",
+                                             "agland_per_operation", "agland_operations"))) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+ohio_farms <- map(c("FARM OPERATIONS - NUMBER OF OPERATIONS",
+                    "FARM OPERATIONS - ACRES OPERATED"), function(x){
+                      nass_data(commodity_desc = "FARM OPERATIONS",
+                                agg_level_desc = "COUNTY",
+                                state_name = "OHIO", domain_desc = "TOTAL",
+                                #source_desc = "SURVEY", 
+                                short_desc = x, numeric_vals = T)
+                    })
+
+ohio_farms <- ohio_farms %>% 
+  bind_rows() %>% 
+  mutate(year = as.numeric(year),
+         short_desc = plyr::mapvalues(short_desc,
+                                      from = c("FARM OPERATIONS - NUMBER OF OPERATIONS",
+                                               "FARM OPERATIONS - ACRES OPERATED"),
+                                      to = c("farms", "acres"))) %>% 
+  filter(!(year %in% c(1997, 2002, 2007) & source_desc == "SURVEY")) %>% 
+  select(year, val = Value, short_desc,
+         county_code, county_name, asd_desc) %>% 
+  spread(short_desc, val)
+
+ohio <- ohio_farms %>% 
+  full_join(ohio) %>% 
+  full_join(ohio_tax) %>% 
+  full_join(ohio_income) %>% 
+  full_join(ohio_land)
+ohio$fips <- 39000 + as.numeric(ohio$county_code)
+
+# Let's add in that pesky 2015 with NA values ...
+blerg <- ohio %>%
+  select(fips, county_code:asd_desc) %>%
+  distinct() %>% 
+  mutate(year = 2015)
+
+ohio <- full_join(ohio, blerg)
+
+write.csv(ohio, paste0(local_dir, "/ohio_econ_county.csv"), row.names = F)
+write_rds(ohio, paste0(local_dir, "/ohio_econ_county.rds"))
