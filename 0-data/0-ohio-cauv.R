@@ -86,12 +86,12 @@ cauv_temp <- j5 %>%
 
 # ---- historical ---------------------------------------------------------
 
-cauv_2007 <- read_excel("0-data/soils/offline/CAUV 2007 Final.xlsx",
+cauv_2007 <- read_excel("0-data/soils/offline/odt_old/CAUV 2007 Final.xlsx",
                         col_names = c("soil_series", "texture", "slope",
                                       "erosion", "drainage",
                                       "cropland", "woodland")) %>% 
   mutate(year = 2007)
-cauv_2008 <- read_excel("0-data/soils/offline/CAUV 2008 Final.xlsx",
+cauv_2008 <- read_excel("0-data/soils/offline/odt_old/CAUV 2008 Final.xlsx",
                         col_names = c("soil_series", "texture", "slope",
                                       "erosion", "drainage",
                                       "cropland", "woodland")) %>% 
