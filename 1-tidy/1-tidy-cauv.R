@@ -21,7 +21,8 @@ ohio <- c("0-data/ohio/ohio_prices_annual.rds",
           "0-data/ohio/ohio_state_crops.rds",
           "0-data/ohio/ohio_forecast_crops.rds") %>% 
   map(read_rds) %>% 
-  reduce(full_join)
+  reduce(full_join) %>% 
+  arrange(year)
 
 # ---- prices -------------------------------------------------------------
 
