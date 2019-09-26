@@ -80,9 +80,35 @@ j5 <- map(cauv_files, function(x) {
   return(temp)
 })
 
-cauv <- j5 %>% 
+cauv_temp <- j5 %>% 
   bind_rows() %>% 
   mutate_at(vars(prod_index, cropland, woodland, year), as.numeric)
+
+# ---- historical ---------------------------------------------------------
+
+cauv_2007 <- read_excel("0-data/soils/offline/CAUV 2007 Final.xlsx",
+                        col_names = c("soil_series", "texture", "slope",
+                                      "erosion", "drainage",
+                                      "cropland", "woodland")) %>% 
+  mutate(year = 2007)
+cauv_2008 <- read_excel("0-data/soils/offline/CAUV 2008 Final.xlsx",
+                        col_names = c("soil_series", "texture", "slope",
+                                      "erosion", "drainage",
+                                      "cropland", "woodland")) %>% 
+  mutate(year = 2008)
+
+cauv_old <-
+  bind_rows(cauv_2007, cauv_2008) %>%
+  replace(., is.na(.), "")
+# %>% 
+#   left_join(select(dot_soils, "soil_series", "texture", "slope",
+#                    "erosion", "drainage", "prod_index"))
+
+
+# ---- soil-correction ----------------------------------------------------
+
+# cauv <- bind_rows(cauv_old, cauv_temp)
+cauv <- bind_rows(cauv_temp)
 
 # Need to add in corrections here for messed up soils -- this is tedious!
 x <- cauv$soil_series == "DRUMMER,GR-SUBST"
@@ -142,17 +168,23 @@ x <- cauv$soil_series == "CARLISLE,DRAINED"
 cauv$prod_index[x] <- 86
 
 # Fill in the productivity index for these values
-cauv <- cauv %>% 
+cauv_all <- cauv %>% 
+  complete(nesting(soil_series, texture, slope, erosion, drainage),
+           year = seq(min(year), max(year)))
+  
+cauv <- cauv_all %>% 
   group_by(soil_series, texture, slope, erosion, drainage) %>% 
   arrange(year) %>% 
   fill(prod_index) %>% 
+  fill(prod_index, .direction = "up") %>% 
   mutate(indx = case_when(prod_index < 50  ~ "indx_49",
                           prod_index < 60  ~ "indx_59",
                           prod_index < 70  ~ "indx_69",
                           prod_index < 80  ~ "indx_79",
                           prod_index < 90  ~ "indx_89",
                           prod_index < 100 ~ "indx_99",
-                          T ~ "indx_100"),
+                          prod_index == 100 ~ "indx_100",
+                          T ~ NA_character_),
          indx = factor(indx, c("indx_100", "indx_99",
                                "indx_89", "indx_79",
                                "indx_69", "indx_59", "indx_49"))) %>% 
@@ -166,18 +198,21 @@ cauv <- cauv %>%
   left_join(dot_soils) %>% 
   mutate(prod_index = ifelse(is.na(prod_index), prod, prod_index)) %>% 
   select(-prod, soy_base = soybeans_base) %>% 
-  # A new productivity index based on only corn, soybeans, and wheat with a max of 15,024
-  mutate(prod_index_new = round((56*corn_base + 60*soy_base + 60*wheat_base) / 150),
+  # A new productivity index based on only corn, soybeans, and wheat
+  #  with a max of 15,024
+  mutate(prod_index_new = round((56*corn_base + 60*soy_base + 60*wheat_base) /
+                                  150),
          indx_new = case_when(prod_index_new < 50  ~ "indx_49",
                               prod_index_new < 60  ~ "indx_59",
                               prod_index_new < 70  ~ "indx_69",
                               prod_index_new < 80  ~ "indx_79",
                               prod_index_new < 90  ~ "indx_89",
                               prod_index_new < 100 ~ "indx_99",
-                              T ~ "indx_100"),
+                              prod_index_new == 100 ~ "indx_100",
+                              T ~ NA_character_),
          indx_new = factor(indx_new, c("indx_100", "indx_99",
                                        "indx_89", "indx_79",
-                                       "indx_69", "indx_59", "indx_49")))
+                                       "indx_69", "indx_59", "indx_49", NA)))
 
 write_csv(cauv, paste0(local_dir, "/cauv_soils.csv"))
 write_rds(cauv, paste0(local_dir, "/cauv_soils.rds"))
@@ -229,101 +264,101 @@ unadj <- bind_rows(unadj2017, unadj2018, unadj2019)
 write_csv(unadj, paste0(local_dir, "/cauv_unadj.csv"))
 write_rds(unadj, paste0(local_dir, "/cauv_unadj.rds"))
 
-
-# ---- pd32 ---------------------------------------------------------------
-
-# http://www.tax.ohio.gov/portals/0/tax_analysis/tax_data_series/
-#  tangible_personal_property/pd32/pd32cy85.xls
-# http://www.tax.ohio.gov/portals/0/tax_analysis/tax_data_series/
-#  tangible_personal_property/pd32/pd32cy86.xls
-# http://www.tax.ohio.gov/Portals/0/tax_analysis/tax_data_series/
-#  tangible_personal_property/pd32/PD32CY15.xls
-
-tax_site <- paste0("http://www.tax.ohio.gov/tax_analysis/tax_data_series/",
-                   "publications_tds_property.aspx")
-
-tax_urls <- read_html(tax_site) %>% 
-  html_nodes("ul:nth-child(17) li:nth-child(5) a") %>% 
-  html_attr("href") %>% 
-  paste0("http://www.tax.ohio.gov", .)
-
-tax_download <- purrr::map(tax_urls, function(x){
-  Sys.sleep(sample(seq(0,1,0.25), 1))
-  dlinks <- read_html(x) %>% 
-    html_nodes("#dnn_ContentPane a") %>% 
-    html_attr("href") %>% 
-    na.omit() %>% 
-    paste0("http://www.tax.ohio.gov", .)
-  dfile <- paste0(data_source, "/", tolower(basename(dlinks)))
-  purrr::map2(dfile, dlinks, function(x, y){
-    if (!file.exists(x)) download.file(y, x, mode = "wb")
-  })
-})
-
-tax_files <- dir(data_source, pattern = "pd32", full.names = T)
-
-tax_files <- tax_files[!grepl(".pdf", tax_files)]
-
+# 
+# # ---- pd32 ---------------------------------------------------------------
+# 
+# # http://www.tax.ohio.gov/portals/0/tax_analysis/tax_data_series/
+# #  tangible_personal_property/pd32/pd32cy85.xls
+# # http://www.tax.ohio.gov/portals/0/tax_analysis/tax_data_series/
+# #  tangible_personal_property/pd32/pd32cy86.xls
+# # http://www.tax.ohio.gov/Portals/0/tax_analysis/tax_data_series/
+# #  tangible_personal_property/pd32/PD32CY15.xls
+# 
+# tax_site <- paste0("http://www.tax.ohio.gov/tax_analysis/tax_data_series/",
+#                    "publications_tds_property.aspx")
+# 
+# tax_urls <- read_html(tax_site) %>% 
+#   html_nodes("ul:nth-child(17) li:nth-child(5) a") %>% 
+#   html_attr("href") %>% 
+#   paste0("http://www.tax.ohio.gov", .)
+# 
+# tax_download <- purrr::map(tax_urls, function(x){
+#   Sys.sleep(sample(seq(0,1,0.25), 1))
+#   dlinks <- read_html(x) %>% 
+#     html_nodes("#dnn_ContentPane a") %>% 
+#     html_attr("href") %>% 
+#     na.omit() %>% 
+#     paste0("http://www.tax.ohio.gov", .)
+#   dfile <- paste0(data_source, "/", tolower(basename(dlinks)))
+#   purrr::map2(dfile, dlinks, function(x, y){
+#     if (!file.exists(x)) download.file(y, x, mode = "wb")
+#   })
+# })
+# 
+# tax_files <- dir(data_source, pattern = "pd32", full.names = T)
+# 
+# tax_files <- tax_files[!grepl(".pdf", tax_files)]
+# 
+# # cauv_vals <- map(tax_files, function(x){
+# #   j5 <- read_excel(x, col_names = F)
+# #   starts <- which(grepl("adams", tolower(j5$X__1)))
+# #   ends   <- which(grepl("wyandot", tolower(j5$X__1)))
+# #   j5 <- j5[starts:ends,]
+# #   j5 <- j5[, !(is.na(j5[1,]))]
+# #   return(j5)
+# # })
+# 
 # cauv_vals <- map(tax_files, function(x){
-#   j5 <- read_excel(x, col_names = F)
-#   starts <- which(grepl("adams", tolower(j5$X__1)))
-#   ends   <- which(grepl("wyandot", tolower(j5$X__1)))
+#   j5 <- gdata::read.xls(x)
+#   
+#   # Remove the first column if it is the county number
+#   if (any(grepl("county number", tolower(j5[,1])))) j5 <- j5[,-1]
+#   
+#   starts <- which(grepl("adams", tolower(j5[,1])))
+#   ends   <- which(grepl("wyandot", tolower(j5[,1])))
 #   j5 <- j5[starts:ends,]
 #   j5 <- j5[, !(is.na(j5[1,]))]
+#   j5 <- j5[, !(j5[1,] == "")]
+#   names(j5) <- c("county", "parcels", "acres_cauv", "cauv", "market_value")
+#   j5$year <- as.numeric(substr(basename(x), 7, 8))
+#   
+#   # hack for creating a year variable
+#   j5$year <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
 #   return(j5)
 # })
-
-cauv_vals <- map(tax_files, function(x){
-  j5 <- gdata::read.xls(x)
-  
-  # Remove the first column if it is the county number
-  if (any(grepl("county number", tolower(j5[,1])))) j5 <- j5[,-1]
-  
-  starts <- which(grepl("adams", tolower(j5[,1])))
-  ends   <- which(grepl("wyandot", tolower(j5[,1])))
-  j5 <- j5[starts:ends,]
-  j5 <- j5[, !(is.na(j5[1,]))]
-  j5 <- j5[, !(j5[1,] == "")]
-  names(j5) <- c("county", "parcels", "acres_cauv", "cauv", "market_value")
-  j5$year <- as.numeric(substr(basename(x), 7, 8))
-  
-  # hack for creating a year variable
-  j5$year <- ifelse(j5$year < 70, 2000 + j5$year, 1900 + j5$year)
-  return(j5)
-})
-
-cauv_vals <- bind_rows(cauv_vals)
-
-cauv_vals <- cauv_vals %>% 
-  mutate(county = tolower(county),
-         county = ifelse(county == "putnum", "putnam", county),
-         parcels = as.numeric(gsub(",", "", parcels)),
-         acres_cauv = as.numeric(gsub(",", "", acres_cauv)),
-         cauv = gsub(",", "", cauv),
-         cauv = gsub("\\$", "", cauv),
-         cauv = as.numeric(cauv),
-         market_value = gsub(",", "", market_value),
-         market_value = gsub("\\$", "", market_value),
-         market_value = as.numeric(market_value))
-
-# # Add in temp blanks for next year:
-# temp <- data.frame(county = unique(cauv_vals$county),
-#                    year = max(cauv_vals$year) + 1)
-# cauv_vals <- bind_rows(cauv_vals, temp)
-
-# Reappraisals:
-reap <- read_csv("0-data/soils/offline/tax_reappraisals.csv") %>% 
-  gather(appraisal, year, -county)
-j5 <- map(-1:5, function(x){
-  temp <- reap
-  temp$year <- reap$year - 6*x
-  return(temp)
-})
-j5 <- bind_rows(j5)
-
-cauv_vals <- cauv_vals %>% 
-  left_join(j5) %>% 
-  arrange(year)
-
-write_csv(cauv_vals, paste0(local_dir, "/cauv_county.csv"))
-write_rds(cauv_vals, paste0(local_dir, "/cauv_county.rds"))
+# 
+# cauv_vals <- bind_rows(cauv_vals)
+# 
+# cauv_vals <- cauv_vals %>% 
+#   mutate(county = tolower(county),
+#          county = ifelse(county == "putnum", "putnam", county),
+#          parcels = as.numeric(gsub(",", "", parcels)),
+#          acres_cauv = as.numeric(gsub(",", "", acres_cauv)),
+#          cauv = gsub(",", "", cauv),
+#          cauv = gsub("\\$", "", cauv),
+#          cauv = as.numeric(cauv),
+#          market_value = gsub(",", "", market_value),
+#          market_value = gsub("\\$", "", market_value),
+#          market_value = as.numeric(market_value))
+# 
+# # # Add in temp blanks for next year:
+# # temp <- data.frame(county = unique(cauv_vals$county),
+# #                    year = max(cauv_vals$year) + 1)
+# # cauv_vals <- bind_rows(cauv_vals, temp)
+# 
+# # Reappraisals:
+# reap <- read_csv("0-data/soils/offline/tax_reappraisals.csv") %>% 
+#   gather(appraisal, year, -county)
+# j5 <- map(-1:5, function(x){
+#   temp <- reap
+#   temp$year <- reap$year - 6*x
+#   return(temp)
+# })
+# j5 <- bind_rows(j5)
+# 
+# cauv_vals <- cauv_vals %>% 
+#   left_join(j5) %>% 
+#   arrange(year)
+# 
+# write_csv(cauv_vals, paste0(local_dir, "/cauv_county.csv"))
+# write_rds(cauv_vals, paste0(local_dir, "/cauv_county.rds"))
