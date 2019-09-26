@@ -14,8 +14,8 @@ if (!file.exists(prices)) dir.create(prices, recursive = T)
 
 j5 <- read_rds("1-tidy/prices/ohio_prices.rds")
 
-# Add on an additional year for prices:
-price_proj <- tibble(year = max(j5$year) + 1) %>% 
+# Add on two additional years for prices:
+price_proj <- tibble(year = c(max(j5$year) + 1, max(j5$year) + 2)) %>% 
   bind_rows(j5) %>% 
   arrange(year)
 
@@ -55,7 +55,8 @@ price_projection <- price_proj %>%
   select(year, c_p = corn_price, c_w = corn_grain_prod_bu,
          s_p = soy_price, s_w = soy_prod_bu,
          w_p = wheat_price, w_w = wheat_prod_bu) %>% 
-  fill(c_p:w_w) %>% # This step passes current price forward, better way?
+  # This step passes current price and production forward, better way? Maybe.
+  fill(c_p:w_w) %>% 
   mutate(corn_price_cauv = ifelse(year > 2014,
                                   projection_price(lag(c_p), lag(c_w)),
                                   projection_price(lag(c_p, 2), lag(c_w, 2))),

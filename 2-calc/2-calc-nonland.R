@@ -60,14 +60,19 @@ extra <- nonland_proj %>%
   filter(year == last_odt) %>% 
   mutate(year = max(year) + 1)
 
+extra2 <- nonland_proj %>% 
+  filter(year == last_odt) %>% 
+  mutate(year = max(year) + 2)
+
 if (!((last_odt + 1) %in% nonland_proj$year)) {
   nonland_proj <- nonland_proj %>% 
-    bind_rows(extra) %>% 
+    bind_rows(extra, extra2) %>% 
     arrange(year)
 } else if (!((last_odt + 2) %in% nonland_proj$year)) {
   extra$year   <- extra$year + 1
+  extra2$year  <- extra2$year + 1
   nonland_proj <- nonland_proj %>%
-    bind_rows(extra) %>%
+    bind_rows(extra, extra2) %>%
     arrange(year)
 }
 

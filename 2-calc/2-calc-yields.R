@@ -13,8 +13,8 @@ if (!file.exists(yields)) dir.create(yields, recursive = T)
 
 j5 <- read_rds("1-tidy/yields/ohio_yields.rds")
 
-# Add on an additional year for Yields:
-yield_proj <- tibble(year = max(j5$year) + 1) %>% 
+# Add on two additional years for Yields:
+yield_proj <- tibble(year = c(max(j5$year) + 1, max(j5$year) + 2)) %>% 
   bind_rows(j5) %>% 
   arrange(year)
 
@@ -59,14 +59,14 @@ ohio_yield <- yield_proj %>%
          wheat_yield = if_else(is.na(wheat_yield), wheat_trend, wheat_yield)) %>% 
   
   mutate(corn_yield_cauv  = yield_calc(corn_grain_yield, year),
-         corn_yield_adj_cauv = corn_yield_cauv / corn_grain_yield[year==1984],
-         corn_yield_adj_odt = corn_yield_odt / corn_grain_yield[year==1984],
+         corn_yield_adj_cauv = corn_yield_cauv / corn_grain_yield[year == 1984],
+         corn_yield_adj_odt = corn_yield_odt / corn_grain_yield[year == 1984],
          soy_yield_cauv   = yield_calc(soy_yield, year),
-         soy_yield_adj_cauv = soy_yield_cauv / soy_yield[year==1984],
-         soy_yield_adj_odt = soy_yield_odt / soy_yield[year==1984],
+         soy_yield_adj_cauv = soy_yield_cauv / soy_yield[year == 1984],
+         soy_yield_adj_odt = soy_yield_odt / soy_yield[year == 1984],
          wheat_yield_cauv = yield_calc(wheat_yield, year),
-         wheat_yield_adj_cauv = wheat_yield_cauv / wheat_yield[year==1984],
-         wheat_yield_adj_odt = wheat_yield_odt / wheat_yield[year==1984]) %>% 
+         wheat_yield_adj_cauv = wheat_yield_cauv / wheat_yield[year == 1984],
+         wheat_yield_adj_odt = wheat_yield_odt / wheat_yield[year == 1984]) %>% 
   select(year, corn_yield_cauv:wheat_yield_adj_odt)
 
 ohio <- left_join(yield_proj, ohio_yield)

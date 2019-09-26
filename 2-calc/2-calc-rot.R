@@ -14,8 +14,8 @@ if (!file.exists(rot)) dir.create(rot, recursive = T)
 
 j5 <- read_rds("1-tidy/rot/ohio_rot.rds")
 
-# Add on an additional year for Rotation:
-rot_proj <- tibble(year = max(j5$year) + 1) %>% 
+# Add on two additional years for Rotation:
+rot_proj <- tibble(year = c(max(j5$year) + 1, max(j5$year) + 2)) %>% 
   bind_rows(j5) %>% 
   arrange(year)
 
