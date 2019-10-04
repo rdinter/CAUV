@@ -105,7 +105,7 @@ ohio_exp %>%
 ohio_soils_exp <- ohio_exp %>% 
   mutate(val = cauv_projected_exp,
          num_soils = n(),
-         avg_cauv = mean(val)) %>% 
+         avg_cauv = mean(val, na.rm = T)) %>% 
   group_by(indx) %>% 
   summarise(val = mean(val),
             avg_cauv = mean(avg_cauv),
@@ -284,7 +284,7 @@ ohio_soils_exp %>%
                           label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
-      geom_vline(xintercept = 2018) +
+      geom_vline(xintercept = 2019) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2018),
                          limits = c(1991, 2021)) +
       scale_y_continuous(labels = dollar) +
