@@ -19,7 +19,7 @@ An oversimplified description of how to calculate the CAUV value for a particula
 4. [Non-Land Costs](nonland)
 5. [Capitalization Rate](caprate)
 
-The [usdarnass package](https://rdinter.github.io/usdarnass) is used for updating official USDA data and is not on CRAN. To install, a user must run the following command in R:
+The [usdarnass package](https://cran.r-project.org/web/packages/usdarnass/) is used for updating official USDA data and is not on CRAN. To install, a user must run the following command in R:
 
 ``` r
 devtools::install_github("rdinter/usdarnass")
