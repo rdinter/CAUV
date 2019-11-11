@@ -34,7 +34,7 @@ And lastly, here are the category-item combinations and descriptions (useful for
     - `crop_insurance` - crop insurance which depends on the expected yields for each crop and will vary across the different levels.
     - `drying` - only corn needs drying, but the cost value needs to be converted into cent per bushel.
     - `fuel_oil_grease` - in about the middle of each variable cost section, but it usually doesn't vary across yield levels.
-    - `hired_costom_work` - began in 2018 split of how the budgets were calculated, should be documented across the different production levels but the average should be used to add onto the `machine` category in fixed costs.
+    - `hired_custom_work` - began in 2018 split of how the budgets were calculated, should be documented across the different production levels but the average should be used to add onto the `machine` category in fixed costs.
     - `k2o` - fertilizer cost is documented as per pound, this should be a column within the category. There should also be different levels in terms of how much fertilizer should be sued, which are to the left of the cost and should be inputted into the low-med-high categories.
     - `lime` - both cost and production units should be used here, although in the situation where there is only one production unit used it should be applied to low-med-high equally.
     - `n` - stands for nitrogen and is used in corn and wheat production (not soybeans). Cost and the production levels are recorded for this and the cost may differ across crops. Cost is in a per-pound cost at the middle right while the production levels are to the left of this value.
