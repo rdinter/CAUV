@@ -36,7 +36,8 @@ rotate_calc <- function(crop, year) {
 
 # Trends for acreage, give the 30-year trend harvested acres for the most
 #  recent data we have available on each component
-acre_trends <- rot_proj %>% 
+acre_trends <-
+  rot_proj %>% 
   select(year, corn_trend = corn_grain_acres_harvest,
          soy_trend = soy_acres_harvest, wheat_trend = wheat_acres_harvest) %>% 
   gather(var, val, -year) %>% 
@@ -45,9 +46,9 @@ acre_trends <- rot_proj %>%
   nest() %>% 
   mutate(model = data %>% map(~lm(val ~ year, data = .)),
          trend = map2(model, data, predict)) %>% 
-  unnest(trend, data) %>% 
+  unnest(c(trend, data)) %>% 
   filter(is.na(val)) %>% # Only keep the missing values
-  select(-val) %>% 
+  select(-val, -model) %>% 
   spread(var, trend)
 
 
@@ -64,10 +65,8 @@ ohio_rot <- rot_proj %>%
   mutate(corn_harvest_cauv    = rotate_calc(corn_grain_acres_harvest, year),
          soy_harvest_cauv     = rotate_calc(soy_acres_harvest, year),
          wheat_harvest_cauv   = rotate_calc(wheat_acres_harvest, year),
-         total_harvest_cauv   = rollapplyr(corn_harvest_cauv +
-                                             soy_harvest_cauv +
-                                             wheat_harvest_cauv, 5, mean,
-                                           fill = NA),
+         total_harvest_cauv   = corn_harvest_cauv + soy_harvest_cauv +
+           wheat_harvest_cauv,
          corn_rotate_cauv  = corn_harvest_cauv / total_harvest_cauv,
          soy_rotate_cauv   = soy_harvest_cauv / total_harvest_cauv,
          wheat_rotate_cauv = wheat_harvest_cauv / total_harvest_cauv) %>% 

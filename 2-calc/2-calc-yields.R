@@ -35,7 +35,8 @@ yield_calc <- function(crop, year) {
 
 # Trend yields, give the 30-year trend yields for the most recent data we have
 #  available on each component
-yield_trends <- yield_proj %>% 
+yield_trends <-
+  yield_proj %>% 
   select(year, corn_trend = corn_grain_yield,
          soy_trend = soy_yield, wheat_trend = wheat_yield) %>% 
   gather(var, val, -year) %>% 
@@ -44,9 +45,9 @@ yield_trends <- yield_proj %>%
   nest() %>% 
   mutate(model = data %>% map(~lm(val ~ year, data = .)),
          trend = map2(model, data, predict)) %>% 
-  unnest(trend, data) %>% 
+  unnest(c(trend, data)) %>% 
   filter(is.na(val)) %>% # Only keep the missing values
-  select(-val) %>% 
+  select(-val, -model) %>% 
   spread(var, trend)
 
 
