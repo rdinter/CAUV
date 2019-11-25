@@ -137,13 +137,16 @@ dallas_fed <- dallas_rates %>%
 suggestion <- dallas_fed %>% 
   full_join(kc_fed) %>% 
   full_join(chicago_fed) %>% 
-  arrange(date)
+  arrange(date) %>% 
+  filter(lubridate::month(date) == 3) %>% 
+  rename_at(vars(-date), ~paste0(., "_q1")) %>% 
+  mutate_at(vars(-date), ~./100)
 
 cap_rate <- suggestion %>% 
   mutate(tax_year = lubridate::year(date)) %>% 
   select(-date) %>% 
-  group_by(tax_year) %>% 
-  summarise_all(~mean(. / 100, na.rm = T)) %>% 
+  # group_by(tax_year) %>% 
+  # summarise_all(~mean(. / 100, na.rm = T)) %>% 
   left_join(cap_rate, .) 
 
 write_csv(cap_rate, "0-data/cap_rate/capitalization_rate.csv")
@@ -156,7 +159,7 @@ write_csv(cap_rate, "0-data/cap_rate/capitalization_rate.csv")
 
 kc_credit <- paste0("https://www.kansascityfed.org/~/media/files/publicat/",
                      "research/indicatorsdata/agfinance/",
-                    "2019_q1_afd_historical_data.xlsx")
+                    "2019_q2_afd_historical_data.xlsx")
 fed_file   <- paste(data_source, basename(kc_credit), sep = "/")
 set_config(config(ssl_verifypeer = 0L))
 GET(kc_credit, write_disk(fed_file, overwrite = T))
@@ -170,26 +173,40 @@ j5 <- j5 %>%
   rename_all(~str_remove_all(., " \\-.*")) %>% 
   rename_all(~str_to_lower(str_remove_all(., '[[:punct:] ]+'))) %>% 
   mutate_at(vars(-period), ~as.numeric(.) / 100) %>%
-  mutate(year = str_sub(period, 1, 4),
+  mutate(year = as.numeric(str_sub(period, 1, 4)),
          quarter = case_when(str_sub(period, 5, 6) == "Q1" ~ "-03-31",
                              str_sub(period, 5, 6) == "Q2" ~ "-06-30",
                              str_sub(period, 5, 6) == "Q3" ~ "-09-30",
                              str_sub(period, 5, 6) == "Q4" ~ "-12-31"),
          date = as.Date(paste0(year, quarter))) %>% 
-  select(-period, -year, -quarter)
+  select(-period, -quarter) %>% 
+  rename_at(vars(-year, -date), ~paste0(., "_fed_re"))
+
+j5 <- cap_rate %>% 
+  select(year = tax_year, cap_rate_odt,
+         interest_rate_15_odt, interest_rate_25_odt, interest_rate_odt) %>% 
+  # mutate_at(vars(-year), ~./100) %>% 
+  right_join(j5)
+
+write_csv(j5, "0-data/cap_rate/capitalization_rate_alt.csv")
 
 #######
 j5 %>% 
+  select(-year, -cap_rate_odt, -interest_rate_25_odt,
+         -interest_rate_15_odt, -interest_rate_odt) %>% 
   gather(var, val, -date) %>% 
   ggplot(aes(date, val, color = var, linetype = var)) +
   geom_line() +
+  geom_line(data = select(j5, date, interest_rate_25_odt),
+            aes(x = date, y = interest_rate_25_odt,
+                linetype = NULL, color = NULL)) +
   scale_y_continuous(labels = scales::percent) +
   theme_minimal()
 #######
 
 j5 %>% 
-  rename_all(~paste0(., "_fed_re")) %>% 
-  mutate(tax_year = lubridate::year(date_fed_re)) %>% 
+  # rename_all(~paste0(., "_fed_re")) %>% 
+  mutate(tax_year = year) %>% 
   group_by(tax_year) %>% 
   summarise_all(~mean(., na.rm = T)) %>% 
   View()
