@@ -55,7 +55,7 @@ cap_rates_alt <- read_rds("../2-calc/cap/ohio_alternate_caprate.rds")
 ```{r cauv-reference}
 cauv_indx %>% 
   filter(year > 2004) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -108,7 +108,7 @@ $$ {Nonland}_{s,t} = {Base}_{t} + \left( {Yield}_{s,t} - {low}_{t} \right) \time
 - Only major categories in OSU crop budgets not collected for calculation are Land Charge and Management Charge
     - Land Charge is rent which a landowner would not explicitly pay
     - Management Charge is not collected as this entails the oversight of owning a property
-- ODT synthesizes each OSU crop budget to then calculate the Olympic average of each item:
+- ODT harmonizes each OSU crop budget to then calculate the Olympic average of each item:
 
 
 <!-- ## ODT Method as of 2019 Tax Year -->
@@ -173,7 +173,7 @@ nonland_alt %>%
          add_diff = percent((corn_cost_add_alt - corn_cost_add_odt) / corn_cost_add_odt)) %>% 
   select(Year = year, "ODT Base" = base, "Alt Base" = base_alt, "Diff Base" = base_diff,
          "ODT Add" = add, "Alt Add" = add_alt, "Diff Add" = add_diff) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
   
 ```
@@ -205,7 +205,7 @@ nonland_alt %>%
          add_diff = percent((soy_cost_add_alt - soy_cost_add_odt) / soy_cost_add_odt)) %>% 
   select(Year = year, "ODT Base" = base, "Alt Base" = base_alt, "Diff Base" = base_diff,
          "ODT Add" = add, "Alt Add" = add_alt, "Diff Add" = add_diff) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
   
 ```
@@ -236,7 +236,7 @@ nonland_alt %>%
          add_diff = percent((wheat_cost_add_alt - wheat_cost_add_odt) / wheat_cost_add_odt)) %>% 
   select(Year = year, "ODT Base" = base, "Alt Base" = base_alt, "Diff Base" = base_diff,
          "ODT Add" = add, "Alt Add" = add_alt, "Diff Add" = add_diff) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
   
 ```
@@ -269,7 +269,7 @@ read_rds("../3-proj/recommendations/ohio_nonland_alt.rds") %>%
   filter(year > 2011, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -322,7 +322,7 @@ rot_alt %>%
          "Alt Soybeans" = soy_rotate_alt,
          "ODT Wheat" = wheat_rotate_odt,
          "Alt Wheat" = wheat_rotate_alt) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -367,7 +367,7 @@ yield_alt %>%
          "ODT Wheat" = wheat_yield_odt,
          "Alt Wheat" = wheat_yield_alt,
          "Wheat Diff" = wheat_diff) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 <!-- | Year| ODT Corn| Alt Corn| ODT Soybeans| Alt Soybeans| ODT Wheat| Alt Wheat| -->
@@ -399,7 +399,7 @@ read_rds("../3-proj/recommendations/ohio_rot_alt.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -411,7 +411,7 @@ read_rds("../3-proj/recommendations/ohio_yield_alt.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -423,7 +423,7 @@ read_rds("../3-proj/recommendations/ohio_rot_yield_alt.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -480,7 +480,7 @@ cap_rates_raw %>%
          Dallas = dallas_fed_re, Richmond = richmond_fed_re,
          "St. Louis" = stlouis_fed_re) %>% 
   mutate_at(vars(-Year), ~scales::percent(., accuracy = 0.1)) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -534,7 +534,7 @@ cap_rates_alt %>%
          Chicago = chicago_fed_re, "Kansas City" = kansas_fed_re,
          Dallas = dallas_fed_re) %>% 
   mutate_at(vars(-Year), ~scales::percent(., accuracy = 0.01)) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
   
 ```
@@ -567,7 +567,7 @@ cap_rates_alt %>%
          "Kansas City" = cap_rate_kansas,
          "Chicago" = cap_rate_chicago) %>% 
   mutate_at(vars(-Year), ~scales::percent(., accuracy = 0.1)) %>% 
-  kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 <!-- | Year|ODT Value |Dallas |Kansas City |Chicago | -->
@@ -592,7 +592,7 @@ read_rds("../3-proj/recommendations/ohio_cap_kansas.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -604,7 +604,7 @@ read_rds("../3-proj/recommendations/ohio_cap_chicago.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -617,7 +617,7 @@ read_rds("../3-proj/recommendations/ohio_cap_dallas.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 # Data Years Used
@@ -667,7 +667,7 @@ read_rds("../3-proj/recommendations/ohio_same_dates.rds") %>%
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -693,7 +693,7 @@ read_rds("../3-proj/recommendations/ohio_all_implemented.rds") %>%
   filter(year > 2011, year < 2021) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 
@@ -704,7 +704,7 @@ read_rds("../3-proj/recommendations/ohio_all_withoutdates.rds") %>%
   filter(year > 2011, year < 2021) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
   select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
-  knitr::kable() %>% 
+  kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
 

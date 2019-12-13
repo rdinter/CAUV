@@ -52,7 +52,7 @@ The structure of the repository is as follows:
     - project/ - depends on different calculation scenarios one wants to utilize in calculating CAUV.
         - `3-project_proj.R` - projected calculation of CAUV based upon the project at play. These will include high and low based on the Olympic averaging component of the CAUV calculation. Other projections place restrictions on how one would anticipate trends in particular components.
 - [4-presentations/](4-presentations/)
-    - [Recommendations](4-presentations/4-FSR-2018)
+    - [Recommendations](4-presentations/4-recommendations)
     - [Farm Science Review](4-presentations/4-FSR-2018)
     - [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020)
 
