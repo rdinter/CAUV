@@ -4,6 +4,7 @@ title: "CAUV Calculation Recommendations"
 institute: "The Ohio State University"
 date: "2020-01-08"
 output:
+  beamer_presentation: default
   revealjs::revealjs_presentation:
     theme: night
     highlight: pygments
@@ -15,7 +16,6 @@ output:
     reveal_options:
       slideNumber: true
       previewLinks: true
-  beamer_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -157,7 +157,7 @@ $$ {Nonland}_{s,t} = {Base}_{t} + \left( {Yield}_{s,t} - {low}_{t} \right) \time
 
 ## Relevant Aspects of Crop Budget
 
-![](offline/corn-osu-budget-2019-alt.png)
+![](offline/corn-osu-budget-2019-alt-red.png)
 
 ## Hypothetical Previous Values for Corn
 
@@ -268,7 +268,8 @@ nonland_alt %>%
 read_rds("../3-proj/recommendations/ohio_nonland_alt.rds") %>% 
   filter(year > 2011, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -398,7 +399,8 @@ yield_alt %>%
 read_rds("../3-proj/recommendations/ohio_rot_alt.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -410,7 +412,8 @@ read_rds("../3-proj/recommendations/ohio_rot_alt.rds") %>%
 read_rds("../3-proj/recommendations/ohio_yield_alt.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -422,7 +425,8 @@ read_rds("../3-proj/recommendations/ohio_yield_alt.rds") %>%
 read_rds("../3-proj/recommendations/ohio_rot_yield_alt.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -591,7 +595,8 @@ cap_rates_alt %>%
 read_rds("../3-proj/recommendations/ohio_cap_kansas.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -603,7 +608,8 @@ read_rds("../3-proj/recommendations/ohio_cap_kansas.rds") %>%
 read_rds("../3-proj/recommendations/ohio_cap_chicago.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -616,7 +622,8 @@ read_rds("../3-proj/recommendations/ohio_cap_chicago.rds") %>%
 read_rds("../3-proj/recommendations/ohio_cap_dallas.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -666,7 +673,8 @@ read_rds("../3-proj/recommendations/ohio_cap_dallas.rds") %>%
 read_rds("../3-proj/recommendations/ohio_same_dates.rds") %>% 
   filter(year > 2009, year < 2020) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -692,7 +700,8 @@ read_rds("../3-proj/recommendations/ohio_same_dates.rds") %>%
 read_rds("../3-proj/recommendations/ohio_all_implemented.rds") %>% 
   filter(year > 2011, year < 2021) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```
@@ -703,7 +712,8 @@ read_rds("../3-proj/recommendations/ohio_all_implemented.rds") %>%
 read_rds("../3-proj/recommendations/ohio_all_withoutdates.rds") %>% 
   filter(year > 2011, year < 2021) %>% 
   left_join(select(cauv_indx, year, official_avg = avg_cauv)) %>% 
-  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, everything()) %>% 
+  mutate(pct = percent((parse_number(avg_cauv) - parse_number(official_avg)) / parse_number(official_avg), accuracy = 0.1)) %>% 
+  select(Year = year, "Avg CAUV" = official_avg, "Alt Avg CAUV" = avg_cauv, "Pct Chg" = pct, everything()) %>% 
   kable(booktabs = T) %>% 
   kable_styling(latex_options = "scale_down")
 ```

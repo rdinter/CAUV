@@ -8,6 +8,11 @@ Current 2020 projection:
 
 ![](3-proj/figures/cauv_expected_projections_2020.png)
 
+Recommendations for alterating the calculation procedure for CAUV calculations to be presented 2020-01-08:
+
+- [Presentation](4-presentations/4-recommendations) (and in [PDF format](4-presentations/4-recommendations.pdf))
+- [Write-up](4-presentations/4-recommendations-writeup) (and in [PDF format](4-presentations/4-recommendations-writeup.pdf))
+
 
 # Components:
 
@@ -78,8 +83,8 @@ All categories are Olympic averages with the exception of rotation and yields.
 |     2017|2011-2017           |2007-2016 |2010-2016 |2011-2017      |2012-2016 |
 |     2018|2012-2018           |2008-2017 |2011-2017 |2012-2018      |2013-2017 |
 |     2019|2013-2019           |2009-2018 |2012-2018 |2013-2019      |2014-2018 |
-|   Future|current-6 years ago |previous-11 years ago |previous-7 years ago |current-6 years ago |previous-5 years ago |
-|    Years|7 Olympic |10 Average, lag |7 Olympic, lag |7 Olympic |5 Average, lag |
+| Future Years|current to 6 years ago |previous to 11 years ago |previous to 7 years ago |current to 6 years ago |previous to 5 years ago |
+| Averaging|7 Olympic |10 Average, lagged |7 Olympic, lagged |7 Olympic |5 Average, lagged |
 
 Sources and timing of release:
 
