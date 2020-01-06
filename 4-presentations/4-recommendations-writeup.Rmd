@@ -7,11 +7,11 @@ bibliography: recommendations.bib
 indent: true
 linestretch: 1
 output:
+  bookdown::html_document2:
+    number_sections: no
   bookdown::pdf_document2:
     fig_caption: yes
     toc: yes
-    number_sections: no
-  bookdown::html_document2:
     number_sections: no
 header-includes:
    - \usepackage{floatrow}
@@ -43,27 +43,33 @@ cap_rates_alt <- read_rds("../2-calc/cap/ohio_alternate_caprate.rds")
 
 # Current Agricultural Use Value Background
 
-In 1974, Ohio enacted the Current Agricultural Use Value Program (CAUV) as a property tax incentive for farmers to continue agricultural production on their land instead of developing it due to urbanization pressure. The program also provides a public good by preserving farmland and/or open space. Programs for assessing agricultural land at different values and/or rates is not unique to Ohio as all states have some form of differential tax treatment for agricultural land. Use-value assessment of agricultural land began with Maryland in 1960 while the last state to adopt a program was Wisconsin in 1995 -- Ohio was the 27th state to adopt [@anderson2014use]. States differ in their process for assessing agricultural land at their potential use-value which take the form of roughly three approaches:
+Ohio has maintained the Current Agricultural Use Value Program (CAUV) as a property tax incentive for farmers to continue agricultural production on their land instead of developing it due to urbanization pressure since the early 1970s. The program also provides a public good by preserving farmland and/or open space. Programs for assessing agricultural land at different values and/or rates is not unique to Ohio as all states have some form of differential tax treatment for agricultural land. Use-value assessment of agricultural land began with Maryland in 1960 while the last state to adopt a program was Wisconsin in 1995 -- Ohio was the 27th state to adopt [@anderson2014use]. States differ in their process for assessing agricultural land at their potential use-value which take the form of roughly three approaches:
 
 1. A percentage reduction from fair market value (e.g., Georgia, Minnesota, and Mississippi)
 2. Capitalization of average cash rental rate (e.g., California, Tennessee, and Virginia)
 3. Capitalization of net income approach (e.g., Illinois, Iowa, and Pennsylvania)
 
-Some states combine the capitalization of average cash rental rate and net income approach (e.g., Kentucky, Indiana, and North Carolina). In Ohio, valuation of agricultural land enrolled in CAUV is through the capitalization of net income approach which approximates a soil's agricultural capabilities rather than the market value of land:
+However, some states combine the capitalization of average cash rental rate and net income approach (e.g., Kentucky, Indiana, and North Carolina). In Ohio, valuation of agricultural land enrolled in CAUV is through the capitalization of net income approach which approximates a soil's agricultural capabilities rather than the market value of land:
 
 > Current agricultural use values for taxing farmland are determined by calculating the farm's projected gross income from agricultural production, subtracting projected non-land production costs to get the farm's net income, then dividing this by an adjusted capitalization rate to arrive at the farmland's agricultural worth [@jeffers1999current].
 
-The origins of the CAUV calculations began in the late 1970s as a way to approximate the net income derived from agricultural production and further capitalized by the effective interest on farmland loans [@duvick1978alternative]. Data issues preclude knowing the net income of a farm and instead it must be estimated through expected yields and prices for typical crops for a soil type and its associated non-land costs. Based partially on the finding of @reiss1969cash that a direct correlation between soil productivity and net rents earned by Illinois farmland owners exists, the CAUV program uses soil type to determine the expected yields and this serves the basis for CAUV values. @shaudys1981development described the tenets of implementing a program like CAUV for Ohio:
+The origins of the CAUV calculations began in the late 1970s as a way to approximate the net income derived from agricultural production and further capitalized by the effective interest on farmland loans [@chafin1972technique]. Data issues preclude knowing the net income of a farm and instead it must be estimated through expected yields and prices for typical crops for a soil type and its associated non-land costs [@duvick1978alternative]. Based partially on the finding of @reiss1969cash that a direct correlation between soil productivity and net rents earned by Illinois farmland owners exists, the CAUV program uses soil type to determine the expected yields and this serves the basis for CAUV values. @shaudys1981development described the tenets of implementing a program like CAUV for Ohio:
 
 > Basic elements for effectively implementing and administering any taxation system include: 1) administrative simplicity, 2) ease of understanding, and 3) acceptable administrative costs. An acceptable real property taxation system must be easily understood by both county administrators and taxpayers. 
 
-The program was enacted in 1974 and has subsequently grown in complexity. There were 350 soil types in use for the 1981 CAUV values but this has grown to 3,514 soil types as of 2019. Aside from additional soils, the formula has had major changes to how expected yields are handled[^yields] in 2006, altering the process for crop rotations[^rotations] in 2010, changing the dates used for components[^dates] in 2015, and changing the source of equity rates[^equity] in 2017. There may have been subtle changes prior to 2006 as well, however this is hard to detect as there is limited publicly available information on the CAUV formula prior to 2009.
+The method for estimating a capitalized income stream on agricultural land was developed by @chafin1972technique based originally on a soil productivity index and 8 land capability classes with slope, drainage, and erosion as the factors which determine the capability class. Figure \@ref(fig:cauv-1973) dislays the the first CAUV values we could find, which are from 1973. The soil productivity index for these CAUV values are different from the productivity indexes currently in use as the current productivity indexes range from 0-100 with 100 as the most productive. The index in use in 1973 was percentage based in that a productivity index of 100 was equal to state average while an index of 130 would be 30\% more than the state average. Since the program was enacted in the early 1970s it has only grown in complexity.
+
+```{r cauv-1973, fig.cap = "CAUV Values in 1973", out.height="60%"}
+knitr::include_graphics("offline/cauv-1973.png")
+```
+
+
+There were 350 soil types in use for the 1981 CAUV values but this has grown to 3,514 soil types as of 2019. Aside from additional soils, the formula has had major changes to how expected yields are handled[^yields] in 2006, altering the process for crop rotations[^rotations] in 2010, changing the dates used for components[^dates] in 2015, and changing the source of equity rates[^equity] in 2017. There may have been subtle changes prior to 2006 as well, however this is hard to detect as there is limited publicly available information on the CAUV formula prior to 2009.
 
 [^yields]: Yields for soil types are based on the 1984 soil survey, which was the last state-wide survey of yields for corn, soybeans, and wheat by soil type across the state. The original 1984 values were used from 1984 until 2005. In 2006, soil types began having an adjustment factor based on the increase in state-wide yields for each crop.
 [^rotations]: Prior to 2010, the crop rotation was based off of the slope classification of a soil type and involved corn, soybeans, wheat, and hay. From 2010 onward, hay was dropped from the formula and the rotation percentage was based off of state-wide harvested acreage of corn, soybeans, and wheat.
 [^dates]: Dates used for yields, prices, and rotations were brought up two years and the non-land costs were brought up by one year.
 [^equity]: Data source for the equity rate portion of the capitalization rate was changed from the Federal Funds Rate to the [equity rate](https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/) over the previous 25 years from the USDA-ERS.
-
 
 # Recommendations for CAUV Calculation
 
@@ -135,7 +141,7 @@ And finally as a statistical point, the more individual items which are averaged
 
 The process for this proposed change would be that each year the _low_ and _medium_ yield values are recorded along with the _low_ and _medium_ values of "total costs", "land rent", and "management charge" for each crop. Figure \@ref(fig:corn-osu-budget-2019-alt) highlights the 8 relevant numbers to be recorded are circled.
 
-```{r corn-osu-budget-2019-alt, fig.cap = "Relevant Aspects of Crop Budget"}
+```{r corn-osu-budget-2019-alt, fig.cap = "Relevant Aspects of Crop Budget", out.height="66%"}
 knitr::include_graphics("offline/corn-osu-budget-2019-alt-red.png")
 ```
 
