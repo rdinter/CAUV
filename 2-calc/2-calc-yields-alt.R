@@ -3,6 +3,7 @@
 # ---- start --------------------------------------------------------------
 
 library("tidyverse")
+library("scales")
 library("zoo")
 
 # Create a directory for the data
