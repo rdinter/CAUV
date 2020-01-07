@@ -4,7 +4,6 @@ title: "CAUV Calculation Recommendations"
 institute: "The Ohio State University"
 date: "2020-01-08"
 output:
-  beamer_presentation: default
   revealjs::revealjs_presentation:
     theme: night
     highlight: pygments
@@ -16,6 +15,7 @@ output:
     reveal_options:
       slideNumber: true
       previewLinks: true
+  beamer_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -49,6 +49,8 @@ cap_rates_alt <- read_rds("../2-calc/cap/ohio_alternate_caprate.rds")
 3. Replace Farm Credit Service as the source for interest rates with a regional survey of agricultural interest rates from a Federal Reserve Bank
 4. Align all data sources to cover the same years
     <!-- - Chicago, Kansas City, Minneapolis, San Francisco, Dallas, Richmond, and St. Louis all maintain agricultural credit surveys -->
+
+See [http://robertdinterman.com/CAUV/](http://robertdinterman.com/CAUV/) for online version
 
 ## Historical CAUV Values
 
