@@ -6,7 +6,7 @@ The purpose of this repository is to have open source documentation of the calcu
 
 Current 2020 projection:
 
-![](3-proj/figures/cauv_expected_projections_2020.png)
+![](3-proj/figures/cauv_expected_projections_currently.png)
 
 Recommendations for alterating the calculation procedure for CAUV calculations to be presented 2020-01-08:
 
