@@ -1,4 +1,4 @@
-"year","date","corn_sales","hay_sales","soy_sales","wheat_sales","corn_price","hay_alfa_price","hay_nonalfa_price","hay_price","soy_price","wheat_price","wheat_winter_price"
+year,date,corn_sales,hay_sales,soy_sales,wheat_sales,corn_price,hay_alfa_price,hay_nonalfa_price,hay_price,soy_price,wheat_price,wheat_winter_price
 1908,1908-01-01,NA,NA,NA,NA,0.55,NA,NA,NA,NA,NA,NA
 1908,1908-02-01,NA,NA,NA,NA,0.56,NA,NA,NA,NA,NA,NA
 1908,1908-03-01,NA,NA,NA,NA,0.6,NA,NA,NA,NA,NA,NA
@@ -1342,3 +1342,6 @@
 2019,2019-09-01,NA,NA,NA,NA,4.11,200,125,160,8.58,5.05,5.05
 2019,2019-10-01,NA,NA,NA,NA,4.14,200,135,163,8.97,5.14,5.14
 2019,2019-11-01,NA,NA,NA,NA,4.06,205,135,164,9.13,5.29,5.29
+2019,2019-12-01,NA,NA,NA,NA,4.13,220,150,179,9.35,5.53,5.53
+2020,2020-01-01,NA,NA,NA,NA,4.15,220,160,186,9.39,5.46,5.46
+2020,2020-02-01,NA,NA,NA,NA,4.14,220,160,187,9.3,5.69,5.69

@@ -95,12 +95,10 @@ monthly <- sales_data %>%
   select(-time) %>% 
   right_join(monthly)
 
-write.csv(annual, paste0(local_dir, "/ohio_prices_annual.csv"),
-          row.names = F)
+write_csv(annual, paste0(local_dir, "/ohio_prices_annual.csv"))
 write_rds(annual, paste0(local_dir, "/ohio_prices_annual.rds"))
 
-write.csv(monthly, paste0(local_dir, "/ohio_prices_monthly.csv"),
-          row.names = F)
+write_csv(monthly, paste0(local_dir, "/ohio_prices_monthly.csv"))
 write_rds(monthly, paste0(local_dir, "/ohio_prices_monthly.rds"))
 
 # ---- crops --------------------------------------------------------------
@@ -174,8 +172,7 @@ crops <- crops %>%
                               wheat_winter_yield, wheat_yield)) %>% 
   select(-contains("winter"))
 
-write.csv(crops, paste0(local_dir, "/ohio_state_crops.csv"),
-          row.names = F)
+write_csv(crops, paste0(local_dir, "/ohio_state_crops.csv"))
 write_rds(crops, paste0(local_dir, "/ohio_state_crops.rds"))
 
 # Gather up the forecasted values
@@ -212,8 +209,7 @@ forecast_crops <- forecast_crops %>%
   spread(temp, val) %>% 
   select_if(not_all_na)
 
-write.csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"),
-          row.names = F)
+write_csv(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.csv"))
 write_rds(forecast_crops, paste0(local_dir, "/ohio_forecast_crops.rds"))
 
 
@@ -282,7 +278,7 @@ crops <- crops %>%
                               wheat_winter_yield, wheat_yield)) %>% 
   select(-contains("winter"))
 
-write.csv(crops, paste0(local_dir, "/ohio_county_crops.csv"), row.names = F)
+write_csv(crops, paste0(local_dir, "/ohio_county_crops.csv"))
 write_rds(crops, paste0(local_dir, "/ohio_county_crops.rds"))
 
 
@@ -473,5 +469,5 @@ blerg <- ohio %>%
 
 ohio <- full_join(ohio, blerg)
 
-write.csv(ohio, paste0(local_dir, "/ohio_econ_county.csv"), row.names = F)
+write_csv(ohio, paste0(local_dir, "/ohio_econ_county.csv"))
 write_rds(ohio, paste0(local_dir, "/ohio_econ_county.rds"))

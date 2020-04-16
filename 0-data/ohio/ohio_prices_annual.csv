@@ -1,4 +1,4 @@
-"year","corn_price","hay_alfa_price","hay_nonalfa_price","hay_price","soy_price","wheat_price","wheat_winter_price"
+year,corn_price,hay_alfa_price,hay_nonalfa_price,hay_price,soy_price,wheat_price,wheat_winter_price
 1940,NA,NA,NA,NA,0.91,NA,NA
 1941,NA,NA,NA,NA,1.55,NA,NA
 1942,NA,NA,NA,NA,1.61,NA,NA
@@ -78,4 +78,5 @@
 2016,3.61,172,110,137,9.66,4.25,4.25
 2017,3.61,175,115,138,9.62,4.9,4.9
 2018,3.74,183,123,145,8.69,5.08,5.08
-2019,NA,NA,NA,NA,NA,NA,NA
+2019,4.2,208,132,171,9.15,5.25,5.25
+2020,NA,NA,NA,NA,NA,NA,NA
