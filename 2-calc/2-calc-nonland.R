@@ -81,7 +81,8 @@ non_exp <- nonland_proj %>%
   spread(item, val) %>% 
   group_by(crop, level) %>% 
   arrange(year) %>% 
-  mutate(fixed_miscellaneous1 = rollapplyr(fixed_miscellaneous, 5, mean,
+  # The fixed miscellaneous needs to be corrected?
+  mutate(fixed_miscellaneous1 = rollapplyr(fixed_miscellaneous, 6, mean,
                                            na.rm = T, fill = NA),
          variable_miscellaneous = ifelse(level == "cost",
                                          1, variable_miscellaneous)) %>% 
@@ -92,7 +93,7 @@ non_exp <- nonland_proj %>%
 
 # Calculate the 7 year olympic average, except for fixed misc because there 
 #  are not enough observations. Do not do for fixed misc as it started in 2015
-non_land_costs <- non_exp %>% 
+non_land_inter <- non_exp %>% 
   group_by(crop, level) %>% 
   arrange(year) %>% 
   mutate_at(vars(-fixed_miscellaneous1, -year, -crop, -level),
@@ -100,7 +101,11 @@ non_land_costs <- non_exp %>%
                         rollapplyr(., width = 7, FUN =  mean,
                                    trim = 1/7, na.rm = T, fill = NA),
                         rollapplyr(lag(.), width = 7, FUN =  mean,
-                                   trim = 1/7, na.rm = T, fill = NA))))
+                                   trim = 1/7, na.rm = T, fill = NA)))) %>% 
+  # Should round these to the nearest cent?
+  mutate_at(vars(-group_cols()), list(~round(., digits = 2))) %>% 
+  # And round the months/yields to the nearest full value
+  mutate(yield = round(yield), months = round(months))
 
 # # And repeat for high and low projections
 
@@ -145,7 +150,7 @@ add_value  <- function(var, lev) {
   (var[lev == "l2_med"] - var[lev == "l1_low"])*var[lev == "cost"]
 }
 
-non_land <- non_land_costs %>% 
+non_land <- non_land_inter %>% 
   ungroup() %>% 
   group_by(year, crop) %>% 
   summarise(yield_adj = yield[level == "l2_med"] - yield[level == "l1_low"],
@@ -161,7 +166,8 @@ non_land <- non_land_costs %>%
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
             # Interest on variable costs except drying, hauling, crop insurance
-            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            #  looks like they only round to the third decimal place
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 3),
             interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
                                              drying[level == "cost"]*yield[level == "l1_low"] -
                                              trucking[level == "cost"]*yield[level == "l1_low"]),
@@ -202,7 +208,7 @@ non_high <- non_high_costs %>%
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
             # Interest on variable costs except drying, hauling, crop insurance
-            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 3),
             interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
                                              drying[level == "cost"]*yield[level == "l1_low"] -
                                              trucking[level == "cost"]*yield[level == "l1_low"]),
@@ -242,7 +248,7 @@ non_low <- non_low_costs %>%
               drying[level == "cost"]*yield[level == "l1_low"] +
               trucking[level == "cost"]*yield[level == "l1_low"],
             # Interest on variable costs except drying, hauling, crop insurance
-            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 4),
+            interest_rate = round(interest[level == "cost"]*months[level == "cost"]/12, digits = 3),
             interest_cost = interest_rate*(base1 - crop_insurance[level == "l2_med"] -
                                              drying[level == "cost"]*yield[level == "l1_low"] -
                                              trucking[level == "cost"]*yield[level == "l1_low"]),
@@ -278,6 +284,15 @@ write.csv(non_land_costs, paste0(nonland, "/ohio_forecast_nonland.csv"),
           row.names = F)
 write_rds(non_land_costs, paste0(nonland, "/ohio_forecast_nonland.rds"))
 
+
+# ---- components ---------------------------------------------------------
+
+non_land_inter %>% 
+  ungroup() %>% 
+  filter(year == 2020) %>% 
+  pivot_longer(-c(crop, year, level)) %>% 
+  filter(!is.na(value)) %>% 
+  knitr::kable()
 
 # ---- corn-base ----------------------------------------------------------
 
