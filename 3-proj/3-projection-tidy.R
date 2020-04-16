@@ -547,14 +547,14 @@ ohio_soils_exp %>%
     ggplot(., aes(year, val)) +
       geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
-      geom_text_repel(data = filter(., year == next_year),
+      geom_text_repel(data = filter(., year == next_year + 1),
                       aes(color = var,
                           label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
       geom_vline(xintercept = next_year - 1) +
-      scale_x_continuous(breaks = c(1990, 2000, 2010, 2019),
-                         limits = c(1991, 2021)) +
+      scale_x_continuous(breaks = c(1990, 2000, 2010, 2020),
+                         limits = c(1991, 2022)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
