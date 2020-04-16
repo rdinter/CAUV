@@ -44,7 +44,7 @@ ohio <- left_join(ohio, cauv_minimum)
 
 # Take out what the latest year we are projecting CAUV for is
 # next_year <- max(ohio$year[!is.na(ohio$corn_price_exp)]) + 1
-next_year = max(ohio$year[!is.na(ohio$corn_price_cauv_exp)]) - 1
+next_year = max(ohio$year[!is.na(ohio$corn_price)]) + 1
 # next_year = 2020
 
 # Individual soil type data.
@@ -559,7 +559,7 @@ ohio_soils_exp %>%
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
       scale_size_manual(values = indx_size) +
-      labs(x = "per acre", y = "", size = "Soil Productivity Index",
+      labs(y = "per acre", x = "", size = "Soil Productivity Index",
            color = "Soil Productivity Index",
            title = "Projections for CAUV Values of Cropland",
            subtitle = "official ODT values at black line and previous",
