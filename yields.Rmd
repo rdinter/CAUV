@@ -1,5 +1,5 @@
 ---
-output: github_document
+output: html_document
 ---
 
 <!-- yields.md is generated from yields.Rmd. Please edit yields.Rmd for corrections file -->
