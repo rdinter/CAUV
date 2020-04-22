@@ -78,9 +78,16 @@ proj_soils2 <- soils %>%
   distinct() %>% 
   mutate(year = next_year + 1) %>% 
   left_join(organic)
+# And a second additional year for projected soils
+proj_soils3 <- soils %>% 
+  select(-year, -cropland, -woodland) %>% 
+  distinct() %>% 
+  mutate(year = next_year + 2) %>% 
+  left_join(organic)
 # Combined
 proj_soils <- proj_soils1 %>% 
   bind_rows(proj_soils2) %>% 
+  bind_rows(proj_soils3) %>% 
   bind_rows(old_soils) %>% 
   arrange(year)
 
@@ -95,7 +102,6 @@ indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
                "0 to 49" = 0.5, "Average" = 2)
 
 # ---- expected -----------------------------------------------------------
-
 
 ohio_exp <- ohio %>%
   right_join(proj_soils) %>% 
@@ -139,7 +145,21 @@ ohio_exp <- ohio %>%
                                      soy_cost_odt),
          wheat_cost_cauv_proj = ifelse(is.na(wheat_cost_odt),
                                        wheat_cost_cauv,
-                                       wheat_cost_odt)) %>% 
+                                       wheat_cost_odt),
+         
+         corn_rotate_cauv = ifelse(is.na(corn_rotate_odt),
+                                   round(corn_rotate_cauv, 2),
+                                   corn_rotate_odt),
+         soy_rotate_cauv = ifelse(is.na(soy_rotate_odt),
+                                  round(soy_rotate_cauv, 2),
+                                  soy_rotate_odt),
+         wheat_rotate_cauv = ifelse(is.na(wheat_rotate_odt),
+                                    round(wheat_rotate_cauv, 2),
+                                    wheat_rotate_odt),
+         # Cap Rate
+         cap_rate_cauv = ifelse(is.na(cap_rate_odt),
+                                cap_rate_cauv_exp,
+                                cap_rate_odt)) %>% 
   # Calculating the components for the CAUV calculation
   mutate(corn_yield = round(corn_base*corn_yield_adj_proj),
          soy_yield = round(soy_base*soy_yield_adj_proj),
@@ -166,8 +186,8 @@ ohio_exp <- ohio %>%
          
          organic = 0.5*net_corn + 0.5*net_soy,
          
-         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits = -1),
-         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits = -1),
+         raw_val = round(net_return / round(cap_rate_cauv, 3),digits = -1),
+         raw_val_o = round(organic / round(cap_rate_cauv, 3),digits = -1),
          
          # Careful, org_soil is supposed to be T/F for if soil is classified
          raw = ifelse(org_soil, raw_val_o, raw_val),
@@ -234,7 +254,21 @@ ohio_low <- ohio %>%
          
          corn_cost_cauv_proj = corn_cost_cauv_l,
          soy_cost_cauv_proj = soy_cost_cauv_l,
-         wheat_cost_cauv_proj = wheat_cost_cauv_l) %>% 
+         wheat_cost_cauv_proj = wheat_cost_cauv_l,
+         
+         corn_rotate_cauv = ifelse(is.na(corn_rotate_odt),
+                                   round(corn_rotate_cauv, 2),
+                                   corn_rotate_odt),
+         soy_rotate_cauv = ifelse(is.na(soy_rotate_odt),
+                                  round(soy_rotate_cauv, 2),
+                                  soy_rotate_odt),
+         wheat_rotate_cauv = ifelse(is.na(wheat_rotate_odt),
+                                    round(wheat_rotate_cauv, 2),
+                                    wheat_rotate_odt),
+         # Cap Rate
+         cap_rate_cauv = ifelse(is.na(cap_rate_odt),
+                                cap_rate_cauv_l,
+                                cap_rate_odt)) %>% 
   # Calculating the components for the CAUV calculation
   mutate(corn_yield = round(corn_base*corn_yield_adj_proj),
          soy_yield = round(soy_base*soy_yield_adj_proj),
@@ -261,8 +295,8 @@ ohio_low <- ohio %>%
          
          organic = 0.5*net_corn + 0.5*net_soy,
          
-         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits = -1),
-         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits = -1),
+         raw_val = round(net_return / round(cap_rate_cauv, 3),digits = -1),
+         raw_val_o = round(organic / round(cap_rate_cauv, 3),digits = -1),
          
          # Careful, org_soil is supposed to be T/F for if soil is classified
          raw = ifelse(org_soil, raw_val_o, raw_val),
@@ -331,7 +365,21 @@ ohio_high <- ohio %>%
          
          corn_cost_cauv_proj = corn_cost_cauv_h,
          soy_cost_cauv_proj = soy_cost_cauv_h,
-         wheat_cost_cauv_proj = wheat_cost_cauv_h) %>% 
+         wheat_cost_cauv_proj = wheat_cost_cauv_h,
+         
+         corn_rotate_cauv = ifelse(is.na(corn_rotate_odt),
+                                   round(corn_rotate_cauv, 2),
+                                   corn_rotate_odt),
+         soy_rotate_cauv = ifelse(is.na(soy_rotate_odt),
+                                  round(soy_rotate_cauv, 2),
+                                  soy_rotate_odt),
+         wheat_rotate_cauv = ifelse(is.na(wheat_rotate_odt),
+                                    round(wheat_rotate_cauv, 2),
+                                    wheat_rotate_odt),
+         # Cap Rate
+         cap_rate_cauv = ifelse(is.na(cap_rate_odt),
+                                cap_rate_cauv_h,
+                                cap_rate_odt)) %>% 
   # Calculating the components for the CAUV calculation
   mutate(corn_yield = round(corn_base*corn_yield_adj_proj),
          soy_yield = round(soy_base*soy_yield_adj_proj),
@@ -358,8 +406,8 @@ ohio_high <- ohio %>%
          
          organic = 0.5*net_corn + 0.5*net_soy,
          
-         raw_val = round(net_return / round(cap_rate_cauv_exp, 3),digits = -1),
-         raw_val_o = round(organic / round(cap_rate_cauv_exp, 3),digits = -1),
+         raw_val = round(net_return / round(cap_rate_cauv, 3),digits = -1),
+         raw_val_o = round(organic / round(cap_rate_cauv, 3),digits = -1),
          
          # Careful, org_soil is supposed to be T/F for if soil is classified
          raw = ifelse(org_soil, raw_val_o, raw_val),
@@ -547,14 +595,14 @@ ohio_soils_exp %>%
     ggplot(., aes(year, val)) +
       geom_line(aes(color = var, size = var)) +
       geom_point(aes(color = var)) +
-      geom_text_repel(data = filter(., year == next_year + 1),
+      geom_text_repel(data = filter(., year == next_year + 2),
                       aes(color = var,
                           label = dollar(val, accuracy = 1)),
                       nudge_x = 1.75, show.legend = FALSE,
                       segment.alpha = 0.5) +
       geom_vline(xintercept = next_year - 1) +
       scale_x_continuous(breaks = c(1990, 2000, 2010, 2020),
-                         limits = c(1991, 2022)) +
+                         limits = c(1991, next_year + 3)) +
       scale_y_continuous(labels = dollar) +
       scale_color_viridis(option = "C", direction = -1,
                           end = 0.9, discrete = T) +
@@ -570,4 +618,59 @@ ohio_soils_exp %>%
   }
 ggsave(filename = "3-proj/figures/cauv_expected_projections_currently.png",
       width = 10, height = 7)
+
+# ---- etc ----------------------------------------------------------------
+
+ohio %>%
+  mutate(corn_yield_adj_proj = ifelse(is.na(corn_yield_adj_odt),
+                                      corn_yield_adj_cauv, corn_yield_adj_odt),
+         soy_yield_adj_proj = ifelse(is.na(soy_yield_adj_odt),
+                                     soy_yield_adj_cauv, soy_yield_adj_odt),
+         wheat_yield_adj_proj = ifelse(is.na(wheat_yield_adj_odt),
+                                       wheat_yield_adj_cauv, wheat_yield_adj_odt),
+         
+         corn_price_proj = ifelse(is.na(corn_price_odt), corn_price_cauv_exp,
+                                  corn_price_odt),
+         soy_price_proj = ifelse(is.na(soy_price_odt), soy_price_cauv_exp,
+                                 soy_price_odt),
+         wheat_price_proj = ifelse(is.na(wheat_price_odt), wheat_price_cauv_exp,
+                                   wheat_price_odt),
+         
+         corn_cost_add_cauv_proj = ifelse(is.na(corn_cost_add_odt),
+                                          corn_cost_add_cauv,
+                                          corn_cost_add_odt),
+         soy_cost_add_cauv_proj = ifelse(is.na(soy_cost_add_odt),
+                                         soy_cost_add_cauv,
+                                         soy_cost_add_odt),
+         wheat_cost_add_cauv_proj = ifelse(is.na(wheat_cost_add_odt),
+                                           wheat_cost_add_cauv,
+                                           wheat_cost_add_odt),
+         
+         corn_base_cauv_proj = ifelse(is.na(corn_base_odt),
+                                      corn_base_cauv, corn_base_odt),
+         soy_base_cauv_proj = ifelse(is.na(soy_base_odt),
+                                     soy_base_cauv, soy_base_odt),
+         wheat_base_cauv_proj = ifelse(is.na(wheat_base_odt),
+                                       wheat_base_cauv, wheat_base_odt),
+         
+         corn_cost_cauv_proj = ifelse(is.na(corn_cost_odt),
+                                      corn_cost_cauv,
+                                      corn_cost_odt),
+         soy_cost_cauv_proj = ifelse(is.na(soy_cost_odt),
+                                     soy_cost_cauv,
+                                     soy_cost_odt),
+         wheat_cost_cauv_proj = ifelse(is.na(wheat_cost_odt),
+                                       wheat_cost_cauv,
+                                       wheat_cost_odt)) %>% 
+  select(year, cap_rate_cauv_exp, 
+         corn_rotate_cauv, corn_yield_cauv, corn_yield_adj_proj, corn_price_proj,
+         corn_cost_add_cauv_proj, corn_base_cauv_proj, corn_cost_cauv_proj,
+         
+         soy_rotate_cauv, soy_yield_cauv, soy_yield_adj_proj, soy_price_proj,
+         soy_cost_add_cauv_proj, soy_base_cauv_proj, soy_cost_cauv_proj,
+         
+         wheat_rotate_cauv, wheat_yield_cauv, wheat_yield_adj_proj, wheat_price_proj,
+         wheat_cost_add_cauv_proj, wheat_base_cauv_proj, wheat_cost_cauv_proj) %>% 
+  View()
+
 

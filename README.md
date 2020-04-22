@@ -1,14 +1,14 @@
 # CAUV
 
-Projections for Ohio's Current Agricultural Use Value (CAUV) Program for each soil type in Ohio, based on the [2017 formulation](https://ofbf.org/2017/08/24/cauv-reform-passed/) which substantially changed from previous years. The Ohio Department of Taxation (ODT) provides an [overview of the caclulation for CAUV values](https://www.tax.ohio.gov/real_property/cauv.aspx) which are used within this repository.
+The purpose of this repository is to have open source documentation of the calculation for Ohio's Current Agricultural Use Value (CAUV) Program. Secondarily, this repository produces projections for future CAUV values for soil types in Ohio. Likely of most interest is the [current projections](3-proj/) for CAUV that you can find by clicking that link. A more dynamic version with descriptions is available at [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020) -- [PDF version also available](4-presentations/4-projections-2019-2020.pdf)
 
-The purpose of this repository is to have open source documentation of the calculation for CAUV values which can also be leveraged for projecting future values for soil types CAUV valuation. Likely of most interest is the [current projections](3-proj/) for CAUV that you can find by clicking that link. A more dynamic version with descriptions is available at [Ohio CAUV Value Projections for 2019 and 2020](4-presentations/4-projections-2019-2020) -- [PDF version also available](4-presentations/4-projections-2019-2020.pdf)
+The calculations and projections for each soil type in Ohio are based on the [2017 formulation](https://ofbf.org/2017/08/24/cauv-reform-passed/) which substantially changed the methodology for CAUV values from previous years. The Ohio Department of Taxation (ODT) provides an [overview of the caclulation for CAUV values](https://www.tax.ohio.gov/real_property/cauv.aspx) which are used within this repository.
 
-Current 2020 projection:
+Current projections:
 
-![](3-proj/figures/cauv_expected_projections_currently.png)
+[![](3-proj/figures/cauv_expected_projections_currently.png)](3-proj/figures/cauv_expected_projections_currently.png)
 
-Recommendations for alterating the calculation procedure for CAUV calculations to be presented 2020-01-08:
+Recommendations for altering the calculation procedure for CAUV calculations presented on 2020-01-08:
 
 - [Presentation](4-presentations/4-recommendations) (and in [PDF format](4-presentations/4-recommendations.pdf))
 - [Write-up](4-presentations/4-recommendations-writeup) (and in [PDF format](4-presentations/4-recommendations-writeup.pdf))
@@ -83,6 +83,7 @@ All categories are Olympic averages with the exception of rotation and yields.
 |     2017|2011-2017           |2007-2016 |2010-2016 |2011-2017      |2012-2016 |
 |     2018|2012-2018           |2008-2017 |2011-2017 |2012-2018      |2013-2017 |
 |     2019|2013-2019           |2009-2018 |2012-2018 |2013-2019      |2014-2018 |
+|     2020|2014-2020           |2010-2019 |2013-2019 |2014-2020      |2015-2019 |
 | Future Years|current to 6 years ago |previous to 11 years ago |previous to 7 years ago |current to 6 years ago |previous to 5 years ago |
 | Averaging|7 Olympic |10 Average, lagged |7 Olympic, lagged |7 Olympic |5 Average, lagged |
 
