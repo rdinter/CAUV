@@ -1,0 +1,99 @@
+---
+output: github_document
+---
+
+<!-- nonland.md is generated from nonland.Rmd. Please edit nonland.Rmd for corrections file -->
+
+```{r setup, include = FALSE}
+library("lubridate")
+library("knitr")
+library("tidyverse")
+opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  echo = FALSE
+)
+```
+
+```{r chunked, include = FALSE}
+# Current calculation of nonland costs
+read_chunk("2-calc/2-calc-nonland.R")
+```
+
+```{r start, include = FALSE}
+```
+
+```{r data, include = FALSE}
+```
+
+```{r calc-components, include = FALSE}
+```
+
+```{r calc-costs, include = FALSE}
+```
+
+
+# Non-land Costs
+
+The non-land costs are calculated as 7-year Olympic averages for typical costs of producing each commodity (corn, soybeans, and wheat). The [Farm Office](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) at The Ohio State University Extension conducts annual surveys for costs of production which serve as the yearly estimates that are used in the 7-year Olympic average. Budgets for a commodity marketing year are generally released in October of the prior year and then finalized in May of the marketing year -- i.e. the 2019 marketing year was initially released in October 2018 and will likely be finalized sometime after May 2019. There will typically be updates to the budgets throughout the year with a finalized version sometime in May. Due to the complex nature of the budgets, these data must be manually downloaded to each crops respective folder in [0-data/osu_budget/raw](0-data/osu_budget/raw) and the values manually input into the [0-data/osu_budget/osu_budgets - R.csv](0-data/osu_budget/osu_budgets - R.csv) file. These budgets will include both fixed (machinery, equipment, labor, etc.) and variable (seeds, fertilizer, chemicals, hauling, etc.) costs involved in producing corn, wheat, or soybeans and each of these individual components are averaged for use in CAUV calculation.
+
+Prior to 2015, the non-land costs were lagged one year -- i.e. tax year 2014 used the values from budgets in 2007 to 2013. From 2015 onward, the current year values are included in the non-land cost calculations. Because of the nature of an Olympic average, the non-land costs used in 2019 CAUV is bounded between a "high" and a "low" value by averaging the previous 6-years after dropping only the highest or lowest value respectively. In the event that the "high" value of our projected non-land costs occur, then this is where the 2019 non-land costs are all the lowest values in the previous 7-years which causes the CAUV to be a higher value. The opposite is true for the "low" value in that the non-land costs are all 7-year highs.
+
+Data description of each item in the budget can be found [in the README for the folder](0-data/osu_budget/).
+
+## Timing of Values
+
+The non-land costs years of OSU Crop Budgets used to calculate a tax year's non-land cost are as follows:
+
+| Tax Year|Non-Land Costs |
+|--------:|:--------------|
+|     2005|1998-2004      |
+|     2006|1999-2005      |
+|     2007|2000-2006      |
+|     2008|2001-2007      |
+|     2009|2002-2008      |
+|     2010|2003-2009      |
+|     2011|2004-2010      |
+|     2012|2005-2011      |
+|     2013|2006-2012      |
+|     2014|2007-2013      |
+|     2015|2009-2015      |
+|     2016|2010-2016      |
+|     2017|2011-2017      |
+|     2018|2012-2018      |
+|     2019|2013-2019      |
+|     2020|2014-2020      |
+|   Future|current-6 years ago|
+|    Years|7 Olympic |
+
+## Current Projections
+
+Because of the Olympic averaging nature of the non-land costs, projecting one year into the future for non-land costs has an upper bound and a lower bound even without knowing what the OSU crop budgets are. This is because the highest and lowest values are always discarded in calculating the non-land costs component of CAUV. If the missing year ends up with extremely high costs, then that value will be omitted and the previous 6 years of data (minus the lowest costs) are then averaged. The reverse can be said if the missing year ends up with extremely low costs. Therefore, for each tax year we can have an upper bound and a lower bound. In addition, we construct what we "expect" to be the non-land costs based on carrying forward the previous year's values in place.
+
+Our current expectations for the base cost and additional cost of each commodities in the CAUV formula as of `r Sys.Date()`.
+
+### Corn
+
+```{r corn-base}
+```
+
+```{r corn-add}
+```
+
+### Soybeans
+
+```{r corn-base}
+```
+
+```{r soy-add}
+```
+
+### Wheat
+
+```{r wheat-base}
+```
+
+```{r wheat-add}
+```
+

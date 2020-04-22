@@ -81,6 +81,12 @@ write_rds(ohio, paste0(yields, "/ohio_forecast_crops.rds"))
 
 ohio %>% 
   filter(year > 2005) %>% 
+  mutate(corn_yield_odt = replace(round(corn_yield_odt, digits = 1),
+                                  is.na(corn_yield_odt), "-"),
+         corn_yield_cauv = replace(round(corn_yield_cauv, digits = 1),
+                                  is.na(corn_yield_cauv), "-"),
+         corn_grain_yield = replace(round(corn_grain_yield, digits = 1),
+                                  is.na(corn_grain_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = corn_yield_odt,
          "USDA Yield" = corn_grain_yield,
          "Projected Yield" = corn_yield_cauv) %>% 
@@ -90,6 +96,12 @@ ohio %>%
 
 ohio %>% 
   filter(year > 2005) %>% 
+  mutate(soy_yield_odt = replace(round(soy_yield_odt, digits = 1),
+                                  is.na(soy_yield_odt), "-"),
+         soy_yield_cauv = replace(round(soy_yield_cauv, digits = 1),
+                                   is.na(soy_yield_cauv), "-"),
+         soy_yield = replace(round(soy_yield, digits = 1),
+                                    is.na(soy_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = soy_yield_odt,
          "USDA Yield" = soy_yield, "Projected Yield" = soy_yield_cauv) %>% 
   knitr::kable()
@@ -98,6 +110,12 @@ ohio %>%
 
 ohio %>% 
   filter(year > 2005) %>% 
+  mutate(wheat_yield_odt = replace(round(wheat_yield_odt, digits = 1),
+                                 is.na(wheat_yield_odt), "-"),
+         wheat_yield_cauv = replace(round(wheat_yield_cauv, digits = 1),
+                                  is.na(wheat_yield_cauv), "-"),
+         wheat_yield = replace(round(wheat_yield, digits = 1),
+                             is.na(wheat_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = wheat_yield_odt,
          "USDA Yield" = wheat_yield,
          "Projected Yield" = wheat_yield_cauv) %>% 

@@ -83,11 +83,14 @@ write_rds(ohio, paste0(rot, "/ohio_forecast_rotate.rds"))
 ohio %>% 
   filter(year > 2009) %>% 
   mutate(corn_rotate_cauv = scales::percent(corn_rotate_cauv, accuracy = 0.1),
-         corn_rotate_odt = scales::percent(corn_rotate_odt, accuracy = 0.1)) %>% 
+         corn_rotate_odt = scales::percent(corn_rotate_odt, accuracy = 0.1),
+         corn_grain_acres_harvest = scales::comma(corn_grain_acres_harvest),
+         corn_harvest_cauv = scales::comma(corn_harvest_cauv)) %>% 
   select("Year" = year, "ODT Value" = corn_rotate_odt,
          "USDA Acres Harvested" = corn_grain_acres_harvest,
          "AVG Acres Harvested" = corn_harvest_cauv,
          "Projected" = corn_rotate_cauv) %>% 
+  replace(is.na(.), "-") %>% 
   knitr::kable()
 
 # ---- soy ----------------------------------------------------------------
@@ -95,11 +98,14 @@ ohio %>%
 ohio %>% 
   filter(year > 2009) %>% 
   mutate(soy_rotate_cauv = scales::percent(soy_rotate_cauv, accuracy = 0.1),
-         soy_rotate_odt = scales::percent(soy_rotate_odt, accuracy = 0.1)) %>% 
+         soy_rotate_odt = scales::percent(soy_rotate_odt, accuracy = 0.1),
+         soy_acres_harvest = scales::comma(soy_acres_harvest),
+         soy_harvest_cauv = scales::comma(soy_harvest_cauv)) %>% 
   select("Year" = year, "ODT Value" = soy_rotate_odt,
          "USDA Acres Harvested" = soy_acres_harvest,
          "AVG Acres Harvested" = soy_harvest_cauv,
          "Projected" = soy_rotate_cauv) %>% 
+  replace(is.na(.), "-") %>% 
   knitr::kable()
 
 # ---- wheat --------------------------------------------------------------
@@ -107,9 +113,12 @@ ohio %>%
 ohio %>% 
   filter(year > 2009) %>% 
   mutate(wheat_rotate_cauv = scales::percent(wheat_rotate_cauv, accuracy = 0.1),
-         wheat_rotate_odt = scales::percent(wheat_rotate_odt, accuracy = 0.1)) %>% 
+         wheat_rotate_odt = scales::percent(wheat_rotate_odt, accuracy = 0.1),
+         wheat_acres_harvest = scales::comma(wheat_acres_harvest),
+         wheat_harvest_cauv = scales::comma(wheat_harvest_cauv)) %>% 
   select("Year" = year, "ODT Value" = wheat_rotate_odt,
          "USDA Acres Harvested" = wheat_acres_harvest,
          "AVG Acres Harvested" = wheat_harvest_cauv,
          "Projected" = wheat_rotate_cauv) %>% 
+  replace(is.na(.), "-") %>% 
   knitr::kable()

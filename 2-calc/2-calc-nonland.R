@@ -302,7 +302,8 @@ non_land_costs %>%
          "Low Projection" = corn_cost_cauv_l,
          "Expected Projection" = corn_cost_cauv,
          "High Projection" = corn_cost_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- corn-add -----------------------------------------------------------
@@ -313,7 +314,8 @@ non_land_costs %>%
          "Low Projection" = corn_cost_add_cauv_l,
          "Expected Projection" = corn_cost_add_cauv,
          "High Projection" = corn_cost_add_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- soy-base ----------------------------------------------------------
@@ -324,7 +326,8 @@ non_land_costs %>%
          "Low Projection" = soy_cost_cauv_l,
          "Expected Projection" = soy_cost_cauv,
          "High Projection" = soy_cost_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- soy-add -----------------------------------------------------------
@@ -335,7 +338,8 @@ non_land_costs %>%
          "Low Projection" = soy_cost_add_cauv_l,
          "Expected Projection" = soy_cost_add_cauv,
          "High Projection" = soy_cost_add_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(replace(scales::dollar(., accuracy = 0.01),
+                                          is.na(.), "-"), is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- wheat-base ----------------------------------------------------------
@@ -346,7 +350,8 @@ non_land_costs %>%
          "Low Projection" = wheat_cost_cauv_l,
          "Expected Projection" = wheat_cost_cauv,
          "High Projection" = wheat_cost_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- wheat-add -----------------------------------------------------------
@@ -357,6 +362,7 @@ non_land_costs %>%
          "Low Projection" = wheat_cost_add_cauv_l,
          "Expected Projection" = wheat_cost_add_cauv,
          "High Projection" = wheat_cost_add_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 

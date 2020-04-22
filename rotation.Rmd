@@ -1,0 +1,78 @@
+---
+output: github_document
+---
+
+<!-- rotation.md is generated from rotation.Rmd. Please edit rotation.Rmd for corrections file -->
+
+```{r setup, include = FALSE}
+library("lubridate")
+library("knitr")
+library("tidyverse")
+opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  echo = FALSE
+)
+```
+
+```{r chunked, include = FALSE}
+# Current calculation of rotation
+read_chunk("2-calc/2-calc-rot.R")
+```
+
+```{r start, include = FALSE}
+```
+
+```{r calc, include = FALSE}
+```
+
+
+
+# Rotation
+
+The rotation between corn, soybeans, and wheat come from official USDA data which are automatically downloaded with the [0-data/0-ohio-nass.R](0-data/0-ohio-nass.R) script. These data technically come from [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046). Typically there is an August, September, October, and November forecast. Then [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occur in January of the following year. The USDA Quick Stats API will incorrectly place the most recent forecast value for the current year in the "YEAR" reference period. This needs to be accounted for when looking at projections.
+
+Rotation is one of the components which does not use Olympic averaging, which makes projecting the component forward more sensitive to new values.
+
+| Tax Year|Rotation  |
+|--------:|:---------|
+|     2005|ad hoc    |
+|     2006|ad hoc    |
+|     2007|ad hoc    |
+|     2008|ad hoc    |
+|     2009|ad hoc    |
+|     2010|2004-2008 |
+|     2011|2005-2009 |
+|     2012|2006-2010 |
+|     2013|2007-2011 |
+|     2014|2008-2012 |
+|     2015|2010-2014 |
+|     2016|2011-2015 |
+|     2017|2012-2016 |
+|     2018|2013-2017 |
+|     2019|2014-2018 |
+|     2020|2015-2019 |
+|   Future|previous-5 years ago |
+|    Years|5 Average, one year lag |
+
+## Current Projections
+
+The rotation values are based on the harvested acreage of each crop from USDA. USDA provides updates for each of the crops in the Summer time until they denote their official estimates in January or February of the following year. In calculating projections, the most recent value for harvested acreage is carried forward to future years to create the projection. There is no "high" or "low" value in projections for rotations.
+
+Our current expectations for the rotation of corn, soybeans, and wheat in the CAUV formula as of `r Sys.Date()`.
+
+### Corn
+
+```{r corn}
+```
+
+### Soybeans
+
+```{r soy}
+```
+
+### Wheat
+
+```{r wheat}
+```

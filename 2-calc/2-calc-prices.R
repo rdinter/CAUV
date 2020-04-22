@@ -125,7 +125,8 @@ price_proj %>%
     "Expected Projection" = corn_price_cauv_exp,
     "High Projection" = corn_price_cauv_h
   ) %>%
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- soy ----------------------------------------------------------------
@@ -141,7 +142,8 @@ price_proj %>%
     "Expected Projection" = soy_price_cauv_exp,
     "High Projection" = soy_price_cauv_h
   ) %>%
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 
@@ -158,7 +160,8 @@ price_proj %>%
     "Expected Projection" = wheat_price_cauv_exp,
     "High Projection" = wheat_price_cauv_h
   ) %>%
-  mutate_at(vars(-Year), ~scales::dollar(., accuracy = 0.01)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 0.01),
+                                  is.na(.), "-")) %>% 
   knitr::kable()
 
 # ---- prediction ---------------------------------------------------------

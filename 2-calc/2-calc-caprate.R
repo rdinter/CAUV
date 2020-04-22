@@ -136,5 +136,6 @@ ohio %>%
   select("Year" = year, "ODT Value" = cap_rate_odt,
          "Expected" = cap_rate_cauv_exp, #"Maybe" = cap_rate_cauv_exp,
          "Low" = cap_rate_cauv_l, "High" = cap_rate_cauv_h) %>% 
-  mutate_at(vars(-Year), ~scales::percent(., accuracy = 0.1)) %>% 
+  mutate_at(vars(-Year), ~replace(scales::percent(., accuracy = 0.1),
+            is.na(.), "-")) %>% 
   knitr::kable()
