@@ -79,7 +79,7 @@ based on carrying forward the previous year’s values in place.
 
 Our current expectations for the prices of corn, soybeans, and wheat in
 the CAUV formula as of
-2020-04-22.
+2020-04-24.
 
 ### Corn
 

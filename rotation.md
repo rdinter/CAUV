@@ -1,3 +1,5 @@
+Rotations
+================
 
 <!-- rotation.md is generated from rotation.Rmd. Please edit rotation.Rmd for corrections file -->
 
@@ -53,7 +55,7 @@ rotations.
 
 Our current expectations for the rotation of corn, soybeans, and wheat
 in the CAUV formula as of
-2020-04-22.
+2020-04-24.
 
 ### Corn
 
