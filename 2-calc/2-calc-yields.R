@@ -46,7 +46,7 @@ yield_trends <-
   mutate(model = data %>% map(~lm(val ~ year, data = .)),
          trend = map2(model, data, predict)) %>% 
   unnest(c(trend, data)) %>% 
-  filter(is.na(val)) %>% # Only keep the missing values
+  # filter(is.na(val)) %>% # Only keep the missing values
   select(-val, -model) %>% 
   spread(var, trend)
 
@@ -56,19 +56,27 @@ ohio_yield <- yield_proj %>%
   left_join(yield_trends) %>% 
   mutate(corn_grain_yield = if_else(is.na(corn_grain_yield),
                                     corn_trend, corn_grain_yield),
-         soy_yield = if_else(is.na(soy_yield), soy_trend, soy_yield),
-         wheat_yield = if_else(is.na(wheat_yield), wheat_trend, wheat_yield)) %>% 
-  
-  mutate(corn_yield_cauv  = yield_calc(corn_grain_yield, year),
-         corn_yield_adj_cauv = corn_yield_cauv / corn_grain_yield[year == 1984],
-         corn_yield_adj_odt = corn_yield_odt / corn_grain_yield[year == 1984],
-         soy_yield_cauv   = yield_calc(soy_yield, year),
-         soy_yield_adj_cauv = soy_yield_cauv / soy_yield[year == 1984],
-         soy_yield_adj_odt = soy_yield_odt / soy_yield[year == 1984],
+         soy_yield = if_else(is.na(soy_yield),
+                             soy_trend, soy_yield),
+         wheat_yield = if_else(is.na(wheat_yield),
+                               wheat_trend, wheat_yield)) %>% 
+  mutate(corn_yield_cauv = yield_calc(corn_grain_yield, year),
+         corn_yield_adj_cauv = corn_yield_cauv /
+           corn_grain_yield[year == 1984],
+         corn_yield_adj_odt = corn_yield_odt /
+           corn_grain_yield[year == 1984],
+         soy_yield_cauv = yield_calc(soy_yield, year),
+         soy_yield_adj_cauv = soy_yield_cauv /
+           soy_yield[year == 1984],
+         soy_yield_adj_odt = soy_yield_odt /
+           soy_yield[year == 1984],
          wheat_yield_cauv = yield_calc(wheat_yield, year),
-         wheat_yield_adj_cauv = wheat_yield_cauv / wheat_yield[year == 1984],
-         wheat_yield_adj_odt = wheat_yield_odt / wheat_yield[year == 1984]) %>% 
-  select(year, corn_yield_cauv:wheat_yield_adj_odt)
+         wheat_yield_adj_cauv = wheat_yield_cauv /
+           wheat_yield[year == 1984],
+         wheat_yield_adj_odt = wheat_yield_odt /
+           wheat_yield[year == 1984]) %>% 
+  select(year, corn_yield_cauv:wheat_yield_adj_odt,
+         corn_trend, soy_trend, wheat_trend)
 
 ohio <- left_join(yield_proj, ohio_yield)
 
@@ -85,10 +93,13 @@ ohio %>%
                                   is.na(corn_yield_odt), "-"),
          corn_yield_cauv = replace(round(corn_yield_cauv, digits = 1),
                                   is.na(corn_yield_cauv), "-"),
+         corn_trend = replace(round(corn_trend, digits = 1),
+                                   is.na(corn_trend), "-"),
          corn_grain_yield = replace(round(corn_grain_yield, digits = 1),
                                   is.na(corn_grain_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = corn_yield_odt,
          "USDA Yield" = corn_grain_yield,
+         "Trend Yield" = corn_trend,
          "Projected Yield" = corn_yield_cauv) %>% 
   knitr::kable()
 
@@ -100,10 +111,14 @@ ohio %>%
                                   is.na(soy_yield_odt), "-"),
          soy_yield_cauv = replace(round(soy_yield_cauv, digits = 1),
                                    is.na(soy_yield_cauv), "-"),
+         soy_trend = replace(round(soy_trend, digits = 1),
+                              is.na(soy_trend), "-"),
          soy_yield = replace(round(soy_yield, digits = 1),
                                     is.na(soy_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = soy_yield_odt,
-         "USDA Yield" = soy_yield, "Projected Yield" = soy_yield_cauv) %>% 
+         "USDA Yield" = soy_yield,
+         "Trend Yield" = soy_trend,
+         "Projected Yield" = soy_yield_cauv) %>% 
   knitr::kable()
 
 # ---- wheat --------------------------------------------------------------
@@ -114,9 +129,12 @@ ohio %>%
                                  is.na(wheat_yield_odt), "-"),
          wheat_yield_cauv = replace(round(wheat_yield_cauv, digits = 1),
                                   is.na(wheat_yield_cauv), "-"),
+         wheat_trend = replace(round(wheat_trend, digits = 1),
+                              is.na(wheat_trend), "-"),
          wheat_yield = replace(round(wheat_yield, digits = 1),
                              is.na(wheat_yield), "-")) %>% 
   select("Year" = year, "ODT Yield" = wheat_yield_odt,
          "USDA Yield" = wheat_yield,
+         "Trend Yield" = wheat_trend,
          "Projected Yield" = wheat_yield_cauv) %>% 
   knitr::kable()
