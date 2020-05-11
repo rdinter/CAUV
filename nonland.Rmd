@@ -84,7 +84,7 @@ Our current expectations for the base cost and additional cost of each commoditi
 
 ### Soybeans
 
-```{r corn-base}
+```{r soy-base}
 ```
 
 ```{r soy-add}
