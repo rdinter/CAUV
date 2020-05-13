@@ -1,0 +1,346 @@
+---
+title: "CAUV Projections, May 2020"
+author: Robert Dinterman^[Post-Doctoral Researcher] and Ani L. Katchova^[Associate
+  Professor and Farm Income Enhancement Chair]
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+  word_document: default
+  html_document:
+    df_print: paged
+    keep_md: yes
+linestretch: 1
+subtitle: |
+  | Department of Agricultural, Environmental and Development Economics,
+  | The Ohio State University
+header-includes:
+- \usepackage{floatrow}
+- \floatsetup[figure]{capposition=top}
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_knit$set(root.dir = normalizePath("../"))
+read_chunk("../3-proj/3-projection-tidy.R")
+```
+
+```{r global_options, include=FALSE}
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%", fig.pos = "H")
+```
+
+```{r start, include=FALSE}
+```
+
+```{r expected, include=FALSE}
+```
+
+```{r low, include=FALSE}
+```
+
+```{r high, include=FALSE}
+```
+
+```{r projections, include=FALSE}
+```
+
+# Key Findings
+
+The purpose of this report is to provide projections of property tax for agricultural land in Ohio for tax years 2020, 2021, and 2022. The projections apply for all soil types in Ohio enrolled in the Current Agricultural Use Value Program (CAUV) and are grouped by soil productivity indexes. Ohio underwent large [legislative changes](http://codes.ohio.gov/orc/5715.01) to the calculation of CAUV values in 2017 which were phased-in over one triennial cycle and the 2020, 2021, and 2022 tax years represent the first full implementation of the new formula for counties in Ohio. Current methodology for calculating CAUV values is explained along with how the projections are constructed. Ohio Department of Taxation (ODT) descriptions of calculations and the [Ohio Code of legislation](http://codes.ohio.gov/orc/5713.31) on CAUV are used in this report.
+
+**Highlights**
+
+- For reference, the average CAUV value for 2017, 2018, and 2019 were \$1,153, \$1,105, and \$876 respectively. However, those values included the "phase-in" procedure and would have been approximately \$1,000, \$875, and \$740 without the "phase-in."
+- Current projection for average CAUV value in 2020 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2020], accuracy = 5)` which would represent a change of `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2020] - ohio_soils_all$expected[ohio_soils_all$year == 2019]) / ohio_soils_all$expected[ohio_soils_all$year == 2019], accuracy = 1)` from the previous tax year. However, the more apt comparison would be to the most recent triennial update in 2017 and the projection calls for a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2020] - ohio_soils_all$expected[ohio_soils_all$year == 2017]) / ohio_soils_all$expected[ohio_soils_all$year == 2017], accuracy = 1)` decrease in average CAUV values for counties receiving updates to their property taxes.
+- The projection for the average CAUV value in 2021 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2021], accuracy = 5)` which would represent a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2021] - ohio_soils_all$expected[ohio_soils_all$year == 2018]) / ohio_soils_all$expected[ohio_soils_all$year == 2018], accuracy = 1)` change from the previous triennial update. The average CAUV value projections could end up as low as `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2021], accuracy = 5)` or as high as `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2021], accuracy = 5)` if actualized prices, yields, non-land costs, and interest rates for 2020 have large deviations from their recent trends.
+- The very early projection for the average CAUV value in 2022 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2022], accuracy = 5)` which would represent a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2022] - ohio_soils_all$expected[ohio_soils_all$year == 2019]) / ohio_soils_all$expected[ohio_soils_all$year == 2019], accuracy = 1)` change from the previous triennial update. The average CAUV value projections could end up as low as `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2022], accuracy = 5)` or as high as `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2022], accuracy = 5)` if actualized prices, yields, non-land costs, and interest rates for 2020 and 2021 have large deviations from their recent trends.
+
+
+\newpage
+\setstretch{1.5}
+
+# CAUV Value Projections for 2020 through 2022
+
+In 2019, the average CAUV value across all soil types was \$876 per Ohio Department of Taxation (ODT) and was the final year of the "phase-in." The "phase-in" resulted from legislative changes in 2017 which altered the formula for CAUV but would not fully incorporate the changes until 2020 and beyond. Without the "phase-in," the average CAUV value in 2019 would have been \$739. The projection for the average value of CAUV in the 2020 tax year is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2020], accuracy = 1)` followed by an uptick in the 2021 tax year to `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2021], accuracy = 1)` and then `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2022], accuracy = 1)` in the 2022 tax year. The projections are partially based on how the CAUV formula use Olympic averaging[^olympic] for certain components and it is possible for a potential high of `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2020], accuracy = 1)` to a potential low of `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2020], accuracy = 1)` for average CAUV values in 2020. However, CAUV values will not become official for 2020 until sometime after June but are unlikely to have a substantial divergence from current expected projections based on the currently available data for components which use Olympic averaging. The corresponding high projections for 2021 and 2022 are `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2021], accuracy = 1)` and `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2022], accuracy = 1)` respectively while the low projections for 2021 and 2022 are `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2021], accuracy = 1)` and `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2022], accuracy = 1)` respectively. There is more uncertainty with the expected 2021 and 2022 values because they are missing one or two years worth of values in their formula for the agricultural economy but the high and low projections capture the full range of values CAUV can take on in those tax years.
+
+[^olympic]: A 7-year Olympic average is a mean of the previous 7 values after first removing the highest and lowest values from calculation. For projections, we assume the most recent data is either the highest/lowest value in the 7 year span.
+
+Projections of CAUV values are based on five major components in the formula which are averaged over a period of five to twenty-five years depending on the specific component: capitalization rate, commodity yields, commodity prices, commodity acreage/rotation, and non-land input costs. The commodities used in CAUV are corn, soybeans, and wheat. Each of these components are projected into the future based on recent trends in order to fill in missing values in the projection of 2020, 2021, and 2022 CAUV values.
+
+While the projection of the CAUV values for 2020 tax year are to decrease from 2019, this is due to firstly from the absence of the "phase-in" as well as trends in the components that make up the CAUV formula. The projections for the CAUV values in the 2020 tax year are for the components of commodity yields, commodity rotation, and capitalization rate to remain largely unchanged from their 2019 values. Input costs are expected to continue their recent decline, although this is counteracted with commodity prices expected to decline by a larger degree in part to a recent low price environment but also due to higher prices dropping out of the calculation. However, the recent trend for input costs falling as well as an expected decrease in the capitalization rate -- due to lower interest rates on farmland loans -- will reverse the trend of falling CAUV values for 2021 and 2022 as they are expected to rise.
+
+Under the expected scenario, the average CAUV value will continue to decline in 2020 by a similar proportion as the fall in the CAUV values from 2016 through 2019. Grouping soil types based on a productivity index, as seen in figure \ref{fig:cauv-expected}, can help display how similarly productive soils are expected to decline for the 2020 projections and corresponding rise for 2021 and 2022:
+
+```{r cauv-expected, fig.cap="\\label{fig:cauv-expected}"}
+```
+
+The 2017 through 2019 CAUV values were partially offset by the current provision in the CAUV calculations that phases in the new formula for CAUV, smoothing the adjustment to lower CAUV values over one cycle of property reassessment rather than these declines occurring immediately. The 2019 values had an adjustment factor where only half of the difference was included between the 2018 CAUV value and what the pre-adjusted 2019 CAUV would have been. This also occurred for the 2018 and 2017 values. Figure \ref{fig:cauv-unadj} provides a productivity index grouping of soils over time if the "phase-in" did not exist, which indicates that the expected values in 2021 and 2022 will have similar values to what an unadjusted average CAUV value would have been in 2017 and 2018:
+
+```{r cauv-unadj, fig.cap="\\label{fig:cauv-unadj}"}
+```
+
+
+Updates to CAUV values do not occur equally across Ohio as there is a rotating schedule for tax assessments in Ohio. [Once every six years](https://www.tax.ohio.gov/real_estate/reappraisal_and_triennial_update.aspx), a county receives a full reappraisal of their property with an adjustment in the third year in between. Each county receives an update to their CAUV values for the years a reappraisal or adjustment occurs. About half of the state will receive updates in 2020, a quarter in 2021, and the remaining quarter in 2022. Figure \ref{fig:update-map} provides a reference for when a county receives an update to their CAUV values:
+
+```{r update-map, fig.cap="\\label{fig:update-map}"}
+```
+
+\newpage
+
+
+# Current Agricultural Use Value Program Overview
+
+For landowners in Ohio, their farmland's property tax is not based on the market value of the land but instead through the Current Agricultural Use Value Program (CAUV). The stated intention of the program is to provide a value of agricultural farmland based on expected value from agricultural use and depends on soil type, yields, prices, non-land costs, and capitalization rate (derived from interest rates on farmland) that is used in place of the market value of land.
+
+In 1974, Ohio enacted the Current Agricultural Use Value Program (CAUV) as a tax incentive for farmers to continue agricultural production on their land instead of selling it due to urbanization pressure. CAUV provides an appraisal method for valuing agricultural land by use of only agricultural inputs rather than the market value of land. Throughout the 1970s, other states adopted similar programs of differential appraisal methods of agricultural land and, as of 2014, all 50 states within the US provide some form of differential tax treatment of agricultural land. CAUV reduced the property assessment value to 35\% of market value in 1985 with a steady decline to below 14\% of market value in 2006. However, since 2006 there has been a rapid increase in CAUV values, which has led to CAUV values being at least half of the market value since 2014. This rapid increase in CAUV values prompted lawmakers in Ohio evaluate the formula used in CAUV calculations and propose changes to the formula to reflect more modern appraisal techniques. The changes, from House Bill 49, were signed into legislation on June 30, 2017 and will be phased-in over a three year period starting with 2017.
+
+No matter what commodity a farmer produces, their CAUV value is determined solely based on their soil type and a formula from the Ohio Department of Taxation (ODT) which aims to represent the expected returns for an average farmer in Ohio. A simplified version of the calculation can be stated as:
+
+> The CAUV value is the expected net present value of an acre of land based on expected net income of the land used for agricultural purposes. To determine this, first a historical average of yields and prices for corn, soybeans, and wheat is used to determine gross income. Then historical non-land costs -- provided by The Ohio State University Extension -- are subtracted from gross income for a measure of net income. And finally, this net income is divided by a capitalization rate based upon historical values of farm interest and equity rates. This CAUV value will vary based upon the particular soil type(s) for a farm.
+
+For agricultural land to be eligible for CAUV, it must either be at least 10 acres devoted exclusively to commercial agricultural use or be able to produce more than \$2,500 in average gross income. The general trend for the state of Ohio since the 1980s has been a steady increase in the total acreage enrolled in CAUV, although there have been declines in enrolled CAUV acreage for areas under urbanization pressure as farmland is converted to residential or commercial purposes. When a land owner decides to unenroll from CAUV for this purpose, they must pay a recoupment penalty that is equal to the CAUV tax savings for the previous 3 tax years -- i.e. the difference between the market value and CAUV value.
+
+## CAUV Value Formula
+
+For each of the over 3,500 soil types ($s$) in Ohio, a particular year's ($t$) CAUV value is calculated as the soil's net income divided by the capitalization rate:
+
+$$
+CAUV_{s,t} = \frac{NOI_{s,t}}{CAP_t} \label{eq:cauv}
+$$
+
+where $CAP_t$ represents the capitalization rate and $NOI_{s,t}$ represents the net operating income based on revenues less non-land costs for corn, soybeans, and wheat.
+
+
+## Net Operating Income
+
+Net operating income, ${NOI_{s,t}}$, captures the average returns to an acre of land under normal management practices which is adjusted by the state-wide rotation pattern of commodities. In other words, a net income for corn, soybeans, and wheat is calculated for each soil type and then these net incomes for a given soil type are averaged in proportion to the state-wide acreage of harvested corn, soybeans, and wheat. This can be defined as:
+
+$$
+NOI_{s,t} = \sum_{c} w_{c,t}\times(GOI_{s,c,t} - {nonland}_{s,c,t})
+$$
+
+where $c$ denotes the commodity type, which is either corn, soybeans, or wheat which represent the dominant commodities in Ohio and $w_{c,t}$ is commodity's share of state production. $GOI_{s,c,t}$ is the gross operating income for a soil type and is calculated for each of the commodity types (corn, soybeans, and wheat) based on yields and prices. ${nonland}_{s,c,t}$ is the non-land costs associated with each commodity type. Both of these variables are further explained in the following sections.
+
+### Rotation
+
+Each commodity's share of state production is based on a 5-year average of total acres harvested between the three commodities -- with weights summing to 1. This is done by summing up the total harvested acreage for corn, for soybeans, and for wheat over the past six years ignoring the current -- i.e. 2019 value for CAUV calculations uses 2014 to 2018 harvested acres. Once summed up, each commodity is then assigned their share of total harvested for the entire state based on those past six years ignoring the current.
+
+These data are from the United States Department of Agriculture (USDA) [Crop Production Reports](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1046). Typically there is an August, September, October, and November forecast for Ohio's corn, soybeans, and wheat acreage with the [finalized values](https://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1047) occurring in January of the following year -- i.e. 2019 harvested acreage was finalized in January 2020. The values calculated for CAUV are lagged one year -- i.e. the tax year of 2019 CAUV values for commodity rotation percentages are based on the 2015 through 2019 harvested acreage.
+
+The values for rotation used in ODT calculations since 2010 are displayed in the following tables along with the values used in our 2020, 2021 and 2022 CAUV value projections. Projections indicate a slight shift towards soybeans at the expense of corn.
+
+```{r corn-rot}
+```
+
+```{r soy-rot}
+```
+
+```{r wheat-rot}
+```
+
+
+### Non-Land Cost
+
+The non-land costs are calculated as 7-year Olympic averages for typical costs of producing each commodity (corn, soybeans, and wheat). The [Farm Office](https://farmoffice.osu.edu/farm-management-tools/farm-budgets) at The Ohio State University Extension conducts annual surveys for costs of production which serve as the yearly estimates that are used in the 7-year Olympic average. Budgets for a commodity marketing year are generally released in October of the prior year and then finalized in May of the marketing year -- i.e. the 2020 marketing year was initially released in October 2019 and will likely be finalized sometime after May 2020. These budgets will include both fixed (machinery, equipment, labor, etc.) and variable (seeds, fertilizer, chemicals, hauling, etc.) costs involved in producing corn, wheat, or soybeans and each of these individual components are averaged for use in CAUV calculation.
+
+Prior to 2015, the non-land costs were lagged one year -- i.e. tax year 2014 used the values from budgets in 2007 to 2013. From 2015 onward, the current year values are included in the non-land cost calculations. Because of the nature of an Olympic average, the non-land costs used in 2019 CAUV is bounded between a "high" and a "low" value by averaging the previous 6-years after dropping only the highest or lowest value respectively. In the event that the "high" value of our projected non-land costs occur, then this is where the 2020 non-land costs are all the lowest values in the previous 7-years which causes the CAUV to be a higher value. The opposite is true for the "low" value in that the non-land costs are all 7-year highs.
+
+Our projection of non-land base costs for corn is `r dollar(ohio$corn_cost_cauv[ohio$year==2020], accuracy = 1)`; for soybeans is `r dollar(ohio$soy_cost_cauv[ohio$year==2020], accuracy = 1)`; and for wheat is `r dollar(ohio$wheat_cost_cauv[ohio$year==2020], accuracy = 1)` per acre for 2020. For 2021, our projections are `r dollar(ohio$corn_cost_cauv[ohio$year==2021], accuracy = 1)` for corn; `r dollar(ohio$soy_cost_cauv[ohio$year==2021], accuracy = 1)` for soybeans; and `r dollar(ohio$wheat_cost_cauv[ohio$year==2021], accuracy = 1)` for wheat. And for 2022, our projections are `r dollar(ohio$corn_cost_cauv[ohio$year==2022], accuracy = 1)` for corn; `r dollar(ohio$soy_cost_cauv[ohio$year==2022], accuracy = 1)` for soybeans; and `r dollar(ohio$wheat_cost_cauv[ohio$year==2022], accuracy = 1)` for wheat. The historical and projected values for each commodity are displayed in figure \ref{fig:viz-nonland}:
+
+```{r viz-nonland, fig.cap="\\label{fig:viz-nonland}"}
+```
+
+A base cost is assigned for each commodity and is the same across all soil types. The base cost has an associated base yield for each commodity, which is calculated from the budget reports of OSU Extension. However, each soil type has an associated expected yield (explained in the following section) and there is an adjustment applied for each commodity if the expected yield is above or below the base yield. Each additional yield above or below the base yield is multiplied by an additional cost per yield -- which is calculated in the same manner as the base costs with a 7-year Olympic average. However, these additional costs vary across soil types which makes it difficult to present for all soil types.
+
+However, we also calculate hypothetical high or low scenarios for this year as a way to place bounds on the non-land costs of each commodity. The base and additional costs for all commodities are displayed in tables on the following pages with the associated ranges of the high or low projections.
+
+
+\newpage
+
+```{r corn-base}
+```
+
+```{r corn-add}
+```
+
+\newpage
+
+```{r soy-base}
+```
+
+```{r soy-add}
+```
+
+\newpage
+
+```{r wheat-base}
+```
+
+```{r wheat-add}
+```
+
+\newpage
+
+
+## Gross Operating Income
+
+Gross operating income, $GOI_{s,c,t}$, is based on historical state-wide yields and prices for each commodity which are multiplied together to approximate the expected revenues. The gross operating income across soil types and for each commodity is defined as:
+
+$$
+GOI_{s,c,t} = Price_{c,Ohio,t} \times \left( \frac{Yield_{c,Ohio,t}}{Yield_{c,Ohio,1984}} \times Yield_{c,s,1984} \right)
+$$
+
+
+### Price
+
+Price for each commodity is a 7-year Olympic average of past marketing year prices that is also weighted by total production as measured in bushels for each marketing year with 5\% subtracted from the price to account for management costs. Both the price and production values are from USDA-NASS reports.
+
+Prior to 2015, the Olympic average for price was lagged two years -- i.e. the 2014 tax year used the USDA prices from 2006 through 2012. Since 2015, the lag has been reduced to one year -- i.e. the 2015 tax year used the USDA prices from 2008 through 2014. Because of the nature of an Olympic average, the prices used in 2020 CAUV calculations are bounded between a high and a low value by averaging the previous 6-years after dropping only the lowest or highest prices respectively. In the event that the high CAUV value of our projected prices occur, then this is where the 2020 prices are all the highest values in the previous 7-years which causes the CAUV to be a higher value. The opposite is true for the low CAUV value in that the prices are 7-year lows.
+
+Our 2020 projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2020], accuracy = 0.01)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2020], accuracy = 0.01)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2020], accuracy = 0.01)` per bushel for wheat. For 2021, our projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2021], accuracy = 0.01)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2021], accuracy = 0.01)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2021], accuracy = 0.01)` per bushel for wheat. And for 2022, our projected prices are: `r dollar(ohio$corn_price_cauv_exp[ohio$year==2022], accuracy = 0.01)` per bushel for corn, `r dollar(ohio$soy_price_cauv_exp[ohio$year==2022], accuracy = 0.01)` per bushel for soybeans, and `r dollar(ohio$wheat_price_cauv_exp[ohio$year==2022], accuracy = 0.01)` per bushel for wheat. The yearly commodity prices since 1991 and values used in ODT calculations since 2006 can be seen in figure \ref{fig:prices} along with the projected prices.
+
+
+```{r viz-prices, fig.cap="\\label{fig:prices}"}
+```
+
+In the event that the high or low values of our projected commodity prices arises, we have calculated those scenarios for historical price data in the following tables:
+
+```{r corn-price}
+```
+
+```{r soy-price}
+```
+
+```{r wheat-price}
+```
+
+
+### Yield
+
+Each soil type has a corresponding base yield of production for each commodity from 1984 -- which is the most recent comprehensive soil survey for the state of Ohio and separate from the base yield of non-land costs. Prior to 2006, ODT did not adjust for yield trends and calculated gross operating income for each soil type via their 1984 yields which suppressed revenues -- in the formula this would effectively mean that the $Yield_{c,Ohio,t}$ equaled $Yield_{c,Ohio,1984}$. 
+
+ODT began adjusting for yield trends through the current method of taking the 7-year averages of state-wide yields (irrespective of soil type), dividing by the state-wide yields for each commodity in 1984, then multiplying this value based on the 1984 commodity yield for the particular soil type evaluated. This can be thought of as an adjustment factor to account for the general trend of increasing yields in corn, wheat, and soybeans. Prior to 2014, the 7-year calculation involved a two year lag -- i.e. the 2014 tax year used average yield values from 2003 through 2012. In 2015 and beyond, there is only a one year lag -- i.e. 2015 tax year used average yield values from 2005 through 2014.
+
+The values for commodity yields for tax year 2020 are known because USDA has published their 2019 values for each commodity -- however for unknown future values we use the 30-year yield trend. The yield values for the 2020 CAUV calculations are `r round(ohio$corn_yield_cauv[ohio$year == 2020], 1)` for corn, `r round(ohio$soy_yield_cauv[ohio$year == 2020], digits = 1)` for soybeans, and `r round(ohio$wheat_yield_cauv[ohio$year == 2020], digits = 1)` for wheat. Our yield projections for the 2021 and 2020 CAUV calculations are `r round(ohio$corn_yield_cauv[ohio$year == 2021], 1)` and `r round(ohio$corn_yield_cauv[ohio$year == 2022], 1)` for corn, `r round(ohio$soy_yield_cauv[ohio$year == 2021], digits = 1)` and `r round(ohio$soy_yield_cauv[ohio$year == 2022], digits = 1)` for soybeans, and `r round(ohio$wheat_yield_cauv[ohio$year == 2021], digits = 1)` and `r round(ohio$wheat_yield_cauv[ohio$year == 2022], digits = 1)` for wheat. These historical yield trends are displayed in figure \ref{fig:yields} and in the following tables:
+
+```{r viz-yields, fig.cap="\\label{fig:yields}"}
+```
+
+\newpage
+
+```{r corn-yield}
+```
+
+```{r soy-yield}
+```
+
+```{r wheat-yield}
+```
+
+
+## Capitalization Rate
+
+Of the factors going into the CAUV calculation, the capitalization rate is in the denominator of the equation and has a significant impact on overall CAUV values because of its relatively small value and range (see historical values in the next section). The economic purpose of a capitalization rate is to capture the future stream of revenues from an asset into a present value and thus the capitalization rate acts as an interest rate.
+
+Prior to 2015, the capitalization rate was based on a 60\% loan and 40\% equity appreciation with interest rates for each value based on a 7-year Olympic average where the value for the loan interest rate came from a 15-year mortgage from Farm Credit Services (FCS) and the equity interest rate was the Federal Funds rate plus two percentage points. Both of these interest rates use the current tax year's value in calculation so the value calculated for 2014 was an Olympic average over the years 2008 through 2014. This loan/equity mix is calculated and then 5 years of equity buildup and appreciation are subtracted from the interest rate plus a tax additur -- the average effective tax rate for agricultural land applied at 35\% of the market value.
+
+For the 2015 tax year, the capitalization rate changed to an 80\% loan (based on 25-year mortgage from FCS) and 20\% equity appreciation. Then in 2017, ODT changed the interest rate used for equity Economic Research Services (ERS) -- this amount is lagged two years so the 2017 value is based on 1991 through 2015 values. The loan interest rate remains a 7-year Olympic average that is not lagged, so the 2017 interest rate used values from 2011 through 2017. The formula dropped appreciation from calculations and changed the equity buildup calculation from 5 years to 25 years.
+
+The capitalization rate requires the knowledge of an interest rate on a loan and an equity rate as well as the term and debt percentage for determining from the [Mortgage-Equity Method](http://www.commercialappraisalsoftware.dcfsoftware.com/mtgequity.htm). But it can be defined as:
+
+$$ \begin{aligned}
+{CAP_t} &= {Loan \%}_t \times {Annual Debt Service}_t + \\
+& {Equity \%}_t \times {Equity Yield}_t - \nonumber \\
+& {Buildup}_t + \nonumber \\
+& {Tax Additur Adjustment}_t
+\end{aligned} $$
+
+
+The ${Loan \%}_t$ plus ${Equity \%}_t$ must equal one and is currently an 80% to 20% ratio respectively. Prior to 2015, the values were based on 60% loan and 40% equity appreciation.
+
+
+${Annual Debt Service}_t$ is a debt servicing factor based on a 25-year term mortgage with an associated interest rate. The interest rate used for a particular year is based on a 7-year Olympic average where the value for the loan interest rate came from a 25-year mortgage from FCS. Prior to 2015, a 15-year term was used instead of 25 and there were no lags in this formula. For example, the 2017 interest rate used comes from FCS values between 2011 and 2017. The formula for calculating the debt servicing factor with $r$ as the interest rate (from FCS) and $n$ the term length (currently 25) is:
+
+$$ {Annual Debt Service} = \frac{r \times (1 + r)^n}{(1 + r)^n - 1} $$
+
+Next, the ${Equity Yield}_t$ needs to be calculated -- which is simply the interest rate associated with equity that a farmer may hold. Prior to 2017, the equity yield was a 7-year Olympic average of the prime rate plus 2% from the Wall Street Journal's bank survey -- with no lag for the values. In 2017, the ODT switched the equity yield to be a two year lagged 25-year average of the "Total rate of return on farm equity" from the [Economic Research Services](https://data.ers.usda.gov/reports.aspx?ID=17838) of the USDA. For example, the 2017 value used the ERS's values from 1991 to 2015.
+
+Then, the equity buildup associated with a set time frame needs to be calculated. The equity buildup formula involves an associated interest rate (the ${Equity Yield}_t$ is used here as $r$) and a time-frame $n$, which is set at 25 years currently (prior to 2017, this was set at 5 years of equity buildup):
+
+$$ {Buildup}_t = {Equity \%}_t \times {Mortgage Paid \%}_t \times \frac{r}{(1 + r)^n - 1} $$
+
+For 2017 and beyond, the ${Mortgage Paid \%}_t$ is assumed to be 100%. However, prior to 2017 this value needed to be calculated as the percentage of mortgage paid after 5 years. The mortgage term was needed to determine what the mortgage paid after 5 years would be. For 2015 and beyond the mortgage terms have been for 25 years while prior to 2015 the mortgage term was for 15 years. The formula for calculating the percentage of the mortgage paid off after 5 years is:
+
+$$ {Mortgage Paid \%}_t = \frac{ \frac{1}{ (1 + r)^{n-5} } - \frac{1}{ (1 + r)^n} }{ 1 - \frac{1}{(1 + r)^n} } $$
+
+Where $r$ is the interest rate and $n$ is the term of the loan.
+
+<!--- in addition, --->
+
+And finally, the ${Tax Additur Adjustment}_t$ needs to be calculated. The tax additur is added onto the capitalization rate as a way to proxy for property taxes as a ratio to market value. The statewide average effective tax rate on agricultural land, as determined through table [DTE27](https://www.tax.ohio.gov/tax_analysis/tax_data_series/publications_tds_property.aspx#Allpropertytaxes), from the previous tax year is used in calculation for the tax additur in question. The statewide average effective tax rate is expressed in terms of mills and the tax additur is then expressed as:
+
+$$ {Tax Additur Adjustment}_t = \frac{0.35 \times {Statewide Millage}_{t-1} }{1000} $$
+
+
+The tax additur component remained in the calculation and between 2006 and 2018 it ranged from `r percent(min(ohio$tax_additur_odt, na.rm = T))` to `r percent(max(ohio$tax_additur_odt, na.rm = T))`.
+
+## Capitalization Rate Values
+
+The capitalization rates used by the ODT in CAUV calculations since 2003 are displayed in figure \ref{fig:viz-cap}, which shows a steady decline until the formula change in 2015. The projected capitalization rate for 2020 is `r percent(ohio$cap_rate_cauv_exp[ohio$year==2020], accuracy = .1)`, then `r percent(ohio$cap_rate_cauv_exp[ohio$year==2021], accuracy = .1)` for 2021, and finally `r percent(ohio$cap_rate_cauv_exp[ohio$year==2022], accuracy = .1)` for 2022.
+
+
+```{r viz-cap, fig.cap="\\label{fig:viz-cap}"}
+```
+
+
+In addition, the scenarios for a "high" and "low" capitalization rate in 2020, 2021, and 2022 can be calculated due to the Olympic averaging aspect of the capitalization rate formula. A "high" scenario implies the highest potential CAUV values, which would be a lower capitalization rate because the capitalization rate is in the denominator of the formula for CAUV. Vice-versa for the "low" projection of CAUV value. These scenarios utilize the Olympic averages which will always drop the highest and lowest values for the previous 7 years. Since the 2020 FCS interest is unknown, the "high" ("low") scenario assumes that the 2020 interest rate will be 0 (infinite) and calculates the value used in ODT calculations for this. The "high" value of our projected capitalization rate of `r percent(round(ohio$cap_rate_cauv_h[ohio$year==2020],3))` leads to a high CAUV value whereas our capitalization rate is `r percent(ohio$cap_rate_cauv_l[ohio$year==2020])` for a "low" CAUV value in 2020.
+
+Of the capitalization rate projections, only the tax additur and FCS interest rate are currently unknown for 2020 and beyond. The equity appreciation rate is already known because USDA-ERS has published their 2018 value for total rate of return on farm equity -- thus allowing for the 2020 tax year calculation. The 25-year mortgage from FCS uses a 7-year Olympic average, which allows for a "high" and "low" CAUV value projection. The tax additur is reported by the ODT for that particular tax year -- in lieu of utilizing the Olympic average and this projection uses a +/- 0.1\% range with the tax additur from the 2020 value.
+
+```{r cap-table}
+```
+
+\newpage
+
+# CAUV Values
+
+## CAUV Values by Soil Type
+
+Effectively, every soil type throughout Ohio is assigned a CAUV value each year that is dependent on average corn, soybeans, and wheat revenues less costs over the previous 7 to 10 years. Soil types that have higher productive capacity -- based on 1984 values -- will have higher CAUV values than those with lower productivity. However, some soil types are relatively more productive with respect to one commodity than the others.
+
+ODT provides a comprehensive soil productivity index for every soil type in Ohio based upon relative yields of corn, soybeans, wheat, oats, and hay across the state of Ohio. The index ranges from 0 to 100 and provides a barometer for how productive soil types across the state are. Figure \ref{fig:cropland-trend} places soil types in bins according to their productivity index and plots the average CAUV value since 1991 to provide a range of CAUV values. ODT provides an additional mandate for a minimum CAUV value. Prior to 2009, this was \$100 but the value subsequently rose to \$170, \$200, \$300, and finally \$350 in 2012. The most recent official values from ODT are from 2018, which are displayed in figure \ref{cauv-expected2}:
+
+```{r cauv-expected, fig.cap="\\label{fig:cauv-expected2}"}
+```
+
+
+## Possible Ranges
+
+While our expected projections are noted at the beginning of this report, we also provide the high and low potential projections for both 2019 and 2020.
+
+### High Range
+
+```{r cauv-high, fig.cap="\\label{fig:cauv-high}"}
+```
+
+### Low Range
+
+```{r cauv-low, fig.cap="\\label{fig:cauv-low}"}
+```
+
+
+
+# References
+
+- Farm Office annual crop budget reports https://farmoffice.osu.edu/farm-management-tools/farm-budgets
+- Ohio Code of Legislation http://codes.ohio.gov/orc/5713.31 and http://codes.ohio.gov/orc/5715.01
+- ODT CAUV Information page https://www.tax.ohio.gov/real_property/cauv.aspx
+- USDA-NASS price and yield data https://quickstats.nass.usda.gov
+- USDA-ERS total rate of return on farm equity data https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/
+
+Projections for 2020 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2020.csv
+
+Projections for 2021 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2021.csv
+
+Projections for 2022 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2022.csv

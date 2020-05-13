@@ -612,7 +612,7 @@ ohio_map %>%
   geom_text(data = cnames, aes(label = county), size = 3, color = "black") +
   scale_fill_viridis(option = "C", discrete = T, begin = 0.35) +
   labs(fill = "", title = "Schedule for CAUV Update",
-       caption = paste0("Source: Dinterman and Kathocva projections",
+       caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT data")) +
   ohio_theme + 
   theme(legend.position = c(0.15, 0.95), legend.direction = "horizontal")
@@ -697,7 +697,7 @@ ggplot(ohio_exp, aes(year, raw, group = year)) +
 
 # ---- cauv-expected ------------------------------------------------------
 
-caption_proj <- paste0("Source: Dinterman and Kathocva projections",
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data",
                        "\nas of ", Sys.Date())
 
@@ -744,7 +744,7 @@ ohio_soils_exp %>%
 
 # ---- cauv-unadj ------------------------------------------------------
 
-caption_proj <- paste0("Source: Dinterman and Kathocva projections",
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data",
                        "\nas of ", Sys.Date())
 
@@ -790,7 +790,7 @@ ohio_soils_exp_unadj %>%
 
 # ---- cauv-high ------------------------------------------------------
 
-caption_proj <- paste0("Source: Dinterman and Kathocva projections",
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data",
                        "\nas of ", Sys.Date())
 
@@ -837,7 +837,7 @@ ohio_soils_high %>%
 
 # ---- cauv-low ------------------------------------------------------
 
-caption_proj <- paste0("Source: Dinterman and Kathocva projections",
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
                        "\nbased on ODT/NASS/OSU Extension data",
                        "\nas of ", Sys.Date())
 
@@ -958,7 +958,7 @@ ohio %>%
        subtitle = paste0("points are marketing year costs per OSU",
                          "\nsolid lines are values used in CAUV calculation",
                          "\ndashed lines are projected values"),
-       caption = paste0("Source: Dinterman and Kathocva projections",
+       caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT and OSU Extension data")) +
   theme_bw() +
   theme(legend.position = "bottom", legend.background = element_blank())
@@ -1066,7 +1066,7 @@ ohio %>%
        subtitle = paste0("points are marketing year prices per USDA",
                          "\nsolid lines are values used in CAUV calculation",
                          "\ndashed lines are projected values"),
-       caption = paste0("Source: Dinterman and Kathocva projections",
+       caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT and NASS data")) +
   theme_bw() +
   theme(legend.position = "bottom", legend.background = element_blank())
@@ -1166,7 +1166,7 @@ ohio %>%
        subtitle = paste0("points are harvested yields per USDA",
                          "\nsolid lines are values used in CAUV calculation",
                          "\ndashed lines are projected values"),
-       caption = paste0("Source: Dinterman and Kathocva projections",
+       caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT and NASS data")) +
   theme_bw() +
   theme(legend.position = "bottom", legend.background = element_blank())
@@ -1244,7 +1244,7 @@ ohio %>%
        title = "Capitalization Rate for Ohio",
        subtitle = paste0("actual value used in ODT in solid line",
                          "\nprojected values are dashed line"),
-       caption = paste0("Source: Dinterman and Kathocva projections",
+       caption = paste0("Source: Dinterman and Katchova projections",
                         "\nbased on ODT data")) +
   theme_bw() +
   theme(legend.position = "bottom", legend.background = element_blank())
