@@ -1,0 +1,222 @@
+---
+title: "CAUV Projections, 2020 and beyond"
+author: Robert Dinterman
+date: "2020-06-25"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    highlight: pygments
+    center: false
+    css: "4-recommendations.css"
+    self_contained: true
+    fig_width: 7
+    fig_height: 5
+    reveal_options:
+      slideNumber: true
+      previewLinks: true
+  beamer_presentation: default
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_knit$set(root.dir = normalizePath("../"))
+read_chunk("../3-proj/3-projection-tidy.R")
+```
+
+```{r global_options, include=FALSE}
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%", fig.pos = "H")
+```
+
+```{r start, include=FALSE}
+```
+
+```{r expected, include=FALSE}
+```
+
+```{r low, include=FALSE}
+```
+
+```{r high, include=FALSE}
+```
+
+```{r projections, include=FALSE}
+```
+
+# Key Findings
+
+## Highlights
+
+- Current projection for average CAUV value in 2020 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2020], accuracy = 5)` which would represent a change of `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2020] - ohio_soils_all$expected[ohio_soils_all$year == 2019]) / ohio_soils_all$expected[ohio_soils_all$year == 2019], accuracy = 1)` from the previous tax year.
+    - From 2017-2020 a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2020] - ohio_soils_all$expected[ohio_soils_all$year == 2017]) / ohio_soils_all$expected[ohio_soils_all$year == 2017], accuracy = 1)` decrease in average CAUV values for counties receiving updates to their property taxes.
+- The projection for the average CAUV value in 2021 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2021], accuracy = 5)`. The average CAUV value projections could end up as low as `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2021], accuracy = 5)` or as high as `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2021], accuracy = 5)`.
+    - From 2018-2021 a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2021] - ohio_soils_all$expected[ohio_soils_all$year == 2018]) / ohio_soils_all$expected[ohio_soils_all$year == 2018], accuracy = 1)` change from the previous triennial update.
+- The very early projection for the average CAUV value in 2022 is `r dollar(ohio_soils_all$expected[ohio_soils_all$year == 2022], accuracy = 5)`. The average CAUV value projections could end up as low as `r dollar(ohio_soils_all$low[ohio_soils_all$year == 2022], accuracy = 5)` or as high as `r dollar(ohio_soils_all$high[ohio_soils_all$year == 2022], accuracy = 5)`.
+    - From 2019-2022 a `r percent((ohio_soils_all$expected[ohio_soils_all$year == 2022] - ohio_soils_all$expected[ohio_soils_all$year == 2019]) / ohio_soils_all$expected[ohio_soils_all$year == 2019], accuracy = 1)` change from the previous triennial update.
+
+## Expectations
+
+```{r cauv-expected, fig.cap="\\label{fig:cauv-expected}"}
+```
+
+## Updates
+
+```{r update-map, fig.cap="\\label{fig:update-map}"}
+```
+
+# CAUV Calcuation
+
+## CAUV Calcuation Overview
+
+> It is the expected net present value of an acre of land based. To determine this, first a historical average of yields and prices for corn, soybeans, and wheat to determine gross income. Then historical non-land costs – compliments of The Ohio State University Agricultural Extension Agency – are subtracted from gross income for a measure of net income. And finally, this net income is divided by a capitalization rate based upon historical values of farm interest and equity rates. This value will vary based upon the particular soil type(s) for a farm.
+
+## CAUV Calculation Overview
+
+- A CAUV value is assigned for each of the 3,514 soil types in Ohio
+    - based on their expected yields of corn, soybeans, and wheat from the last state-wide soil survey in 1984
+- Value is the expected net present value based on the past 5 to 10 years worth of data for each component
+    -  Economics jargon, it is the net operating income divided by **capitalization rate**
+- Net operating income is based off of the expected revenue (**price** times **yield**) less the expected costs (only **non-land costs**). Calculated for corn, soybeans, and wheat.
+- **Capitalization rate** is a combination of the interest rate on a loan for purchasing farmland along with appreciation rate of farmland.
+
+## CAUV Calculation Expectations
+
+- Non-land costs have trended downward since 2015 and since this component is based off of an Olympic Average of the past 7 years, high values for non-land costs will be dropping out and this component is expected to continue to decrease.
+- Prices for corn, soybeans, and wheat have stagnated and are projected at current levels. Component based off of an Olympic Average of the past 8 years (excludes current). High values from 2012 and 2013 are dropping out.
+- Yields are based off of the past 11 years (excludes current) and have mostly continued along the path of a 30-year trendline upward.
+- Capitalization rate is based on an Olympic Average of the past 7 years which has recently been trending downward. Current Federal Reserve policy is pushing downward pressure on capitalization rate into the future.
+
+
+# Component Values
+
+## Rotations
+
+
+```{r corn-rot}
+```
+
+---
+
+```{r soy-rot}
+```
+
+---
+
+```{r wheat-rot}
+```
+
+## Non-Land Costs
+
+
+```{r viz-nonland, fig.cap="\\label{fig:viz-nonland}"}
+```
+
+---
+
+```{r corn-base}
+```
+
+---
+
+```{r corn-add}
+```
+
+---
+
+```{r soy-base}
+```
+
+---
+
+```{r soy-add}
+```
+
+---
+
+```{r wheat-base}
+```
+
+---
+
+```{r wheat-add}
+```
+
+## Prices
+
+
+```{r viz-prices, fig.cap="\\label{fig:prices}"}
+```
+
+---
+
+```{r corn-price}
+```
+
+---
+
+```{r soy-price}
+```
+
+---
+
+```{r wheat-price}
+```
+
+## Yields
+
+
+```{r viz-yields, fig.cap="\\label{fig:yields}"}
+```
+
+---
+
+```{r corn-yield}
+```
+
+---
+
+```{r soy-yield}
+```
+
+---
+
+```{r wheat-yield}
+```
+
+## Capitalization Rate
+
+
+```{r viz-cap, fig.cap="\\label{fig:viz-cap}"}
+```
+
+
+# CAUV Values
+
+## Expectation
+
+```{r cauv-expected, fig.cap="\\label{fig:cauv-expected2}"}
+```
+
+## High Range
+
+```{r cauv-high, fig.cap="\\label{fig:cauv-high}"}
+```
+
+## Low Range
+
+```{r cauv-low, fig.cap="\\label{fig:cauv-low}"}
+```
+
+
+
+# References
+
+---
+
+- Farm Office annual crop budget reports https://farmoffice.osu.edu/farm-management-tools/farm-budgets
+- Ohio Code of Legislation http://codes.ohio.gov/orc/5713.31 and http://codes.ohio.gov/orc/5715.01
+- ODT CAUV Information page https://www.tax.ohio.gov/real_property/cauv.aspx
+- USDA-NASS price and yield data https://quickstats.nass.usda.gov
+- USDA-ERS total rate of return on farm equity data https://www.ers.usda.gov/data-products/farm-income-and-wealth-statistics/data-files-us-and-state-level-farm-income-and-wealth-statistics/
+- Projections for 2020 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2020.csv
+- Projections for 2021 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2021.csv
+- Projections for 2022 CAUV values are available at https://github.com/rdinter/CAUV/blob/master/3-proj/future/projections_tidy_2022.csv
