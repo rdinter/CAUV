@@ -77,9 +77,9 @@ opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = "100%
 ```
 
 
-# CAUV Calcuation
+# CAUV Calculation
 
-## CAUV Calcuation Overview
+## CAUV Calculation Overview
 
 > It is the expected net present value of an acre of land based. To determine this, first a historical average of yields and prices for corn, soybeans, and wheat to determine gross income. Then historical non-land costs – compliments of The Ohio State University Agricultural Extension Agency – are subtracted from gross income for a measure of net income. And finally, this net income is divided by a capitalization rate based upon historical values of farm interest and equity rates. This value will vary based upon the particular soil type(s) for a farm.
 
