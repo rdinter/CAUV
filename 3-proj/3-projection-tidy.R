@@ -742,6 +742,31 @@ ohio_soils_exp %>%
             legend.background = element_blank())
   }
 
+# ---- cauv-expected-table ------------------------------------------------
+
+
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
+                       "\nbased on ODT/NASS/OSU Extension data",
+                       "\nas of ", Sys.Date())
+
+indxs     <-  c("indx_100", "indx_99", "indx_89", "indx_79",
+                "indx_69", "indx_59", "indx_49", "avg_cauv")
+indx_name <- c("100", "90 to 99", "80 to 89", "70 to 79",
+               "60 to 69", "50 to 59", "0 to 49", "Average")
+indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
+               "80 to 89" = 0.5, "70 to 79" = 0.5,
+               "60 to 69" = 0.5, "50 to 59" = 0.5,
+               "0 to 49" = 0.5, "Average" = 2)
+
+ohio_soils_exp %>%
+  filter(year >= next_year) %>% 
+  bind_rows((filter(ohio_soils, year < next_year)), .) %>% 
+  select(-num_soils, Year = year) %>%
+  filter(Year > 2006) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 1),
+                                  is.na(.), "-")) %>% 
+  knitr::kable(caption = "Expected CAUV Projections")
+
 # ---- cauv-unadj ------------------------------------------------------
 
 caption_proj <- paste0("Source: Dinterman and Katchova projections",
@@ -835,6 +860,31 @@ ohio_soils_high %>%
             legend.background = element_blank())
   }
 
+# ---- cauv-high-table ------------------------------------------------
+
+
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
+                       "\nbased on ODT/NASS/OSU Extension data",
+                       "\nas of ", Sys.Date())
+
+indxs     <-  c("indx_100", "indx_99", "indx_89", "indx_79",
+                "indx_69", "indx_59", "indx_49", "avg_cauv")
+indx_name <- c("100", "90 to 99", "80 to 89", "70 to 79",
+               "60 to 69", "50 to 59", "0 to 49", "Average")
+indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
+               "80 to 89" = 0.5, "70 to 79" = 0.5,
+               "60 to 69" = 0.5, "50 to 59" = 0.5,
+               "0 to 49" = 0.5, "Average" = 2)
+
+ohio_soils_high %>%
+  filter(year >= next_year) %>% 
+  bind_rows((filter(ohio_soils, year < next_year)), .) %>% 
+  select(-num_soils, Year = year) %>%
+  filter(Year > 2006) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 1),
+                                  is.na(.), "-")) %>% 
+  knitr::kable(caption = "High CAUV Projections")
+
 # ---- cauv-low ------------------------------------------------------
 
 caption_proj <- paste0("Source: Dinterman and Katchova projections",
@@ -882,6 +932,30 @@ ohio_soils_low %>%
             legend.background = element_blank())
   }
 
+# ---- cauv-low-table ------------------------------------------------
+
+
+caption_proj <- paste0("Source: Dinterman and Katchova projections",
+                       "\nbased on ODT/NASS/OSU Extension data",
+                       "\nas of ", Sys.Date())
+
+indxs     <-  c("indx_100", "indx_99", "indx_89", "indx_79",
+                "indx_69", "indx_59", "indx_49", "avg_cauv")
+indx_name <- c("100", "90 to 99", "80 to 89", "70 to 79",
+               "60 to 69", "50 to 59", "0 to 49", "Average")
+indx_size <- c("100" = 0.5, "90 to 99" = 0.5,
+               "80 to 89" = 0.5, "70 to 79" = 0.5,
+               "60 to 69" = 0.5, "50 to 59" = 0.5,
+               "0 to 49" = 0.5, "Average" = 2)
+
+ohio_soils_low %>%
+  filter(year >= next_year) %>% 
+  bind_rows((filter(ohio_soils, year < next_year)), .) %>% 
+  select(-num_soils, Year = year) %>%
+  filter(Year > 2006) %>% 
+  mutate_at(vars(-Year), ~replace(scales::dollar(., accuracy = 1),
+                                  is.na(.), "-")) %>% 
+  knitr::kable(caption = "Low CAUV Projections")
 
 # ---- corn-rot -----------------------------------------------------------
 
