@@ -1,4 +1,10 @@
 # Ohio Taxation statistics:
+# New:
+# https://bit.ly/2BEyq8b
+# https://tax.ohio.gov/wps/portal/gov/tax/researcher/tax-analysis/
+#  tax-data-series/property%2Btax%2B-%2Breal%2Bestate%2Band%2Bpublic%2Butility
+
+# Old:
 # http://www.tax.ohio.gov/tax_analysis/tax_data_series/
 #  publications_tds_property.aspx
 
@@ -19,8 +25,9 @@ folder_create <- function(x, y = "") {
 local_dir    <- folder_create("0-data/odt")
 data_source  <- folder_create("/raw", local_dir)
 
-tax_site <- paste0("http://www.tax.ohio.gov/tax_analysis/tax_data_series/",
-                   "publications_tds_property.aspx")
+tax_site <- paste0("https://tax.ohio.gov/wps/portal/gov/tax/researcher/",
+                   "tax-analysis/tax-data-series/property%2Btax%2B-",
+                   "%2Breal%2Bestate%2Band%2Bpublic%2Butility")
 
 # ---- pd31 ---------------------------------------------------------------
 
@@ -31,17 +38,17 @@ pd31 <- folder_create("/pd31", data_source)
 #  tangible_personal_property/pd31/pd31cy85.aspx
 
 tax_urls <- read_html(tax_site) %>% 
-  html_nodes("ul:nth-child(17) li:nth-child(4) a") %>% 
+  html_nodes("#js-odx-content__body li:nth-child(4) a") %>% 
   html_attr("href") %>% 
-  paste0("http://www.tax.ohio.gov", .)
+  paste0(tax_site, .)
 
 tax_download <- purrr::map(tax_urls, function(x){
   Sys.sleep(sample(seq(0,1,0.25), 1))
   dlinks <- read_html(x) %>% 
-    html_nodes("#dnn_ContentPane a") %>% 
+    html_nodes("#js-odx-content__body a") %>% 
     html_attr("href") %>% 
     na.omit() %>% 
-    paste0("http://www.tax.ohio.gov", .)
+    paste0(tax_site, .)
   dfile <- paste0(pd31, "/", tolower(basename(dlinks)))
   purrr::map2(dfile, dlinks, function(x, y){
     if (!file.exists(x)) download.file(y, x)

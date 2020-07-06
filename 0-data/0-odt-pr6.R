@@ -1,4 +1,9 @@
 # Ohio Taxation statistics:
+# New:
+# https://tax.ohio.gov/wps/portal/gov/tax/researcher/tax-analysis/tax-data-series/property%2Btax%2B-%2Ball%2Bproperty%2Btaxes
+# https://tax.ohio.gov/wps/portal/gov/tax/researcher/tax-data-series/other-tax-statistics-archive/tds-archives-property
+
+# Old:
 # http://www.tax.ohio.gov/tax_analysis/tax_data_series/
 #  publications_tds_property.aspx
 
@@ -19,41 +24,49 @@ folder_create <- function(x, y = "") {
 local_dir    <- folder_create("0-data/odt")
 data_source  <- folder_create("/raw", local_dir)
 
-tax_site <- paste0("http://www.tax.ohio.gov/tax_analysis/tax_data_series/",
-                   "publications_tds_property.aspx")
+tax_site <- paste0("https://tax.ohio.gov/wps/portal/gov/tax/researcher/",
+                   "tax-analysis/tax-data-series/",
+                   "property%2Btax%2B-%2Ball%2Bproperty%2Btaxes")
+tax_site_archive <- paste0("https://tax.ohio.gov/wps/portal/gov/tax/",
+                           "researcher/tax-data-series/",
+                           "other-tax-statistics-archive/tds-archives-property")
 
 # ---- pr6 ----------------------------------------------------------------
 
 pr6 <- folder_create("/pr6", data_source)
 
 # pr6 tax rates by county
-# http://www.tax.ohio.gov/tax_analysis/tax_data_series/
+# https://www.tax.ohio.gov/tax_analysis/tax_data_series/
 #  all_property_taxes/pr6/pr6cy88.aspx
+# 
+# tax_urls <- read_html(tax_site_archive) %>%
+#   html_nodes("strong+ ul li:nth-child(3) u") %>%
+#   html_attr("href") %>%
+#   paste0(tax_site_archive, .)
+
+tax_urls <- paste0("https://tax.ohio.gov/wps/portal/gov/tax/researcher/",
+                   "tax-analysis/tax-data-series/all-property-taxes/pr6/pr6cy",
+                   str_pad(c(88:99, 0:10), width = 2, side = "left", pad = "0"))
+
 # http://www.tax.ohio.gov/tax_analysis/tax_data_series/
 #  all_property_taxes/pr6/pr6cy09.aspx
 
 tax_urls <- read_html(tax_site) %>%
-  html_nodes("ul:nth-child(11) li:nth-child(3) a") %>%
+  html_nodes("#js-odx-content__body li:nth-child(4) a") %>%
   html_attr("href") %>%
-  paste0("http://www.tax.ohio.gov", .)
-
-tax_urls <- read_html(tax_site) %>%
-  html_nodes("ul:nth-child(19) li:nth-child(5) a") %>%
-  html_attr("href") %>%
-  paste0("http://www.tax.ohio.gov", .) %>%
+  paste0(tax_site, .) %>%
   c(tax_urls, .)
 
 # HACK\ for a screwup
-tax_urls[28] <- paste0("http://www.tax.ohio.gov/tax_analysis/tax_data_series/",
-                       "publications_tds_property/PR6CY15.aspx")
+# tax_urls <- str_remove(tax_urls, "/tax.ohio.gov/")
 
 tax_download <- purrr::map(tax_urls, function(x){
   Sys.sleep(sample(seq(0,1,0.25), 1))
   dlinks <- read_html(x) %>%
-    html_nodes("#dnn_ContentPane a") %>%
-    html_attr("href") %>%
-    na.omit() %>%
-    paste0("http://www.tax.ohio.gov", .)
+    html_nodes("#js-odx-content__body a") %>% 
+    html_attr("href") %>% 
+    na.omit() %>% 
+    paste0(tax_site, .)
   dfile <- paste0(pr6, "/", tolower(basename(dlinks)))
   purrr::map2(dfile, dlinks, function(x, y){
     if (!file.exists(x)) download.file(y, x)
