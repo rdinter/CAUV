@@ -10,13 +10,16 @@ taxes     <- paste0(local_dir, "/taxes")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(taxes)) dir.create(taxes, recursive = T)
 
-odt <- dir(path = "0-data/odt", pattern = "*.rds", full.names = T)
+# odt <- dir(path = "0-data/odt", pattern = "*.rds", full.names = T)
+odt <- paste0("0-data/odt/", c("pd30.rds", "pd31.rds", "pd32.rds",
+                               "pr6.rds", "td1.rds"))
 
 j5 <- odt %>% 
   map(read_rds) %>% 
   Reduce(function(x, y) full_join(x, y), .) %>% 
   filter(!is.na(county)) %>% 
   rename(cauv_taxable = cauv, market_value_taxable = market_value) %>% 
+  mutate(county = str_to_upper(county)) %>% 
   select(year, county, everything()) %>%
   arrange(year, county)
 
@@ -38,7 +41,9 @@ j5_taxes <-
   j5_filled %>% 
   mutate(noncauv_taxable = agricultural_taxable_value - cauv_taxable,
          cauv_tax = (res_ag_net_millage/1000)*cauv_taxable,
+         market_tax = (res_ag_net_millage/1000)*market_value_taxable,
          cauv_tax_acre = cauv_tax / acres_cauv,
+         market_tax_acre = market_tax / acres_cauv,
          noncauv_tax = (res_ag_net_millage/1000)*noncauv_taxable,
          noncauv_tax_acre = noncauv_tax / acres_cauv)
 
@@ -65,6 +70,25 @@ j5_taxes %>%
   facet_wrap(~var) +
   theme_minimal() + 
   labs(color = "Update Year:", x = "", y = "") +
+  theme(legend.position = "bottom")
+
+
+j5_taxes %>% 
+  group_by(year, update_year) %>% 
+  summarise(cauv_tax_total = sum(cauv_tax),
+            cauv_tax_acre = sum(cauv_tax) / sum(acres_cauv),
+            market_tax_total = sum(market_tax),
+            market_tax_acre = sum(market_tax) / sum(acres_cauv),
+            noncauv_tax_total = sum(noncauv_tax),
+            noncauv_tax_acre = sum(noncauv_tax) / sum(acres_cauv)) %>%
+  select(year, update_year, cauv_tax_acre,
+         market_tax_acre, noncauv_tax_acre) %>% 
+  gather(var, val, -year, -update_year) %>% 
+  ggplot(aes(year, val, color = var, linetype = var, group = var)) +
+  geom_line() +
+  facet_wrap(~update_year, nrow = 2) +
+  theme_minimal() + 
+  labs(color = "", linetype = "", x = "", y = "") +
   theme(legend.position = "bottom")
 
 j5_taxes %>% 
@@ -101,17 +125,36 @@ j5_taxes %>%
 
 j5_filled %>% 
   group_by(year) %>% 
-  summarise(cauv_tax_per_acre = sum(cauv_taxable*(res_ag_net_millage/1000))/sum(acres_cauv)) %>%
+  summarise(cauv_tax_per_acre = sum(cauv_taxable*(res_ag_net_millage/1000)) /
+              sum(acres_cauv)) %>%
   write_csv("ohio_property_tax.csv")
 
+
 j5_filled %>% 
+  mutate(update_year = as.character(update_year)) %>% 
+  bind_rows(mutate(., update_year = "All")) %>% 
   group_by(update_year, year) %>% 
-  summarise(cauv_tax_per_acre = sum(cauv_taxable*(res_ag_net_millage/1000))/sum(acres_cauv)) %>% 
+  summarise(cauv_tax_per_acre = sum(cauv_taxable*(res_ag_net_millage/1000)) /
+              sum(acres_cauv)) %>% 
   spread(update_year, cauv_tax_per_acre) %>% 
   write_csv("reassessment_cycle_property_tax.csv")
 
 
 j5_filled %>% 
-  mutate(cauv_tax_per_acre = cauv_taxable*(res_ag_net_millage/1000)/acres_cauv) %>% 
-  select(year, county, appraisal, cauv_tax_per_acre, cauv_taxable, acres_cauv, res_ag_net_millage) %>% 
+  group_by(county) %>% 
+  fill(contains("millage"), .direction = "down") %>% 
+  ungroup() %>% 
+  mutate(update_year = as.character(update_year)) %>% 
+  bind_rows(mutate(., update_year = "All")) %>% 
+  group_by(update_year, year) %>% 
+  summarise(cauv_tax_per_acre = sum(cauv_taxable*(res_ag_net_millage/1000)) /
+              sum(acres_cauv)) %>% 
+  spread(update_year, cauv_tax_per_acre) %>% 
+  write_csv("reassessment_cycle_property_tax_fill_est.csv")
+
+j5_filled %>% 
+  mutate(cauv_tax_per_acre = cauv_taxable*(res_ag_net_millage/1000) /
+           acres_cauv) %>% 
+  select(year, county, appraisal, cauv_tax_per_acre,
+         cauv_taxable, acres_cauv, res_ag_net_millage) %>% 
   write_csv("ohio_county_property_tax.csv")
