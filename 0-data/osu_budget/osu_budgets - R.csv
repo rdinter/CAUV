@@ -1,4 +1,151 @@
 year,category,item,crop,level,val,id
+2021,finances,interest,corn,cost,0.04,financesinterestcorncost
+2021,finances,interest,soy,cost,0.04,financesinterestsoycost
+2021,finances,interest,wheat,cost,0.04,financesinterestwheatcost
+2021,finances,months,corn,cost,7,financesmonthscorncost
+2021,finances,months,soy,cost,6,financesmonthssoycost
+2021,finances,months,wheat,cost,9,financesmonthswheatcost
+2021,fixed costs,fixed_miscellaneous,corn,l1_low,20.5,fixed costsfixed_miscellaneouscornl1_low
+2021,fixed costs,fixed_miscellaneous,corn,l2_med,20.5,fixed costsfixed_miscellaneouscornl2_med
+2021,fixed costs,fixed_miscellaneous,corn,l3_high,20.5,fixed costsfixed_miscellaneouscornl3_high
+2021,fixed costs,fixed_miscellaneous,soy,l1_low,13.4,fixed costsfixed_miscellaneoussoyl1_low
+2021,fixed costs,fixed_miscellaneous,soy,l2_med,13.4,fixed costsfixed_miscellaneoussoyl2_med
+2021,fixed costs,fixed_miscellaneous,soy,l3_high,13.4,fixed costsfixed_miscellaneoussoyl3_high
+2021,fixed costs,fixed_miscellaneous,wheat,l1_low,10.7,fixed costsfixed_miscellaneouswheatl1_low
+2021,fixed costs,fixed_miscellaneous,wheat,l2_med,10.7,fixed costsfixed_miscellaneouswheatl2_med
+2021,fixed costs,fixed_miscellaneous,wheat,l3_high,10.7,fixed costsfixed_miscellaneouswheatl3_high
+2021,fixed costs,labor,corn,cost,37.5,fixed costslaborcorncost
+2021,fixed costs,labor,soy,cost,22.5,fixed costslaborsoycost
+2021,fixed costs,labor,wheat,cost,22.95,fixed costslaborwheatcost
+2021,fixed costs,machine,corn,cost,97.42,fixed costsmachinecorncost
+2021,fixed costs,machine,soy,cost,66.2,fixed costsmachinesoycost
+2021,fixed costs,machine,wheat,cost,48.39,fixed costsmachinewheatcost
+2021,fixed costs,machine_new,corn,cost,75.22,fixed costsmachine_newcorncost
+2021,fixed costs,machine_new,soy,cost,59.2,fixed costsmachine_newsoycost
+2021,fixed costs,machine_new,wheat,cost,33.79,fixed costsmachine_newwheatcost
+2021,production,seed,corn,l1_low,28,productionseedcornl1_low
+2021,production,seed,corn,l2_med,32,productionseedcornl2_med
+2021,production,seed,corn,l3_high,34,productionseedcornl3_high
+2021,production,seed,soy,l1_low,160,productionseedsoyl1_low
+2021,production,seed,soy,l2_med,160,productionseedsoyl2_med
+2021,production,seed,soy,l3_high,160,productionseedsoyl3_high
+2021,production,seed,wheat,l1_low,1400,productionseedwheatl1_low
+2021,production,seed,wheat,l2_med,1400,productionseedwheatl2_med
+2021,production,seed,wheat,l3_high,1400,productionseedwheatl3_high
+2021,production,yield,corn,l1_low,140,productionyieldcornl1_low
+2021,production,yield,corn,l2_med,175,productionyieldcornl2_med
+2021,production,yield,corn,l3_high,210,productionyieldcornl3_high
+2021,production,yield,soy,l1_low,43,productionyieldsoyl1_low
+2021,production,yield,soy,l2_med,54,productionyieldsoyl2_med
+2021,production,yield,soy,l3_high,65,productionyieldsoyl3_high
+2021,production,yield,wheat,l1_low,58,productionyieldwheatl1_low
+2021,production,yield,wheat,l2_med,72,productionyieldwheatl2_med
+2021,production,yield,wheat,l3_high,86,productionyieldwheatl3_high
+2021,variable cost,chemicals,corn,cost,46.22,variable costchemicalscorncost
+2021,variable cost,chemicals,soy,cost,43.66,variable costchemicalssoycost
+2021,variable cost,chemicals,wheat,cost,14.65,variable costchemicalswheatcost
+2021,variable cost,crop_insurance,corn,l1_low,11,variable costcrop_insurancecornl1_low
+2021,variable cost,crop_insurance,corn,l2_med,13,variable costcrop_insurancecornl2_med
+2021,variable cost,crop_insurance,corn,l3_high,15,variable costcrop_insurancecornl3_high
+2021,variable cost,crop_insurance,soy,l1_low,8,variable costcrop_insurancesoyl1_low
+2021,variable cost,crop_insurance,soy,l2_med,10,variable costcrop_insurancesoyl2_med
+2021,variable cost,crop_insurance,soy,l3_high,12,variable costcrop_insurancesoyl3_high
+2021,variable cost,crop_insurance,wheat,l1_low,5.5,variable costcrop_insurancewheatl1_low
+2021,variable cost,crop_insurance,wheat,l2_med,6,variable costcrop_insurancewheatl2_med
+2021,variable cost,crop_insurance,wheat,l3_high,6.5,variable costcrop_insurancewheatl3_high
+2021,variable cost,drying,corn,cost,0.039,variable costdryingcorncost
+2021,variable cost,drying,soy,cost,0,variable costdryingsoycost
+2021,variable cost,drying,wheat,cost,0,variable costdryingwheatcost
+2021,variable cost,fuel_oil_grease,corn,l1_low,11,variable costfuel_oil_greasecornl1_low
+2021,variable cost,fuel_oil_grease,corn,l2_med,11,variable costfuel_oil_greasecornl2_med
+2021,variable cost,fuel_oil_grease,corn,l3_high,11,variable costfuel_oil_greasecornl3_high
+2021,variable cost,fuel_oil_grease,soy,l1_low,9.26,variable costfuel_oil_greasesoyl1_low
+2021,variable cost,fuel_oil_grease,soy,l2_med,9.26,variable costfuel_oil_greasesoyl2_med
+2021,variable cost,fuel_oil_grease,soy,l3_high,9.26,variable costfuel_oil_greasesoyl3_high
+2021,variable cost,fuel_oil_grease,wheat,l1_low,6.67,variable costfuel_oil_greasewheatl1_low
+2021,variable cost,fuel_oil_grease,wheat,l2_med,6.67,variable costfuel_oil_greasewheatl2_med
+2021,variable cost,fuel_oil_grease,wheat,l3_high,6.67,variable costfuel_oil_greasewheatl3_high
+2021,variable cost,hired_custom_work,corn,l1_low,22.2,variable costhired_custom_workcornl1_low
+2021,variable cost,hired_custom_work,corn,l2_med,22.2,variable costhired_custom_workcornl2_med
+2021,variable cost,hired_custom_work,corn,l3_high,22.2,variable costhired_custom_workcornl3_high
+2021,variable cost,hired_custom_work,soy,l1_low,7,variable costhired_custom_worksoyl1_low
+2021,variable cost,hired_custom_work,soy,l2_med,7,variable costhired_custom_worksoyl2_med
+2021,variable cost,hired_custom_work,soy,l3_high,7,variable costhired_custom_worksoyl3_high
+2021,variable cost,hired_custom_work,wheat,l1_low,14.6,variable costhired_custom_workwheatl1_low
+2021,variable cost,hired_custom_work,wheat,l2_med,14.6,variable costhired_custom_workwheatl2_med
+2021,variable cost,hired_custom_work,wheat,l3_high,14.6,variable costhired_custom_workwheatl3_high
+2021,variable cost,k2o,corn,cost,0.27,variable costk2ocorncost
+2021,variable cost,k2o,corn,l1_low,28,variable costk2ocornl1_low
+2021,variable cost,k2o,corn,l2_med,35,variable costk2ocornl2_med
+2021,variable cost,k2o,corn,l3_high,42,variable costk2ocornl3_high
+2021,variable cost,k2o,soy,cost,0.27,variable costk2osoycost
+2021,variable cost,k2o,soy,l1_low,49.9,variable costk2osoyl1_low
+2021,variable cost,k2o,soy,l2_med,62.3,variable costk2osoyl2_med
+2021,variable cost,k2o,soy,l3_high,74.8,variable costk2osoyl3_high
+2021,variable cost,k2o,wheat,cost,0.258,variable costk2owheatcost
+2021,variable cost,k2o,wheat,l1_low,14.4,variable costk2owheatl1_low
+2021,variable cost,k2o,wheat,l2_med,18,variable costk2owheatl2_med
+2021,variable cost,k2o,wheat,l3_high,21.6,variable costk2owheatl3_high
+2021,variable cost,lime,corn,cost,25,variable costlimecorncost
+2021,variable cost,lime,corn,l1_low,0.25,variable costlimecornl1_low
+2021,variable cost,lime,corn,l2_med,0.25,variable costlimecornl2_med
+2021,variable cost,lime,corn,l3_high,0.25,variable costlimecornl3_high
+2021,variable cost,lime,soy,cost,25,variable costlimesoycost
+2021,variable cost,lime,soy,l1_low,0.25,variable costlimesoyl1_low
+2021,variable cost,lime,soy,l2_med,0.25,variable costlimesoyl2_med
+2021,variable cost,lime,soy,l3_high,0.25,variable costlimesoyl3_high
+2021,variable cost,lime,wheat,cost,25,variable costlimewheatcost
+2021,variable cost,lime,wheat,l1_low,0.25,variable costlimewheatl1_low
+2021,variable cost,lime,wheat,l2_med,0.25,variable costlimewheatl2_med
+2021,variable cost,lime,wheat,l3_high,0.25,variable costlimewheatl3_high
+2021,variable cost,n,corn,cost,0.27,variable costncorncost
+2021,variable cost,n,corn,l1_low,168,variable costncornl1_low
+2021,variable cost,n,corn,l2_med,186,variable costncornl2_med
+2021,variable cost,n,corn,l3_high,206,variable costncornl3_high
+2021,variable cost,n,soy,cost,0,variable costnsoycost
+2021,variable cost,n,soy,l1_low,0,variable costnsoyl1_low
+2021,variable cost,n,soy,l2_med,0,variable costnsoyl2_med
+2021,variable cost,n,soy,l3_high,0,variable costnsoyl3_high
+2021,variable cost,n,wheat,cost,0.357,variable costnwheatcost
+2021,variable cost,n,wheat,l1_low,63.5,variable costnwheatl1_low
+2021,variable cost,n,wheat,l2_med,82.6,variable costnwheatl2_med
+2021,variable cost,n,wheat,l3_high,101.8,variable costnwheatl3_high
+2021,variable cost,p2o5,corn,cost,0.46,variable costp2o5corncost
+2021,variable cost,p2o5,corn,l1_low,49,variable costp2o5cornl1_low
+2021,variable cost,p2o5,corn,l2_med,61.3,variable costp2o5cornl2_med
+2021,variable cost,p2o5,corn,l3_high,73.5,variable costp2o5cornl3_high
+2021,variable cost,p2o5,soy,cost,0.46,variable costp2o5soycost
+2021,variable cost,p2o5,soy,l1_low,34.7,variable costp2o5soyl1_low
+2021,variable cost,p2o5,soy,l2_med,43.4,variable costp2o5soyl2_med
+2021,variable cost,p2o5,soy,l3_high,52,variable costp2o5soyl3_high
+2021,variable cost,p2o5,wheat,cost,0.433,variable costp2o5wheatcost
+2021,variable cost,p2o5,wheat,l1_low,28.8,variable costp2o5wheatl1_low
+2021,variable cost,p2o5,wheat,l2_med,36,variable costp2o5wheatl2_med
+2021,variable cost,p2o5,wheat,l3_high,43.1,variable costp2o5wheatl3_high
+2021,variable cost,repairs,corn,l1_low,25.54,variable costrepairscornl1_low
+2021,variable cost,repairs,corn,l2_med,25.54,variable costrepairscornl2_med
+2021,variable cost,repairs,corn,l3_high,25.54,variable costrepairscornl3_high
+2021,variable cost,repairs,soy,l1_low,21.6,variable costrepairssoyl1_low
+2021,variable cost,repairs,soy,l2_med,21.6,variable costrepairssoyl2_med
+2021,variable cost,repairs,soy,l3_high,21.6,variable costrepairssoyl3_high
+2021,variable cost,repairs,wheat,l1_low,13.81,variable costrepairswheatl1_low
+2021,variable cost,repairs,wheat,l2_med,13.81,variable costrepairswheatl2_med
+2021,variable cost,repairs,wheat,l3_high,13.81,variable costrepairswheatl3_high
+2021,variable cost,seed,corn,cost,3.25,variable costseedcorncost
+2021,variable cost,seed,soy,cost,0.393,variable costseedsoycost
+2021,variable cost,seed,wheat,cost,0.031,variable costseedwheatcost
+2021,variable cost,trucking,corn,cost,0.155,variable costtruckingcorncost
+2021,variable cost,trucking,soy,cost,0.155,variable costtruckingsoycost
+2021,variable cost,trucking,wheat,cost,0.155,variable costtruckingwheatcost
+2021,variable cost,variable_miscellaneous,corn,l1_low,5.1,variable costvariable_miscellaneouscornl1_low
+2021,variable cost,variable_miscellaneous,corn,l2_med,5.1,variable costvariable_miscellaneouscornl2_med
+2021,variable cost,variable_miscellaneous,corn,l3_high,5.1,variable costvariable_miscellaneouscornl3_high
+2021,variable cost,variable_miscellaneous,soy,l1_low,3.4,variable costvariable_miscellaneoussoyl1_low
+2021,variable cost,variable_miscellaneous,soy,l2_med,3.4,variable costvariable_miscellaneoussoyl2_med
+2021,variable cost,variable_miscellaneous,soy,l3_high,3.4,variable costvariable_miscellaneoussoyl3_high
+2021,variable cost,variable_miscellaneous,wheat,l1_low,3,variable costvariable_miscellaneouswheatl1_low
+2021,variable cost,variable_miscellaneous,wheat,l2_med,3,variable costvariable_miscellaneouswheatl2_med
+2021,variable cost,variable_miscellaneous,wheat,l3_high,3,variable costvariable_miscellaneouswheatl3_high
 2020,finances,interest,corn,cost,0.05,financesinterestcorncost
 2020,finances,interest,soy,cost,0.05,financesinterestsoycost
 2020,finances,interest,wheat,cost,0.05,financesinterestwheatcost
