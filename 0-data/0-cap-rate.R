@@ -93,7 +93,7 @@ chicago_fed <- chicago_rates  %>%
 # Maybe here: https://www.kansascityfed.org/research/indicatorsdata
 
 kc_rates <- paste0("https://www.kansascityfed.org/~/media/files/publicat/",
-                   "research/indicatorsdata/agcredit/latestdata/",
+                   "research/indicatorsdata/agcredit/data/2021/",
                    c("variableinterestrates_kc.xls",
                      "fixedinterestrates_kc.xls"))
 fed_file   <- paste(data_source, basename(kc_rates), sep = "/")
@@ -118,9 +118,9 @@ kc_fed <- kc_rates %>%
 #  https://www.dallasfed.org/research/econdata/ag.aspx
 
 dallas_rates <- paste0("https://www.dallasfed.org/-/media/Documents/",
-                       "research/agsurvey/data/agrates.xlsx")
+                       "research/AgSurvey/data/agrates.xlsx")
 fed_file   <- paste(data_source, basename(dallas_rates), sep = "/")
-download.file(dallas_rates, fed_file)
+# download.file(dallas_rates, fed_file) # Issues downloading
 
 dallas_rates <- read_excel(fed_file, "fixed", skip = 3) %>% 
   mutate(year = str_sub(Date, 1, 4),
@@ -153,6 +153,7 @@ write_csv(cap_rate, "0-data/cap_rate/capitalization_rate.csv")
 
 # ---- ag-finance-databook ------------------------------------------------
 
+# Not sure if this is reliable.
 
 # Kansas City Fed puts together the Ag Finance Databook:
 #  https://www.kansascityfed.org/research/indicatorsdata/agfinancedatabook/past-issues
