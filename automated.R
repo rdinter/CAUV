@@ -12,7 +12,9 @@
 # These commands will automate the downloading of NASS and ODT related data
 source("0-data/0-ohio-cauv.R")
 source("0-data/0-ohio-nass.R")
-source("0-data/0-ohio-taxation.R")
+source("0-data/0-cap-rate.R")
+# Taxation Information is no longer a single file
+# source("0-data/0-ohio-taxation.R") 
 
 
 # ---- tidy ---------------------------------------------------------------
