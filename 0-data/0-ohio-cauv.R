@@ -32,17 +32,18 @@ cauv_files <- c("real_property/cauv_table_ty2009.xls",
                 paste0("personal_property/",
                        "Copy%20of%202014%20Table%20for%20ODT%20Web.xlsx"),
                 "real_property/2015_Table_for_ODT_Web.xls",
-                "real_property/CAUV2016Table.xlsx",
-                "real_property/CAUV2017Table.xlsx",
-                "real_property/CAUV2018Table.xlsx",
-                "real_property/CAUV2019Table.xlsx")
+                "real_property/2016cauvtable.xlsx",
+                "real_property/2017cauvtable.xlsx",
+                "real_property/2018cauvtable.xlsx",
+                "real_property/2019cauvtable.xlsx",
+                "real_property/2020cauvtable.xlsx")
 
 cauv_urls <- paste0(base_url, cauv_files)
 
 cauv_files <- c("cauv_2009.xls", "cauv_2010.xls", "cauv_2011.xls",
                 "cauv_2012.xls", "cauv_2013.xlsx", "cauv_2014.xlsx",
                 "cauv_2015.xls", "cauv_2016.xlsx", "cauv_2017.xlsx",
-                "cauv_2018.xlsx", "cauv_2019.xlsx")
+                "cauv_2018.xlsx", "cauv_2019.xlsx", "cauv_2020.xlsx")
 
 map2(cauv_urls, cauv_files, function(x, y) {
   file_name <- paste0(data_source, "/", y)
@@ -58,7 +59,14 @@ cauv_files <- cauv_files[!grepl(".csv", cauv_files)]
 # }
 
 j5 <- map(cauv_files, function(x) {
-  temp <- tryCatch(read_excel(x, col_names = FALSE),
+  # Does the excel file have a newly named sheet? Find it
+  find_sheet <- tryCatch(excel_sheets(x),
+                         error = function(e){
+                           NA
+                         })
+  find_sheet <- find_sheet[match("Soil Table", find_sheet)]
+  # Data are usually the first sheet but if not the above should find it
+  temp <- tryCatch(read_excel(x, col_names = FALSE, sheet = find_sheet),
                    error = function(e){
                      gdata::read.xls(x)
                    })
@@ -82,7 +90,7 @@ j5 <- map(cauv_files, function(x) {
 
 cauv_temp <- j5 %>% 
   bind_rows() %>% 
-  mutate_at(vars(prod_index, cropland, woodland, year), as.numeric)
+  mutate_at(vars(prod_index, cropland, woodland, year), parse_number)
 
 # ---- historical ---------------------------------------------------------
 
